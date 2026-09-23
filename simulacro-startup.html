@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="author" content="esalas@eduardosalas.com">
+<title>Simulacro de decisiones — Funda tu startup</title>
+<!-- Simulacro de decisiones (Startup) · Inferencia con dos poblaciones · Autor: esalas@eduardosalas.com · Hermosillo, Sonora (MST, UTC-7) · 2026-09-22 16:17 MST -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap');
+:root{
+  --ink:#1B2631; --soft:#3a4a5a; --muted:#566573; --surface:#F4F6F8; --panel:#ffffff; --panel2:#eef2f6; --line:#dfe4ea;
+  --blue:#2980B9; --teal:#1ABC9C; --amber:#E67E22; --red:#C0392B; --green:#1E8449; --purple:#8E44AD;
+  --blue-s:#D6EAF8; --teal-s:#D1F2EB; --amber-s:#FAE5D3; --red-s:#F2D7D5; --green-s:#D5F5E3; --purple-s:#E8DAEF;
+  --accent:#8E44AD; --accent2:#1E8449; --accent-s:#E8DAEF;
+  --dfont:'Fraunces',Georgia,serif; --bfont:'Source Sans 3',system-ui,sans-serif; --mfont:'IBM Plex Mono',monospace;
+  --maxw:1060px; --shadow:0 1px 2px rgba(27,38,49,.06),0 10px 30px rgba(27,38,49,.09); --radius:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface);color:var(--ink);font-family:var(--bfont);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--dfont);font-weight:700;line-height:1.1;margin:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:20px max(16px,env(safe-area-inset-left)) 60px}
+.mono{font-family:var(--mfont);font-variant-numeric:tabular-nums}
+.hidden{display:none!important}
+.btn{appearance:none;border:none;border-radius:12px;padding:14px 22px;font-family:var(--bfont);font-weight:800;font-size:17px;cursor:pointer;transition:.15s;color:#fff;background:var(--accent)}
+.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.btn.ghost{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.eyebrow{color:var(--accent);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.hero{padding:34px 30px}
+.hero h1{font-size:clamp(30px,5vw,48px);margin:6px 0 8px}
+.hero .lead{font-size:clamp(17px,2.2vw,20px);color:var(--soft);max-width:62ch}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0}
+@media(max-width:640px){.rules{grid-template-columns:1fr}}
+.rule{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);border-radius:12px;padding:12px 14px;font-size:15.5px}
+.rule .ic{font-size:22px;line-height:1;flex:none}
+.names{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:640px){.names{grid-template-columns:1fr}}
+.field label{display:block;font-weight:700;font-size:13.5px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.field input{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;font-family:var(--bfont);font-size:16px;background:var(--panel);color:var(--ink)}
+.field input:focus{outline:none;border-color:var(--accent)}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topin{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px max(16px,env(safe-area-inset-left));flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:14px;padding:7px 13px;border-radius:999px;background:var(--panel);border:1px solid var(--line);white-space:nowrap}
+.pill .lab{color:var(--muted);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+.money{font-size:15px}
+.money .val{font-family:var(--mfont);font-size:17px;font-weight:800}
+.money.low{background:var(--amber-s);border-color:var(--amber)} .money.crit{background:var(--red-s);border-color:var(--red)}
+.money.low .val{color:var(--amber)} .money.crit .val{color:var(--red)}
+.clock.warn{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}
+.clock.crit{background:var(--red-s);border-color:var(--red);color:var(--red)}
+.bar{flex:1 1 180px;min-width:140px;height:12px;border-radius:999px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+.bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--teal));width:100%;transition:width .3s linear,background .4s}
+.bar > i.low{background:linear-gradient(90deg,var(--amber),#e0a458)} .bar > i.crit{background:linear-gradient(90deg,var(--red),#d67c72)}
+.burnnote{font-size:12px;color:var(--muted);width:100%;text-align:center;margin-top:2px}
+.floatmsg{position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:60;font-weight:900;font-size:20px;padding:10px 18px;border-radius:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.4s;text-align:center}
+.floatmsg.show{opacity:1;top:80px}
+.floatmsg.down{background:var(--red-s);color:var(--red)} .floatmsg.ok{background:var(--green-s);color:var(--green)}
+.qhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.qnum{font-weight:900;color:var(--accent)}
+.badge{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:4px 10px;border-radius:999px;background:var(--accent-s);color:var(--accent)}
+.badge.cost{background:var(--red-s);color:var(--red)}
+.diff{display:inline-flex;gap:3px}.diff span{width:9px;height:9px;border-radius:50%;background:var(--line)}.diff span.on{background:var(--amber)}
+.qcard{padding:24px 26px;margin-top:12px}
+.qcard h2{font-size:clamp(22px,3.2vw,30px);margin:2px 0 8px}
+.context{color:var(--soft);font-size:16.5px;margin-bottom:12px}
+.chartbox{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;margin:8px 0 12px}
+.chart{width:100%;height:auto;display:block}.chart text{font-family:var(--bfont)}
+.datatags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.datatag{font-family:var(--mfont);font-size:13px;font-weight:600;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+.hint{display:flex;gap:10px;align-items:flex-start;background:var(--blue-s);border-radius:11px;padding:10px 14px;font-size:14.5px;color:var(--blue);margin-bottom:10px}
+.discuss{display:flex;gap:10px;align-items:center;background:var(--purple-s);border-radius:11px;padding:10px 14px;font-size:14.5px;color:var(--purple);font-weight:700;margin-bottom:14px}
+.qtext{font-weight:800;font-size:19px;margin:6px 0 12px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 16px;font-family:var(--bfont);font-size:16.5px;color:var(--ink);cursor:pointer;transition:.12s;display:flex;gap:12px;align-items:flex-start}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-s)}
+.opt .mk{font-weight:900;color:var(--muted);flex:none;width:22px}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--green-s);border-color:var(--green)}.opt.correct .mk{color:var(--green)}
+.opt.wrong{background:var(--red-s);border-color:var(--red)}.opt.wrong .mk{color:var(--red)}
+.why{margin-top:14px;border-left:4px solid var(--accent);background:var(--accent-s);border-radius:0 12px 12px 0;padding:13px 16px;font-size:15.5px;display:none}
+.why.show{display:block}
+.why .verdict{font-weight:900;font-size:17px;margin-bottom:4px}
+.why .src{display:block;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.qfoot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+.res h1{font-size:clamp(28px,4.6vw,44px)}
+.outcome{padding:26px 28px;margin:14px 0;border-radius:var(--radius);color:#fff}
+.outcome .big{font-family:var(--mfont);font-weight:600;font-size:clamp(30px,6vw,46px)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+@media(max-width:640px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{padding:16px 18px;text-align:center}
+.kpi .n{font-family:var(--dfont);font-weight:700;font-size:clamp(22px,3.6vw,32px)}
+.kpi .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+table.res-t{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
+table.res-t th,table.res-t td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+table.res-t th{background:var(--panel2);font-weight:800;font-size:12px}
+table.res-t td.mono{font-family:var(--mfont)}
+.ok{color:var(--green);font-weight:800}.no{color:var(--red);font-weight:800}
+.foot{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);text-align:center}
+@media print{.top,.noprint{display:none!important}body{background:#fff}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section id="intro">
+  <div class="card hero">
+    <div class="eyebrow">Tu startup · Simulacro de decisiones</div>
+    <h1>Funden su startup y sobrevivan a los datos</h1>
+    <p class="lead">Arrancan con una caja de <b>$1,000,000</b> de capital semilla. Diez decisiones de dificultad creciente. Aquí el <b>tiempo es dinero</b>: la caja se quema mientras deliberan, y cada decisión equivocada —irse por el ruido— les cuesta una mordida extra. Ganan quien termine con más caja. Jueguen en pareja.</p>
+    <div class="rules" id="rules"></div>
+    <div class="field" style="margin-bottom:6px"><label>Nombre del equipo (opcional)</label><input id="team" placeholder="Los fundadores"></div>
+    <div class="names">
+      <div class="field"><label>Integrante 1</label><input id="p1" placeholder="Nombre y apellido"></div>
+      <div class="field"><label>Integrante 2</label><input id="p2" placeholder="Nombre y apellido"></div>
+    </div>
+    <button class="btn" id="start" style="margin-top:8px">Fundar la startup y empezar ▸</button>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px">10 decisiones · dificultad creciente · la caja se quema por tiempo y por errores · al final exportan su PDF.</p>
+  </div>
+</section>
+<section id="game" class="hidden">
+  <div class="top"><div class="topin">
+    <span class="pill money" id="mpill"><span class="lab">Caja</span><span class="val" id="money">$1,000,000</span></span>
+    <div class="bar"><i id="cajabar"></i></div>
+    <span class="pill" id="qcount">1 / 10</span>
+    <span class="pill clock" id="qclock">0:00</span>
+    <span class="pill" id="totclock">&Sigma; 0:00</span>
+    <div class="burnnote" id="burnnote"></div>
+  </div></div>
+  <div class="wrap" style="padding-top:16px" id="qhost"></div>
+</section>
+<section id="results" class="hidden"><div class="res" id="reshost"></div></section>
+</main>
+<div class="floatmsg" id="float"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+var CFG={start:1000000, burn:350, penBase:40000};
+
+var Q=[
+ {area:'Growth',diff:1,limit:60,title:'Dos canales de adquisición',
+  context:'Su startup vive de conseguir usuarios. Probaron dos canales de ads durante 12 días cada uno; el canal B convirtió en promedio 0.3 puntos más y su growth lead quiere mover YA todo el presupuesto a B. Antes de firmar, miren cómo se reparten los resultados día a día.',
+  hint:'Cuánto se traslapan las dos distribuciones. ¿La ventaja de B resalta sobre la variación diaria, o se pierde en ella?',
+  chart:{type:'overlap',m1:4.8,m2:5.1,sd:2.6,l1:'Canal A',l2:'Canal B',unit:'% de conversión (cada punto = un día)'},
+  tags:['n = 12 días c/u','ventaja de B = +0.3 pts','[Interpretación] ilustrativo'],
+  q:'El canal B va 0.3 puntos arriba. ¿Qué hacen con el presupuesto?',
+  opts:['Migrar ya todo el presupuesto al canal B','Correr una prueba antes: esa diferencia cabe dentro del ruido','Apagar el canal A de inmediato'],
+  correct:1,
+  why:'Las dos distribuciones se traslapan casi por completo: 0.3 puntos es minúsculo frente a la variación diaria. Migrar sin una prueba formal es apostar al ruido.',
+  src:'[Interpretación] Principio señal/ruido (Field, cap. 9); datos ilustrativos reproducibles.'},
+
+ {area:'Producto',diff:1,limit:60,title:'¿Sirvió el nuevo onboarding?',
+  context:'Rediseñaron el onboarding para que la gente entienda el producto más rápido. Tomaron a los MISMOS 7 usuarios beta y midieron su puntaje de activación antes y después del cambio. Quieren saber si de verdad mueve la aguja.',
+  hint:'Son las mismas personas medidas dos veces (antes y después). Eso define qué prueba corresponde.',
+  chart:{type:'paired',la:'Antes',lb:'Después',min:40,max:95,unit:'puntaje de activación (cada línea = un usuario)',pairs:[[62,71],[55,60],[78,84],[49,58],[70,74],[66,72],[58,63]]},
+  tags:['mismos usuarios','antes vs después'],
+  q:'Para saber si el onboarding mejoró la activación, ¿qué prueba usan?',
+  opts:['t de muestras independientes','t de muestras pareadas (relacionadas)','z de dos proporciones','Correlación de Pearson'],
+  correct:1,
+  why:'Son los mismos usuarios medidos dos veces: cada quien es su propio control. Es un diseño pareado; se analiza la diferencia de cada par (más potencia con menos muestra).',
+  src:'[Verificable] Anderson §10.3 · Field §9.4 (diseño pareado).'},
+
+ {area:'Operaciones',diff:2,limit:70,title:'Dos centros de fulfillment',
+  context:'Ya despachan pedidos desde dos centros con equipos y procesos DISTINTOS. Un inversionista pregunta si uno es más eficiente. Midieron el tiempo de preparación por pedido en cada centro; miren los promedios con su margen de error.',
+  hint:'Son grupos distintos. Y ojo: las barras (el margen de error) se traslapan un poco — por eso no basta mirar el promedio.',
+  chart:{type:'errorbars',min:40,max:70,unit:'minutos por pedido',rows:[{label:'Centro A',mean:58,lo:52,hi:64,color:'var(--blue)'},{label:'Centro B',mean:51,lo:45,hi:57,color:'var(--teal)'}]},
+  tags:['grupos distintos','barras = margen de error'],
+  q:'Para comparar el tiempo promedio de los dos centros, ¿qué prueba usan?',
+  opts:['t de muestras pareadas','t de muestras independientes','Wilcoxon de rangos con signo','Ninguna: basta comparar los promedios'],
+  correct:1,
+  why:'Dos grupos formados por pedidos y equipos distintos: muestras independientes. Como las barras se traslapan, hace falta la prueba para saber si la diferencia supera al ruido.',
+  src:'[Verificable] Anderson §10.2 · Field §9.5 (muestras independientes).'},
+
+ {area:'Herramientas',diff:2,limit:75,title:'La salida de SPSS: ¿qué fila creo?',
+  context:'Evalúan una herramienta interna que promete acelerar el trabajo del equipo (325 h vs 286 h por proyecto). Corrieron la prueba t y lo primero que aparece es la prueba de Levene, que decide qué fila de resultados es la válida.',
+  hint:'Levene con Sig. mayor que 0.05 significa que las varianzas se parecen (varianzas iguales).',
+  chart:{type:'spss',headers:['','F (Levene)','Sig.','t','gl','Sig. bilat.'],rows:[['Var. iguales','0.011','0.917','2.27','22','0.034'],['No iguales (Welch)','','','2.27','21.8','0.034']],hl:[0]},
+  tags:['Levene Sig = 0.917','[Verificable] caso de la herramienta'],
+  q:'Con Levene Sig = 0.917, ¿qué fila deben leer?',
+  opts:['La de "no se asumen varianzas iguales" (Welch)','La de "se asumen varianzas iguales"','El promedio de las dos filas','Da igual: siempre es la de arriba'],
+  correct:1,
+  why:'Levene Sig = 0.917 (> 0.05) indica varianzas parecidas: se lee la fila de "varianzas iguales". Si Levene fuera significativo (< 0.05), irían a la de Welch.',
+  src:'[Verificable] Caso software (Anderson–Field); regla de Levene.'},
+
+ {area:'Herramientas',diff:3,limit:80,title:'¿Compramos la herramienta para todos?',
+  context:'Misma herramienta. La prueba dio t(22) = 2.27 y Sig. bilateral = 0.034. Ahora toca decidir si la compran para todo el equipo: son licencias, un gasto recurrente que sale de la caja.',
+  hint:'Comparen el valor-p con 0.05. Y recuerden lo que el valor-p NO significa (no es la probabilidad de que H₀ sea cierta).',
+  chart:{type:'errorbars',min:260,max:345,unit:'horas por proyecto',rows:[{label:'Actual',mean:325,lo:313,hi:337,color:'var(--blue)'},{label:'Nueva',mean:286,lo:273,hi:299,color:'var(--teal)'}]},
+  tags:['t(22)=2.27','Sig. bilat = 0.034','d ≈ 0.93 (grande)'],
+  q:'¿Qué concluyen y qué deciden sobre la herramienta?',
+  opts:['Hay 3.4% de probabilidad de que sean iguales; mejor no comprar','La diferencia es real (p < 0.05) y grande: conviene adoptarla','No se puede concluir nada con estos datos'],
+  correct:1,
+  why:'p = 0.034 < 0.05: se rechaza H₀, la diferencia es real, y el efecto es grande (d ≈ 0.93). El valor-p NO es la probabilidad de que H₀ sea cierta. Decisión: adoptar.',
+  src:'[Verificable] Caso software (Anderson–Field).'},
+
+ {area:'Producto',diff:3,limit:80,title:'El feature que "ahorra tiempo"',
+  context:'Un feature nuevo supuestamente le ahorra tiempo al usuario en un flujo clave. En la prueba, la diferencia de medias fue 3.5 min a favor, pero el intervalo de confianza de esa diferencia salió ancho. Lanzarlo a todos cuesta ingeniería y riesgo de romper cosas.',
+  hint:'Miren si el intervalo de confianza de la diferencia cruza el 0. Si lo cruza, es compatible con "no hay diferencia".',
+  chart:{type:'civs0',point:3.5,lo:-2.0,hi:9.0,min:-6,max:12,unit:'minutos ahorrados (IC 95% de la diferencia)',color:'var(--amber)'},
+  tags:['dif = 3.5 min','IC 95%: −2.0 a 9.0','incluye el 0'],
+  q:'El intervalo va de −2 a +9 min. ¿Hacen el rollout a todos los usuarios?',
+  opts:['Sí: en promedio ahorra 3.5 min','No: el intervalo incluye el 0, no es concluyente; junten más evidencia','Sí, porque el límite superior llega a 9 min'],
+  correct:1,
+  why:'El IC de la diferencia incluye el 0: los datos son compatibles con no ahorrar nada (o incluso perder tiempo). No hay base para una inversión grande; conviene más evidencia.',
+  src:'[Interpretación] IC que incluye el 0 (Anderson §10.2); datos ilustrativos.'},
+
+ {area:'Ventas',diff:3,limit:85,title:'Un guion de ventas más rápido',
+  context:'Escribieron un nuevo guion de ventas esperando que cierre MÁS rápido (no solo "distinto": tienen una dirección esperada). SPSS reporta Sig. bilateral = 0.08, y la diferencia observada va justo en el sentido que esperaban.',
+  hint:'Hipótesis direccional (una cola). El valor-p de una cola = el bilateral ÷ 2, si la diferencia va en el sentido esperado.',
+  chart:{type:'errorbars',min:8,max:20,unit:'días para cerrar',rows:[{label:'Guion actual',mean:15.2,lo:12.8,hi:17.6,color:'var(--blue)'},{label:'Guion nuevo',mean:12.4,lo:10.1,hi:14.7,color:'var(--teal)'}]},
+  tags:['Hₐ direccional (nuevo < actual)','Sig. bilateral = 0.08','α = 0.05'],
+  q:'Con hipótesis de una cola y α = 0.05, ¿cuál es el valor-p y la decisión?',
+  opts:['0.08 → no se rechaza','0.04 → se rechaza (el nuevo cierra más rápido)','0.16 → no se rechaza','No se puede pasar de dos colas a una'],
+  correct:1,
+  why:'Como la hipótesis es direccional y la diferencia va en el sentido esperado, el valor-p de una cola = 0.08 ÷ 2 = 0.04 < 0.05: se rechaza H₀. Ojo: esto se decide ANTES de ver los datos.',
+  src:'[Interpretación] Regla una/dos colas (Field, cap. 9); datos ilustrativos.'},
+
+ {area:'Soporte',diff:4,limit:90,title:'Dos equipos de soporte',
+  context:'Dos equipos de soporte resuelven tickets. Quieren saber si difiere su tasa de error al resolver: 14% vs 9% (con n = 250 y 300 tickets). La prueba de dos proporciones da z = 1.85, valor-p = 0.064. La política interna fija α = 0.05.',
+  hint:'La decisión depende del α que fijaron de antemano. Comparen 0.064 contra 0.05 — no basta ver que 14% > 9%.',
+  chart:{type:'props',p1:0.14,p2:0.09,l1:'Equipo 1',l2:'Equipo 2'},
+  tags:['z = 1.85','p = 0.064','α = 0.05','p̄ combinada = 0.1127'],
+  q:'A la política α = 0.05, ¿difieren las tasas de error?',
+  opts:['Sí, porque 14% es claramente mayor que 9%','No: p = 0.064 > 0.05, la evidencia es insuficiente a ese α','Sí, siempre que la muestra sea grande'],
+  correct:1,
+  why:'A α = 0.05, p = 0.064 no alcanza: no se rechaza H₀. La conclusión depende del α: a α = 0.10 sí se rechazaría. Ver 14 > 9 no basta; hay que contrastar con el ruido.',
+  src:'[Verificable] Anderson §10.4 (dos proporciones, proporción combinada p̄).'},
+
+ {area:'Finanzas',diff:4,limit:90,title:'Significativo… pero ¿importa?',
+  context:'Con su base ya grande (5,000 usuarios por segmento) comparan el ticket promedio de dos segmentos. La diferencia es de $1.20 y sale p < 0.001. Un asesor propone reestructurar TODA la operación comercial alrededor de ese hallazgo.',
+  hint:'Con muestras enormes casi cualquier diferencia sale "significativa". Miren el tamaño del efecto (d), no solo el valor-p.',
+  chart:{type:'errorbars',min:0,max:2,unit:'diferencia de ticket ($) — con su tamaño de efecto',rows:[{label:'Diferencia',mean:1.2,lo:0.7,hi:1.7,color:'var(--blue)'}]},
+  tags:['n = 5,000 c/u','p < 0.001','d = 0.05 (ínfimo)'],
+  q:'¿Autorizan la gran reestructura por esa diferencia?',
+  opts:['Sí: p < 0.001 es contundente','No: es real pero el efecto es ínfimo (d = 0.05); no justifica la inversión','Sí, porque la muestra es enorme'],
+  correct:1,
+  why:'Con muestras enormes, diferencias triviales salen "significativas". El tamaño del efecto (d = 0.05) y el IC muestran que $1.20 no mueve el negocio. Significativo ≠ importante.',
+  src:'[Interpretación] Tamaño del efecto (Field, cap. 9); datos ilustrativos.'},
+
+ {area:'Dirección',diff:5,limit:110,title:'El mismo dato, dos veredictos',
+  context:'Decisión final, la más cara. Un mismo experimento se analizó de dos formas. Tratado como grupos DISTINTOS: no significativo. Tratado como los MISMOS sujetos (que es el diseño real del experimento): significativo. El pareo era lo correcto.',
+  hint:'El diseño real manda. Si midieron a los mismos sujetos, ¿cuál de los dos análisis es el válido?',
+  chart:{type:'spss',headers:['Análisis','dif.','t','Sig.'],rows:[['Independientes (mal)','−7','−1.68','0.107'],['Pareadas (diseño real)','−7','−2.47','0.031']],hl:[1]},
+  tags:['mismos números','[Verificable] Field §9.6'],
+  q:'Si el diseño real es pareado, ¿cuál es la decisión correcta?',
+  opts:['Seguir el análisis independiente: no hay diferencia','Seguir el análisis pareado: la diferencia es real; actúen','Promediar ambos resultados','Repetir todo desde cero'],
+  correct:1,
+  why:'El diseño correcto manda. Al ser los mismos sujetos, el análisis pareado es el válido (p = 0.031): la diferencia es real. Leer mal el diseño te haría descartar un efecto verdadero — el error más caro.',
+  src:'[Verificable] Field §9.6 (mismos datos, dos diseños).'},
+];
+
+
+var $=function(s,r){return (r||document).querySelector(s)};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function fmtT(s){s=Math.round(s);var m=Math.floor(s/60),ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+function money(v){var n=Math.round(Math.abs(v)).toLocaleString('en-US');return (v<0?'−$':'$')+n;}
+// ---- gráficos ----
+function npdf(x,mu,sd){return Math.exp(-0.5*Math.pow((x-mu)/sd,2))/(sd*Math.sqrt(2*Math.PI));}
+function gpath(mu,sd,a,b,X,base,vs){var d='',N=90,i,x,px,py;for(i=0;i<=N;i++){x=a+(b-a)*i/N;px=X(x);py=base-npdf(x,mu,sd)*vs;d+=(i?'L':'M')+px.toFixed(1)+' '+py.toFixed(1)+' ';}d+='L'+X(b).toFixed(1)+' '+base+' L'+X(a).toFixed(1)+' '+base+' Z';return d;}
+function svg(w,h,inner){return '<svg viewBox="0 0 '+w+' '+h+'" class="chart" role="img">'+inner+'</svg>';}
+function tx(x,y,s,o){o=o||{};return '<text x="'+x+'" y="'+y+'" text-anchor="'+(o.a||'start')+'" style="font-size:'+(o.s||13)+'px;fill:'+(o.c||'var(--ink)')+';font-weight:'+(o.w||400)+'">'+s+'</text>';}
+function renderChart(c){
+  if(!c)return '';
+  if(c.type==='overlap'){var a=Math.min(c.m1,c.m2)-4*c.sd,b=Math.max(c.m1,c.m2)+4*c.sd,base=190,vs=150/npdf(0,0,c.sd);var X=function(x){return 40+(x-a)/(b-a)*560;};
+    var s='<line x1="40" y1="190" x2="600" y2="190" stroke="var(--line)"/>';
+    s+='<path d="'+gpath(c.m1,c.sd,a,b,X,base,vs)+'" fill="var(--blue)" fill-opacity="0.18" stroke="var(--blue)" stroke-width="2.5"/>';
+    s+='<path d="'+gpath(c.m2,c.sd,a,b,X,base,vs)+'" fill="var(--teal)" fill-opacity="0.18" stroke="var(--teal)" stroke-width="2.5"/>';
+    s+='<line x1="'+X(c.m1)+'" y1="60" x2="'+X(c.m1)+'" y2="190" stroke="var(--blue)" stroke-dasharray="4 3"/>';
+    s+='<line x1="'+X(c.m2)+'" y1="60" x2="'+X(c.m2)+'" y2="190" stroke="var(--teal)" stroke-dasharray="4 3"/>';
+    s+=tx(X(c.m1),210,c.l1+' ('+c.m1+')',{a:'middle',c:'var(--blue)',w:700,s:13});
+    s+=tx(X(c.m2),228,c.l2+' ('+c.m2+')',{a:'middle',c:'var(--teal)',w:700,s:13});
+    s+=tx(320,250,c.unit,{a:'middle',c:'var(--muted)',s:12});return svg(640,260,s);}
+  if(c.type==='errorbars'){var mn=c.min,mx=c.max,X=function(v){return 120+(v-mn)/(mx-mn)*440;};var s='';
+    c.rows.forEach(function(r,i){var y=50+i*70;var col=r.color||'var(--blue)';
+      s+=tx(110,y+5,r.label,{a:'end',c:col,w:700,s:14});
+      s+='<line x1="'+X(r.lo)+'" y1="'+(y-13)+'" x2="'+X(r.lo)+'" y2="'+(y+13)+'" stroke="'+col+'" stroke-width="2.5"/>';
+      s+='<line x1="'+X(r.hi)+'" y1="'+(y-13)+'" x2="'+X(r.hi)+'" y2="'+(y+13)+'" stroke="'+col+'" stroke-width="2.5"/>';
+      s+='<line x1="'+X(r.lo)+'" y1="'+y+'" x2="'+X(r.hi)+'" y2="'+y+'" stroke="'+col+'" stroke-width="3.5"/>';
+      s+='<circle cx="'+X(r.mean)+'" cy="'+y+'" r="7" fill="'+col+'"/>'+tx(X(r.mean),y-16,''+r.mean,{a:'middle',c:col,w:700,s:14});});
+    var yb=50+c.rows.length*70-10;s+='<line x1="120" y1="'+yb+'" x2="560" y2="'+yb+'" stroke="var(--line)"/>'+tx(340,yb+24,c.unit,{a:'middle',c:'var(--muted)',s:12});return svg(600,yb+36,s);}
+  if(c.type==='civs0'){var mn=c.min,mx=c.max,X=function(v){return 90+(v-mn)/(mx-mn)*470;},y=90;
+    var s='<line x1="'+X(0)+'" y1="30" x2="'+X(0)+'" y2="150" stroke="var(--muted)" stroke-dasharray="5 4"/>'+tx(X(0),24,'0 = sin diferencia',{a:'middle',c:'var(--muted)',s:12});
+    var col=c.color||'var(--blue)';
+    s+='<line x1="'+X(c.lo)+'" y1="'+(y-14)+'" x2="'+X(c.lo)+'" y2="'+(y+14)+'" stroke="'+col+'" stroke-width="3"/>';
+    s+='<line x1="'+X(c.hi)+'" y1="'+(y-14)+'" x2="'+X(c.hi)+'" y2="'+(y+14)+'" stroke="'+col+'" stroke-width="3"/>';
+    s+='<line x1="'+X(c.lo)+'" y1="'+y+'" x2="'+X(c.hi)+'" y2="'+y+'" stroke="'+col+'" stroke-width="4"/>';
+    s+='<circle cx="'+X(c.point)+'" cy="'+y+'" r="8" fill="'+col+'"/>'+tx(X(c.point),y-18,'dif = '+c.point,{a:'middle',c:col,w:700,s:14})+tx(325,175,c.unit,{a:'middle',c:'var(--muted)',s:12});return svg(650,190,s);}
+  if(c.type==='props'){var base=200,scale=c.scale||900;
+    function bar(x,lab,p,col,fill){var h=p*scale;return '<rect x="'+x+'" y="'+(base-h)+'" width="90" height="'+h+'" rx="6" fill="'+fill+'" stroke="'+col+'" stroke-width="2"/>'+tx(x+45,base-h-10,Math.round(p*100)+'%',{a:'middle',c:col,w:800,s:16})+tx(x+45,base+22,lab,{a:'middle',c:'var(--ink)',s:13});}
+    var s='<line x1="60" y1="200" x2="520" y2="200" stroke="var(--line)"/>'+bar(150,c.l1,c.p1,'var(--blue)','var(--blue-s)')+bar(330,c.l2,c.p2,'var(--teal)','var(--teal-s)');return svg(600,240,s);}
+  if(c.type==='paired'){var s='',xa=180,xb=430;s+=tx(xa,24,c.la||'Antes',{a:'middle',c:'var(--blue)',w:700,s:14})+tx(xb,24,c.lb||'Después',{a:'middle',c:'var(--teal)',w:700,s:14});
+    var mn=c.min,mx=c.max,Y=function(v){return 250-(v-mn)/(mx-mn)*190;};
+    c.pairs.forEach(function(p){s+='<line x1="'+xa+'" y1="'+Y(p[0])+'" x2="'+xb+'" y2="'+Y(p[1])+'" stroke="var(--line)" stroke-width="2"/><circle cx="'+xa+'" cy="'+Y(p[0])+'" r="5" fill="var(--blue)"/><circle cx="'+xb+'" cy="'+Y(p[1])+'" r="5" fill="var(--teal)"/>';});
+    s+=tx(305,268,c.unit||'',{a:'middle',c:'var(--muted)',s:12});return svg(610,280,s);}
+  if(c.type==='spss'){var h='<table class="res-t" style="margin:0"><thead><tr>';c.headers.forEach(function(x){h+='<th>'+x+'</th>';});h+='</tr></thead><tbody>';
+    c.rows.forEach(function(r,ri){h+='<tr>';r.forEach(function(cell){var hl=(c.hl&&c.hl[0]===ri)?' style="background:var(--amber-s);font-weight:800"':'';h+='<td class="mono"'+hl+'>'+cell+'</td>';});h+='</tr>';});return h+'</tbody></table>';}
+  return '';
+}
+// ---- estado ----
+var st={i:0,caja:CFG.start,burnedTime:0,burnedErr:0,score:0,ans:[],tStart:0,qStart:0,limit:0,left:0,timer:null,burner:null,locked:false,order:[],names:''};
+(function(){
+  var rules=[['🚀','Fundan su startup con <b>$1,000,000</b> de capital semilla.'],
+    ['⏳','El tiempo es dinero: la caja se quema <b>$'+CFG.burn.toLocaleString('en-US')+' por segundo</b> mientras deliberan cada decisión.'],
+    ['💸','Cada decisión equivocada (irse por el ruido) cuesta una mordida extra, mayor si es más difícil.'],
+    ['🏁','Ganan quien termine con <b>más caja</b>. Si llega a $0, quiebran. Al final descargan su PDF.']];
+  var rh=$('#rules');rules.forEach(function(r){var d=document.createElement('div');d.className='rule';d.innerHTML='<span class="ic">'+r[0]+'</span><span>'+r[1]+'</span>';rh.appendChild(d);});
+  $('#money').textContent=money(CFG.start);
+  $('#start').addEventListener('click',function(){
+    var p1=$('#p1').value.trim(),p2=$('#p2').value.trim(),tm=$('#team').value.trim();
+    var who=[p1,p2].filter(Boolean).join(' & ')||'Equipo';st.names=(tm?tm+' — ':'')+who;
+    $('#intro').classList.add('hidden');$('#game').classList.remove('hidden');
+    st.tStart=Date.now();tickTotal();renderQ();
+  });
+})();
+function tickTotal(){$('#totclock').innerHTML='Σ '+fmtT((Date.now()-st.tStart)/1000);setTimeout(tickTotal,500);}
+function cajaClass(v){var f=v/CFG.start;return f<=0.2?'crit':(f<=0.45?'low':'');}
+function paintCaja(v){$('#money').textContent=money(v);var cl=cajaClass(v);$('#mpill').className='pill money '+(cl?cl:'');var bar=$('#cajabar');bar.style.width=Math.max(0,Math.min(100,v/CFG.start*100))+'%';bar.className=cl;}
+function renderQ(){
+  st.locked=false;var q=Q[st.i];
+  $('#qcount').textContent=(st.i+1)+' / '+Q.length;
+  paintCaja(st.caja);
+  var pen=CFG.penBase*q.diff;
+  $('#burnnote').innerHTML='Quema por tiempo: −$'+CFG.burn.toLocaleString('en-US')+'/seg · Costo de esta decisión si fallan: −$'+pen.toLocaleString('en-US');
+  st.limit=q.limit;st.left=q.limit;st.qStart=Date.now();updateClock();
+  if(st.timer)clearInterval(st.timer);
+  st.timer=setInterval(function(){st.left--;updateClock();if(st.left<=0)lock(-1,true);},1000);
+  if(st.burner)clearInterval(st.burner);
+  st.burner=setInterval(function(){var el=(Date.now()-st.qStart)/1000;paintCaja(st.caja-CFG.burn*el);},150);
+  var diff='';for(var k=0;k<5;k++)diff+='<span class="'+(k<q.diff?'on':'')+'"></span>';
+  var tags=(q.tags||[]).map(function(t){return '<span class="datatag">'+t+'</span>';}).join('');
+  st.order=shuffle(q.opts.map(function(_,k){return k;}));
+  var opts=st.order.map(function(orig,pos){return '<button class="opt" data-i="'+pos+'"><span class="mk">'+String.fromCharCode(65+pos)+'</span><span>'+q.opts[orig]+'</span></button>';}).join('');
+  $('#qhost').innerHTML=''+
+    '<div class="qhead"><span class="qnum">Decisión '+(st.i+1)+'</span><span class="badge">'+q.area+'</span>'+
+      '<span class="badge cost">Error: −$'+pen.toLocaleString('en-US')+'</span><span class="diff">'+diff+'</span></div>'+
+    '<div class="card qcard"><h2>'+q.title+'</h2>'+
+      '<p class="context">'+q.context+'</p>'+
+      '<div class="chartbox">'+renderChart(q.chart)+(tags?'<div class="datatags">'+tags+'</div>':'')+'</div>'+
+      (q.hint?'<div class="hint">🔎 <span><b>Qué mirar:</b> '+q.hint+'</span></div>':'')+
+      '<div class="discuss">🗣️ Discutan en pareja y digan su porqué antes de contestar — pero rápido: la caja se está quemando.</div>'+
+      '<div class="qtext">'+q.q+'</div><div class="opts" id="opts">'+opts+'</div>'+
+      '<div class="why" id="why"></div>'+
+      '<div class="qfoot"><span style="font-size:13px;color:var(--muted)" id="hint2">Elijan una opción.</span><button class="btn hidden" id="nextb">Siguiente ▸</button></div></div>';
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(b){b.addEventListener('click',function(){if(!st.locked)lock(parseInt(b.dataset.i,10),false);});});
+}
+function updateClock(){var c=$('#qclock');c.textContent=fmtT(Math.max(0,st.left));c.className='pill clock'+(st.left<=10?' crit':(st.left<=20?' warn':''));}
+function floatMsg(html,cls){var f=$('#float');f.innerHTML=html;f.className='floatmsg show '+cls;setTimeout(function(){f.className='floatmsg';},1900);}
+function lock(choice,timeout){
+  if(st.locked)return;st.locked=true;clearInterval(st.timer);clearInterval(st.burner);
+  var q=Q[st.i];var used=Math.min(q.limit,(Date.now()-st.qStart)/1000);
+  var timeBurn=Math.round(CFG.burn*used);st.burnedTime+=timeBurn;st.caja-=timeBurn;
+  var orig=(choice<0)?-1:st.order[choice];var correct=(orig===q.correct);
+  var pen=0;if(!correct){pen=CFG.penBase*q.diff;st.burnedErr+=pen;st.caja-=pen;}
+  var pts=0;if(correct){var speed=Math.max(0,(q.limit-used)/q.limit);pts=q.diff*100+Math.round(speed*30);}
+  st.score+=pts;
+  paintCaja(st.caja);
+  st.ans.push({i:st.i,area:q.area,correct:correct,timeout:!!timeout,used:used,timeBurn:timeBurn,pen:pen,pts:pts,choice:choice});
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(b){var pos=parseInt(b.dataset.i,10);b.disabled=true;if(st.order[pos]===q.correct)b.classList.add('correct');if(pos===choice&&!correct)b.classList.add('wrong');});
+  var w=$('#why');w.classList.add('show');var vcol=correct?'var(--green)':'var(--red)';
+  var head=timeout?'⏳ Se acabó el tiempo — decisión no tomada':(correct?'✔ Buena decisión, y rápida':'✗ Se fueron por el ruido');
+  w.innerHTML='<div class="verdict" style="color:'+vcol+'">'+head+'</div><div>'+q.why+'</div><span class="src">'+q.src+'</span>';
+  floatMsg((correct?'':'✗ ')+'−'+money(timeBurn)+' <span style="font-weight:600;font-size:14px">tiempo</span>'+(pen?('  ·  −'+money(pen)+' <span style="font-weight:600;font-size:14px">error</span>'):''),correct?'ok':'down');
+  $('#hint2').innerHTML=correct?('+'+pts+' puntos · quemaron '+money(timeBurn)+' de tiempo'):('perdieron '+money(timeBurn+pen));
+  var nb=$('#nextb');nb.classList.remove('hidden');nb.textContent=(st.i===Q.length-1)?'Ver resultados ▸':'Siguiente ▸';
+  nb.onclick=function(){st.i++;if(st.i>=Q.length)finish();else{renderQ();window.scrollTo(0,0);}};
+}
+function outcome(v){var f=v/CFG.start;var t=[
+  [0.90,'var(--green)',[30,132,73],'¡Rumbo a una Serie A grande! 🚀','Decidieron rápido y con la evidencia: casi no quemaron caja.'],
+  [0.65,'var(--teal)',[26,188,156],'Startup sólida, lista para levantar','Buen balance entre velocidad y buenas decisiones.'],
+  [0.40,'var(--amber)',[230,126,34],'Sobreviven, con caja justa','El reloj y algún error al ruido les costaron runway.'],
+  [0.15,'#B9770E',[185,119,14],'En apuros: casi sin runway','Demasiado tiempo o demasiados errores quemaron la caja.'],
+  [-1e9,'var(--red)',[192,57,43],'Quiebran','Se acabó el capital: el tiempo y el ruido ganaron.']];
+  for(var i=0;i<t.length;i++){if(f>=t[i][0])return {color:t[i][1],rgb:t[i][2],label:t[i][3],sub:t[i][4]};}}
+function finish(){
+  clearInterval(st.timer);clearInterval(st.burner);$('#game').classList.add('hidden');$('#results').classList.remove('hidden');
+  st.tTotal=(Date.now()-st.tStart)/1000;var aciertos=st.ans.filter(function(a){return a.correct;}).length;var oc=outcome(st.caja);
+  var rows=st.ans.map(function(a,i){return '<tr><td>'+(i+1)+'</td><td>'+a.area+'</td><td>'+(a.timeout?'—':String.fromCharCode(65+a.choice))+'</td><td class="'+(a.correct?'ok':'no')+'">'+(a.correct?'✔':'✗')+'</td><td class="mono">'+fmtT(a.used)+'</td><td class="mono">−'+money(a.timeBurn).replace('$','$')+'</td><td class="mono">'+(a.pen?'−'+money(a.pen):'$0')+'</td></tr>';}).join('');
+  $('#reshost').innerHTML=''+
+    '<div class="eyebrow">Tu startup · Resultados</div><h1 style="margin:6px 0 2px">'+st.names+'</h1>'+
+    '<div class="outcome" style="background:'+oc.color+'"><div style="font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:13px;opacity:.9">Caja final</div>'+
+      '<div class="big">'+money(st.caja)+'</div><div style="font-size:20px;font-weight:800;margin-top:4px">'+oc.label+'</div><div style="opacity:.92">'+oc.sub+'</div></div>'+
+    '<div class="kpis">'+
+      '<div class="card kpi"><div class="n" style="color:var(--green)">'+aciertos+' / '+Q.length+'</div><div class="l">Decisiones correctas</div></div>'+
+      '<div class="card kpi"><div class="n mono" style="color:var(--amber)">−'+money(st.burnedTime)+'</div><div class="l">Quemado por tiempo</div></div>'+
+      '<div class="card kpi"><div class="n mono" style="color:var(--red)">−'+money(st.burnedErr)+'</div><div class="l">Quemado por errores</div></div>'+
+      '<div class="card kpi"><div class="n mono">'+fmtT(st.tTotal)+'</div><div class="l">Tiempo total</div></div>'+
+    '</div>'+
+    '<div class="card" style="padding:18px 20px"><table class="res-t"><thead><tr><th>#</th><th>Área</th><th>Resp.</th><th>¿Bien?</th><th>Tiempo</th><th>Quema tiempo</th><th>Penalización</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="qfoot noprint" style="margin-top:18px"><button class="btn ghost" onclick="location.reload()">↻ Jugar otra vez</button>'+
+      '<span><button class="btn ghost" onclick="window.print()">Imprimir</button> <button class="btn" id="pdfb">⬇ Descargar PDF de resultados</button></span></div>'+
+    '<div class="foot">Simulacro de decisiones (Startup) · Inferencia estadística con dos poblaciones · Mtro. Eduardo Salas García · esalas@eduardosalas.com<br>Trazabilidad: los datos de cada decisión provienen de casos verificados de los libros o de simulaciones reproducibles etiquetadas; ninguno es inventado.</div>';
+  $('#pdfb').addEventListener('click',makePDF);window.scrollTo(0,0);
+}
+function makePDF(){
+  try{
+    var J=(window.jspdf||{}).jsPDF;if(!J){window.print();return;}
+    var d=new J({unit:'pt',format:'a4'});var W=d.internal.pageSize.getWidth();var y=54;
+    var aciertos=st.ans.filter(function(a){return a.correct;}).length;var oc=outcome(st.caja);
+    d.setFont('helvetica','bold');d.setFontSize(18);d.setTextColor(27,38,49);d.text('Simulacro de decisiones — Resultados',40,y);y+=22;
+    d.setFontSize(12);d.setFont('helvetica','normal');d.setTextColor(90,101,115);d.text('Tu startup · Inferencia estadistica con dos poblaciones',40,y);y+=24;
+    d.setDrawColor(223,228,234);d.line(40,y,W-40,y);y+=22;
+    d.setTextColor(27,38,49);d.setFont('helvetica','bold');d.setFontSize(13);d.text('Equipo: ',40,y);d.setFont('helvetica','normal');d.text(st.names,92,y);y+=20;
+    d.setFont('helvetica','bold');d.text('Fecha: ',40,y);d.setFont('helvetica','normal');d.text(new Date().toLocaleString('es-MX'),92,y);y+=24;
+    var rgb=oc.rgb;d.setFillColor(rgb[0],rgb[1],rgb[2]);d.roundedRect(40,y,W-80,64,8,8,'F');
+    d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(11);d.text('CAJA FINAL',54,y+20);
+    d.setFontSize(22);d.text(money(st.caja),54,y+46);
+    d.setFontSize(12);d.text(oc.label,W-54,y+30,{align:'right'});d.setFont('helvetica','normal');d.setFontSize(10);d.text(oc.sub,W-54,y+46,{align:'right'});y+=84;
+    d.setTextColor(27,38,49);d.setFontSize(12);d.setFont('helvetica','bold');
+    d.text('Correctas: '+aciertos+'/'+Q.length+'    Quemado por tiempo: '+money(st.burnedTime)+'    Por errores: '+money(st.burnedErr)+'    Tiempo total: '+fmtT(st.tTotal),40,y,{maxWidth:W-80});y+=24;
+    d.setFontSize(10);d.setFillColor(238,242,246);d.rect(40,y-12,W-80,18,'F');d.setFont('helvetica','bold');d.setTextColor(60,60,60);
+    var cols=[40,70,200,285,345,420,495],labels=['#','Área','Resp.','¿Bien?','Tiempo','Quema t.','Penaliz.'];
+    labels.forEach(function(l,i){d.text(l,cols[i]+3,y);});y+=16;d.setFont('helvetica','normal');d.setTextColor(27,38,49);
+    st.ans.forEach(function(a,i){d.text(''+(i+1),cols[0]+3,y);d.text(a.area,cols[1]+3,y);d.text(a.timeout?'—':String.fromCharCode(65+a.choice),cols[2]+3,y);
+      if(a.correct){d.setTextColor(30,132,73);d.text('Si',cols[3]+3,y);}else{d.setTextColor(192,57,43);d.text('No',cols[3]+3,y);}
+      d.setTextColor(27,38,49);d.text(fmtT(a.used),cols[4]+3,y);d.text('-'+money(a.timeBurn).replace('−','-'),cols[5]+3,y);d.text(a.pen?('-'+money(a.pen).replace('−','-')):'0',cols[6]+3,y);y+=15;});
+    y+=12;d.setDrawColor(223,228,234);d.line(40,y,W-40,y);y+=15;d.setFontSize(8.5);d.setTextColor(120,130,140);
+    d.text('Mtro. Eduardo Salas Garcia · esalas@eduardosalas.com · Datos trazables (casos verificados o simulaciones reproducibles). Ningun dato inventado.',40,y,{maxWidth:W-80});
+    var fn=(st.names.replace(/[^a-zA-Z0-9]+/g,'_').slice(0,40)||'Equipo')+'_Simulacro_Resultados.pdf';d.save(fn);
+  }catch(e){window.print();}
+}
+
+</script>
+</body>
+</html>
