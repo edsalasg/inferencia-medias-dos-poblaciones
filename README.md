@@ -1,0 +1,1 @@
+Presentacion de clase - Inferencia estadistica sobre medias con dos poblaciones (Prueba T, SPSS 25). Sitio: https://edsalasg.github.io/inferencia-medias-dos-poblaciones/ - Autor: esalas@eduardosalas.com
