@@ -274,6 +274,9 @@
   .spss{overflow-x:auto;min-width:0}
   .chart,.card,.tile,.mat-card,.q,.explora,.exp-svg{min-width:0}
 
+  /* ===== Videos ===== */
+  .vid-wrap{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#000;max-width:min(100%,calc((100vh - 360px)*16/9))}
+  .deck-video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
 </style>
 <style>
 :root{ --blue:#4E93C9; --teal:#3FC0A6; --amber:#DE9B50; --red:#CF7C71; --purple:#9E73C0;
@@ -537,6 +540,14 @@ svg text{ font-family:var(--bfont); }
   <p class="foot-note">En una frase: <b>antes verificábamos una afirmación sobre una media; hoy comparamos dos.</b></p>
 </section>
 
+  <!-- VIDEO: Video · introducción -->
+  <section class="slide" data-title="Video · introducción">
+    <div class="eyebrow" style="color:var(--blue)">Video · antes de empezar</div>
+    <h2>¿Para qué comparar dos medias?</h2>
+    <p class="kicker">Fundamento de la sesión y las tres ideas que la guían: diagnostica, verifica e interpreta (≈56 s).</p>
+    <div class="vid-wrap"><video class="deck-video" controls preload="metadata" playsinline poster="videos/v0_intro.jpg" src="videos/v0_intro.mp4"></video></div>
+  </section>
+
   <section class="slide" data-title="Portada">
     <div class="hero-mark">Doctorado en Ciencias Administrativas · DCEA–UNISON</div>
     <h1 style="font-size:clamp(32px,6.5vw,60px);margin:14px 0 6px;">Inferencia estadística acerca de<br>medias con dos poblaciones</h1>
@@ -554,16 +565,22 @@ svg text{ font-family:var(--bfont); }
   <!-- 2 AGENDA -->
   <section class="slide" data-title="Mapa de la sesión">
     <div class="eyebrow">Mapa de la sesión</div>
-    <h2>Qué vamos a hacer hoy</h2>
-    <p class="lead">La meta no es aprender a "picarle" a SPSS, sino decidir <b>cuándo</b> aplicar la técnica, <b>cómo</b> ejecutarla y <b>cómo</b> leer lo que arroja.</p>
+    <h2>Tres ideas guían la sesión</h2>
+    <p class="lead">La meta no es aprender a "picarle" a SPSS, sino <b>diagnosticar</b> el diseño, <b>verificar</b> que la prueba es válida e <b>interpretar</b> lo que arroja.</p>
     <div class="grid g3">
-      <div class="card accent-blue"><span class="tag">Bloque 1 · Concepto</span><h3>El problema</h3><p class="kicker">Por qué comparar dos medias y qué preguntas de negocio responde.</p></div>
-      <div class="card accent-blue"><span class="tag">Bloque 2 · Diseño</span><h3>Independientes vs. pareadas</h3><p class="kicker">El primer diagnóstico: cómo se recolectaron los datos.</p></div>
-      <div class="card accent-blue"><span class="tag">Bloque 3 · Reglas</span><h3>Supuestos y criterios</h3><p class="kicker">Qué debe cumplirse y cómo elegir la prueba correcta.</p></div>
-      <div class="card accent-teal"><span class="tag">Bloque 4 · Práctica</span><h3>Guiado 1: independientes</h3><p class="kicker">Tecnología actual vs. nuevo software (lo hacemos juntos en SPSS).</p></div>
-      <div class="card accent-teal"><span class="tag">Bloque 5 · Práctica</span><h3>Guiado 2: pareadas</h3><p class="kicker">Recordación de anuncios: televisión vs. radio.</p></div>
-      <div class="card accent-purple"><span class="tag">Bloque 6 · Evidencia</span><h3>Aplicación e integral</h3><p class="kicker">Un artículo publicado y tu ejercicio autónomo (caso Par, Inc.).</p></div>
+      <div class="card accent-blue"><span class="tag">Idea 1</span><h3 style="color:var(--blue)">Diagnostica</h3>
+        <p class="kicker">¿Qué comparo y cómo se recolectaron los datos? ¿Grupos distintos (independientes) o los mismos sujetos (pareadas)?</p>
+        <p class="foot-note">Bloques 1 y 2 · diapositivas 16–19 · ▶ video en la 18 · árbol de decisión en la 41</p></div>
+      <div class="card accent-teal"><span class="tag">Idea 2</span><h3 style="color:var(--teal)">Verifica</h3>
+        <p class="kicker">Supuestos, prueba de Levene (qué fila leer) y si la hipótesis es de una o de dos colas.</p>
+        <p class="foot-note">Bloque 3 · ▶ video en la 20 · diapositivas 21 y 27</p></div>
+      <div class="card accent-purple"><span class="tag">Idea 3</span><h3 style="color:var(--purple)">Interpreta</h3>
+        <p class="kicker">Valor p, intervalo de confianza y tamaño del efecto. Significativo ≠ importante; no rechazar ≠ igualdad.</p>
+        <p class="foot-note">▶ video en la 22 · diapositivas 23–26, 44 y 49</p></div>
     </div>
+    <div class="callout teal" style="margin-top:16px"><span class="ic">→</span><div>
+      <span class="callout-label">Las aplicamos en la práctica</span>
+      <b>Bloques 4 y 5</b> · Guiados 1 a 5 en SPSS (28–37) &nbsp;·&nbsp; <b>Bloque 6</b> · Artículo e integral, caso Par, Inc. (45–46).</div></div>
   </section>
 
   <!-- 3 EL PROBLEMA -->
@@ -622,6 +639,14 @@ svg text{ font-family:var(--bfont); }
 
 
 
+  <!-- VIDEO: Video · Diagnostica -->
+  <section class="slide" data-title="Video · Diagnostica">
+    <div class="eyebrow" style="color:var(--blue)">Video · antes de la idea 1</div>
+    <h2>Diagnostica: ¿qué prueba uso?</h2>
+    <p class="kicker">Dos preguntas llevan a la prueba correcta: ¿qué comparo? y ¿los grupos son distintos o los mismos? (≈67 s).</p>
+    <div class="vid-wrap"><video class="deck-video" controls preload="metadata" playsinline poster="videos/v1_diagnostica.jpg" src="videos/v1_diagnostica.mp4"></video></div>
+  </section>
+
   <!-- 4 DISEÑOS -->
   <section class="slide" data-title="Independientes vs. pareadas">
     <div class="eyebrow">Bloque 2 · El diagnóstico previo</div>
@@ -658,6 +683,14 @@ svg text{ font-family:var(--bfont); }
   
   </section>
 
+  <!-- VIDEO: Video · Verifica -->
+  <section class="slide" data-title="Video · Verifica">
+    <div class="eyebrow" style="color:var(--teal)">Video · antes de la idea 2</div>
+    <h2>Verifica antes de interpretar</h2>
+    <p class="kicker">Supuestos, prueba de Levene (qué fila leer) y una o dos colas (≈73 s).</p>
+    <div class="vid-wrap"><video class="deck-video" controls preload="metadata" playsinline poster="videos/v2_verifica.jpg" src="videos/v2_verifica.mp4"></video></div>
+  </section>
+
   <!-- 5 SUPUESTOS -->
   <section class="slide" data-title="Supuestos y criterios">
     <div class="eyebrow">Bloque 3 · Reglas del juego</div>
@@ -692,6 +725,14 @@ svg text{ font-family:var(--bfont); }
     </div>
     <div class="aterriza"><span class="at-label">Aterrízalo</span> Sin agobio: con muestras razonables la t <b>aguanta</b> desvíos pequeños. Lo único que decides mirando la salida es <b>Levene</b>: ¿leo la fila de varianzas iguales o la de Welch? El resto es sentido común.</div>
   
+  </section>
+
+  <!-- VIDEO: Video · Interpreta -->
+  <section class="slide" data-title="Video · Interpreta">
+    <div class="eyebrow" style="color:var(--purple)">Video · antes de la idea 3</div>
+    <h2>Interpreta: tres lecturas</h2>
+    <p class="kicker">Valor p, intervalo de confianza y tamaño del efecto, con el Guiado 1 como adelanto (≈80 s).</p>
+    <div class="vid-wrap"><video class="deck-video" controls preload="metadata" playsinline poster="videos/v3_interpreta.jpg" src="videos/v3_interpreta.mp4"></video></div>
   </section>
 
   <!-- 6 LOGICA -->
@@ -3606,6 +3647,7 @@ L 576.36 234.300531
   function go(k){
     i=Math.max(0,Math.min(N-1,k));
     slides.forEach(function(s,x){s.classList.toggle('active',x===i)});
+    [].slice.call(document.querySelectorAll('video.deck-video')).forEach(function(v){try{v.pause()}catch(e){}});
     dotEls.forEach(function(d,x){d.setAttribute('aria-current',x===i?'true':'false')});
     counter.textContent=(i+1)+' / '+N;
     progress.style.width=((i)/(N-1)*100)+'%';
