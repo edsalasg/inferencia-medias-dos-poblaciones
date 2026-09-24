@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Medias con dos poblaciones — V13</title>
+<title>Medias con dos poblaciones — V16</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -277,6 +277,51 @@
   /* ===== Videos ===== */
   .vid-wrap{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#000;max-width:min(100%,calc((100vh - 360px)*16/9))}
   .deck-video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
+
+/* V16 · índice por temas, diapositivas de cambio de tema y menú de ejercicios */
+#menuGrid{display:block;max-width:var(--maxw);margin:0 auto}
+.tema{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin:0 0 10px;overflow:hidden}
+.tema-head{width:100%;display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;padding:12px 16px;background:none;border:0;cursor:pointer;color:var(--ink);font:inherit;text-align:left}
+.tema-head:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.tema-head .tn{font-family:var(--mfont);font-weight:700;color:#fff;background:var(--accent);border-radius:8px;padding:3px 9px;font-size:13px}
+.tema-head .tt{font-weight:800;font-size:17px}
+.tema-head .tr{font-family:var(--mfont);font-size:12.5px;color:var(--muted)}
+.tema-head .chev{transition:transform .2s;color:var(--muted)}
+.tema.open .tema-head .chev{transform:rotate(90deg)}
+.tema.cur{border-color:var(--accent)}
+.tema-body{display:none;padding:4px 14px 14px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.tema.open .tema-body{display:grid}
+.tema-body .menu-item{padding:10px 12px}
+.tema-body .menu-item.is-div{background:color-mix(in srgb,var(--accent) 10%,var(--panel));border-color:var(--accent)}
+.menu-tools{display:flex;gap:8px;justify-content:center;margin:0 auto 12px;max-width:var(--maxw)}
+.slide.temadiv .div-num{font-family:var(--mfont);font-weight:700;font-size:20px;color:var(--accent);margin:6px 0 4px}
+.slide.temadiv .div-num span{color:var(--muted);font-weight:500}
+.slide.temadiv h2{font-size:clamp(34px,5vw,56px)}
+.div-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.div-list .btn{font-weight:600}
+.div-list .btn .n{font-family:var(--mfont);color:var(--accent)}
+.sref{color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline dotted;font-family:var(--mfont)}
+.backmenu{align-self:flex-end;width:max-content;max-width:max-content;margin:0 0 4px auto;display:inline-flex!important;font-size:12.5px!important;padding:5px 10px!important}
+.ej-tools{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 10px}
+.ej-tool{display:flex;flex-direction:column;gap:2px;padding:8px 12px;border:1.5px solid var(--accent);border-radius:12px;background:var(--panel);color:var(--ink);text-decoration:none;transition:.15s}
+.ej-tool:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.ej-tool b{font-size:18px}
+.ej-tool span{font-size:13.5px;color:var(--muted)}
+.ej-tool .ej-tool-k{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.ej-wrap{overflow:auto;max-height:calc(100vh - 440px);min-height:200px;border:1px solid var(--line);border-radius:12px}
+.ej-mx{width:100%;border-collapse:collapse;font-size:14px}
+.ej-mx th{position:sticky;top:0;background:var(--panel);text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);z-index:1}
+.ej-mx td{padding:5px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.ej-badge{display:inline-grid;place-items:center;min-width:38px;height:38px;border-radius:10px;background:var(--accent);color:#fff;font-weight:800;font-family:var(--mfont)}
+.ej-badge.all{font-size:12px;padding:0 6px}
+.ej-sub{font-size:12.5px;color:var(--muted)}
+.ej-q{font-size:13px}
+.ej-go{display:flex;flex-wrap:wrap;gap:6px}
+.ej-go .btn{font-size:13px!important;padding:6px 10px!important}
+.btn.ghost{background:transparent;border-style:dashed;text-decoration:none;color:var(--ink)}
+.ej-vid{width:160px;max-width:100%;aspect-ratio:16/9;border-radius:8px;background:#000;display:block}
+.ej-mx figure{margin:0}.ej-mx figcaption{font-size:12px;color:var(--muted);margin-top:3px}
+@media (max-width:760px){.ej-tools{grid-template-columns:1fr}.ej-vid{width:150px}}
 </style>
 <style>
 :root{ --blue:#4E93C9; --teal:#3FC0A6; --amber:#DE9B50; --red:#CF7C71; --purple:#9E73C0;
@@ -346,7 +391,7 @@ svg text{ font-family:var(--bfont); }
 <main class="deck" id="deck">
 
   <!-- 1 PORTADA -->
-  <section class="slide active" data-title="Ej1 · el caso">
+  <section class="slide active" data-tema="1" data-title="Ej1 · el caso">
   <div class="eyebrow">Ejemplo 1 · Muestras separadas — el caso</div>
   <h2>¿Cuál taller enseña mejor?</h2>
   <p class="lead">El banco reparte <b>40 microempresarios en dos grupos distintos</b>: 20 al <b>taller presencial</b> (ahí va Doña Lupe) y 20 a la <b>app</b> (ahí va Don Beto). Al final, el mismo examen de educación financiera (0–100).</p>
@@ -358,7 +403,7 @@ svg text{ font-family:var(--bfont); }
     Presencial promedió <b>75.0</b> y la app <b>71.5</b>. El área de capacitación ya quiere <b>cancelar la app</b>.</div></div>
 </section>
 
-<section class="slide" data-title="Ej1 · voten">
+<section class="slide" data-tema="1" data-title="Ej1 · voten">
   <div class="eyebrow">Ejemplo 1 · Su decisión — antes de ver la estadística</div>
   <h2>¿Cancelamos la app?</h2>
   <p class="lead">Con lo que ven —75.0 contra 71.5— voten. <b>No hay respuesta incorrecta… todavía.</b></p>
@@ -369,7 +414,7 @@ svg text{ font-family:var(--bfont); }
   <p class="foot-note" style="margin-top:22px">🎤 <b>Haz esto:</b> pide manos por cada opción y cuéntalas. Que se comprometan con una decisión antes del siguiente paso.</p>
 </section>
 
-<section class="slide" data-title="Ej1 · el resultado">
+<section class="slide" data-tema="1" data-title="Ej1 · el resultado">
   <div class="eyebrow">Ejemplo 1 · El resultado estadístico</div>
   <h2>La diferencia cae dentro del error</h2>
   <svg viewBox="0 0 900 250" style="width:100%;height:auto" role="img">
@@ -391,7 +436,7 @@ svg text{ font-family:var(--bfont); }
   <p class="foot-note"><b>Moraleja:</b> cancelar la app sería decidir sobre ruido. · Datos reproducibles: N(≈74/71, σ=11), n=20 c/u, semilla 16. [Verificable]</p>
 </section>
 
-<section class="slide" data-title="Ej1 · cómo se lee">
+<section class="slide" data-tema="1" data-title="Ej1 · cómo se lee">
   <div class="eyebrow">Ejemplo 1 · Cómo se lee — en prosa plana</div>
   <h2>¿Qué nos dijeron esos números?</h2>
   <p class="lead">Lo técnico, traducido para que se entienda de dónde sale la conclusión.</p>
@@ -404,7 +449,7 @@ svg text{ font-family:var(--bfont); }
     No probamos que los talleres sean iguales; probamos que, con <b>esta</b> evidencia, <b>no podemos afirmar que sean distintos</b>. La diferencia bien puede ser azar.</div></div>
 </section>
 
-<section class="slide" data-hook="1" data-title="El sesgo">
+<section class="slide" data-tema="1" data-hook="1" data-title="El sesgo">
     <div class="eyebrow">Por qué caímos</div>
     <h2>Les di datos y una historia, y fabricaron una certeza</h2>
     <p class="lead">Nuestro cerebro es una máquina de buscar patrones: entre <b>más información y más relato</b>, con más seguridad explicamos algo que <b>no existía</b>. Eso es la <b>ilusión de patrón</b> (o sesgo narrativo).</p>
@@ -412,7 +457,7 @@ svg text{ font-family:var(--bfont); }
       "Las dos muestras vienen de la misma población" tiene nombre técnico: es la <b>hipótesis nula (H₀)</b>. La prueba que veremos hoy existe justo para <b>no</b> caer en esta trampa: distinguir una diferencia real de un accidente del azar.</div></div>
   </section>
 
-<section class="slide" data-title="Ej2 · el caso">
+<section class="slide" data-tema="1" data-title="Ej2 · el caso">
   <div class="eyebrow">Ejemplo 2 · Muestras pareadas — el caso</div>
   <h2>¿El taller de verdad mejora?</h2>
   <p class="lead">Ahora seguimos a <b>las mismas 20 personas</b>: medimos su puntaje <b>antes</b> y <b>después</b> del taller. Doña Lupe pasó de 67 a 74; Don Beto, de 59 a 63.</p>
@@ -424,7 +469,7 @@ svg text{ font-family:var(--bfont); }
     El promedio pasó de <b>64.2</b> a <b>70.2</b>: una mejora de <b>+6</b> puntos. ¿Basta para decir que el taller funciona?</div></div>
 </section>
 
-<section class="slide" data-title="Ej2 · voten">
+<section class="slide" data-tema="1" data-title="Ej2 · voten">
   <div class="eyebrow">Ejemplo 2 · Su decisión — antes de ver la estadística</div>
   <h2>¿El taller mejora el puntaje?</h2>
   <p class="lead">Con lo que ven —de 64.2 a 70.2— voten. <b>Otra vez: decidan primero.</b></p>
@@ -435,7 +480,7 @@ svg text{ font-family:var(--bfont); }
   <p class="foot-note" style="margin-top:22px">🎤 <b>Haz esto:</b> vuelve a pedir manos. Ojo: en el ejemplo 1 el "sí" fallaba… ¿y aquí?</p>
 </section>
 
-<section class="slide" data-title="Ej2 · el resultado">
+<section class="slide" data-tema="1" data-title="Ej2 · el resultado">
   <div class="eyebrow">Ejemplo 2 · El resultado estadístico</div>
   <h2>Esta vez, la mejora supera el error</h2>
   <div class="grid g2" style="margin-top:6px;align-items:center">
@@ -461,7 +506,7 @@ svg text{ font-family:var(--bfont); }
   <p class="foot-note"><b>La clave:</b> al comparar a cada quien <b>consigo mismo</b> quitamos el ruido entre personas; por eso el mismo n ahora <b>sí</b> detecta la mejora. · antes N(64,10)+mejora N(6,7), n=20, semilla 1. [Verificable]</p>
 </section>
 
-<section class="slide" data-title="Ej2 · cómo se lee">
+<section class="slide" data-tema="1" data-title="Ej2 · cómo se lee">
   <div class="eyebrow">Ejemplo 2 · Cómo se lee — en prosa plana</div>
   <h2>¿Por qué esta vez sí lo creemos?</h2>
   <p class="lead">La misma estadística, traducida: por qué aquí la mejora <b>sí</b> supera al azar.</p>
@@ -474,7 +519,7 @@ svg text{ font-family:var(--bfont); }
     Al comparar a cada quien <b>consigo mismo</b> quitamos el ruido entre personas y queda a la vista la señal. La mejora <b>se sale del margen del azar</b>: es un cambio real, no una casualidad — no importa si 6 puntos son muchos o pocos, lo que importa es que, bien medido, es <b>real</b>.</div></div>
 </section>
 
-<section class="slide" data-hook="1" data-title="Y aún hay más">
+<section class="slide" data-tema="1" data-hook="1" data-title="Y aún hay más">
     <div class="eyebrow">La segunda trampa</div>
     <h2>Y cuando sí hay estructura… la forma de mirar cambia el veredicto</h2>
     <p class="lead">Otro conjunto de datos, esta vez con los <b>mismos números</b> analizados de dos maneras. El resultado se invierte.</p>
@@ -495,7 +540,7 @@ svg text{ font-family:var(--bfont); }
     <p class="foot-note" style="margin-top:12px">Ejemplo de Field, cap. 9, §9.6 (mismos datos, dos diseños). [Verificable]</p>
   </section>
 
-<section class="slide" data-hook="1" data-title="La promesa">
+<section class="slide" data-tema="1" data-hook="1" data-title="La promesa">
     <div class="eyebrow">La promesa</div>
     <h2 style="font-size:clamp(28px,5vw,50px)">Hoy aprendemos a no dejarnos engañar <span style="color:var(--teal)">dos veces</span></h2>
     <p class="lead" style="margin-top:14px">A ver una diferencia donde solo hubo <b>azar</b> (Norte vs. Sur)… y a leer bien el <b>diseño</b> cuando la diferencia sí importa. De eso dependen presupuestos, decisiones y tesis.</p>
@@ -508,7 +553,7 @@ svg text{ font-family:var(--bfont); }
 
   <!-- 1 PORTADA -->
   <!-- PUENTE: DE DONDE VENIMOS -->
-  <section class="slide active" data-title="¿De dónde venimos?">
+  <section class="slide active" data-tema="2" data-title="¿De dónde venimos?">
   <div class="eyebrow">Puente con la sesión anterior · ubícate</div>
   <h2>De <span style="color:var(--blue)">una</span> población… a <span style="color:var(--teal)">dos</span></h2>
   <p class="lead">En la sesión anterior (Anderson, caps. 7 a 9) se trabajó con <b>una sola población</b>: muestreo, intervalos de confianza y prueba de hipótesis. Hoy, con el capítulo 10, usamos esa <b>misma maquinaria</b> para comparar <b>dos</b>.</p>
@@ -541,14 +586,14 @@ svg text{ font-family:var(--bfont); }
 </section>
 
   <!-- VIDEO: Video · introducción -->
-  <section class="slide" data-title="Video · introducción">
+  <section class="slide" data-tema="2" data-title="Video · introducción">
     <div class="eyebrow" style="color:var(--blue)">Video · antes de empezar</div>
     <h2>¿Para qué comparar dos medias?</h2>
     <p class="kicker">Fundamento de la sesión y las tres ideas que la guían: diagnostica, verifica e interpreta (≈56 s).</p>
     <div class="vid-wrap"><video class="deck-video" controls preload="metadata" playsinline poster="videos/v0_intro.jpg" src="videos/v0_intro.mp4"></video></div>
   </section>
 
-  <section class="slide" data-title="Portada">
+  <section class="slide" data-tema="2" data-title="Portada">
     <div class="hero-mark">Doctorado en Ciencias Administrativas · DCEA–UNISON</div>
     <h1 style="font-size:clamp(32px,6.5vw,60px);margin:14px 0 6px;">Inferencia estadística acerca de<br>medias con dos poblaciones</h1>
     <p class="lead">Cuándo se usa, cómo se aplica en SPSS y —lo más importante— cómo se interpretan sus resultados en una investigación.</p>
@@ -563,29 +608,37 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 2 AGENDA -->
-  <section class="slide" data-title="Mapa de la sesión">
+  <section class="slide" data-tema="2" data-title="Mapa de la sesión">
     <div class="eyebrow">Mapa de la sesión</div>
     <h2>Tres ideas guían la sesión</h2>
     <p class="lead">La meta no es aprender a "picarle" a SPSS, sino <b>diagnosticar</b> el diseño, <b>verificar</b> que la prueba es válida e <b>interpretar</b> lo que arroja.</p>
     <div class="grid g3">
       <div class="card accent-blue"><span class="tag">Idea 1</span><h3 style="color:var(--blue)">Diagnostica</h3>
         <p class="kicker">¿Qué comparo y cómo se recolectaron los datos? ¿Grupos distintos (independientes) o los mismos sujetos (pareadas)?</p>
-        <p class="foot-note">Bloques 1 y 2 · diapositivas 16–19 · ▶ video en la 18 · árbol de decisión en la 41</p></div>
+        <p class="foot-note">Tema 3 · diapositivas <a class="sref" data-to="El problema que resuelve">·</a>–<a class="sref" data-to="Independientes vs. pareadas">·</a> · ▶ video en la <a class="sref" data-to="Video · Diagnostica">·</a> · árbol de decisión en la <a class="sref" data-to="Árbol de decisión · 2 preguntas">·</a></p></div>
       <div class="card accent-teal"><span class="tag">Idea 2</span><h3 style="color:var(--teal)">Verifica</h3>
         <p class="kicker">Supuestos, prueba de Levene (qué fila leer) y si la hipótesis es de una o de dos colas.</p>
-        <p class="foot-note">Bloque 3 · ▶ video en la 20 · diapositivas 21 y 27</p></div>
+        <p class="foot-note">Tema 4 · ▶ videos en la <a class="sref" data-to="Video · Verifica">·</a> y la <a class="sref" data-to="Video · Supuestos">·</a> · diapositivas <a class="sref" data-to="Supuestos y criterios">·</a> y <a class="sref" data-to="Cómo se hace en SPSS">·</a></p></div>
       <div class="card accent-purple"><span class="tag">Idea 3</span><h3 style="color:var(--purple)">Interpreta</h3>
         <p class="kicker">Valor p, intervalo de confianza y tamaño del efecto. Significativo ≠ importante; no rechazar ≠ igualdad.</p>
-        <p class="foot-note">▶ video en la 22 · diapositivas 23–26, 44 y 49</p></div>
+        <p class="foot-note">Tema 5 · ▶ video en la <a class="sref" data-to="Video · Interpreta">·</a> · diapositivas <a class="sref" data-to="La lógica de la prueba">·</a>–<a class="sref" data-to="Explóralo · valor-p y colas">·</a>, <a class="sref" data-to="Errores comunes">·</a> y <a class="sref" data-to="La frase de decisión">·</a></p></div>
     </div>
     <div class="callout teal" style="margin-top:16px"><span class="ic">→</span><div>
       <span class="callout-label">Las aplicamos en la práctica</span>
-      <b>Bloques 4 y 5</b> · Guiados 1 a 5 en SPSS (28–37) &nbsp;·&nbsp; <b>Bloque 6</b> · Artículo e integral, caso Par, Inc. (45–46).</div></div>
+      <b>Tema 6</b> · menú de ejercicios (<a class="sref" data-to="Ejercicios guiados · menú">·</a>) y Guiados 1 a 5 en SPSS (<a class="sref" data-to="Guiado 1 · Paso a paso SPSS">·</a>–<a class="sref" data-to="Guiado 5 · Resultados">·</a>) &nbsp;·&nbsp; <b>Tema 9</b> · artículo e integral, caso Par, Inc. (<a class="sref" data-to="Aplicación en investigación">·</a>–<a class="sref" data-to="Ejercicio integral">·</a>).</div></div>
   </section>
 
   <!-- 3 EL PROBLEMA -->
-  <section class="slide" data-title="El problema que resuelve">
-    <div class="eyebrow">Bloque 1 · Concepto</div>
+  <section class="slide temadiv" data-title="Tema 3 · Idea 1 · Diagnostica" data-tema="3">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 3 <span>de 9</span></div>
+    <h2>Idea 1 · Diagnostica</h2>
+    <p class="lead">¿Qué se compara y cómo se recolectaron los datos? Grupos distintos o los mismos sujetos.</p>
+    <div class="div-list" data-list="3"></div>
+  </section>
+
+  <section class="slide" data-tema="3" data-title="El problema que resuelve">
+    <div class="eyebrow">Tema 3 · Concepto</div>
     <h2>¿Qué problema resuelve?</h2>
     <p class="lead">Muchísimas decisiones se reducen a una sola pregunta: <b>¿el promedio de este grupo es realmente distinto del de aquel otro, o la diferencia es azar de muestreo?</b></p>
     <div class="grid g2">
@@ -617,7 +670,7 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- CATALOGO POR AREA -->
-  <section class="slide" data-title="Dónde vive esto en la empresa">
+  <section class="slide" data-tema="3" data-title="Dónde vive esto en la empresa">
     <div class="eyebrow">Por qué te importa</div>
     <h2>¿Dónde vive esto en una empresa?</h2>
     <p class="lead">La misma pregunta —«¿la diferencia es real o es azar?»— aparece en cada área. Reconoce la tuya.</p>
@@ -640,7 +693,7 @@ svg text{ font-family:var(--bfont); }
 
 
   <!-- VIDEO: Video · Diagnostica -->
-  <section class="slide" data-title="Video · Diagnostica">
+  <section class="slide" data-tema="3" data-title="Video · Diagnostica">
     <div class="eyebrow" style="color:var(--blue)">Video · antes de la idea 1</div>
     <h2>Diagnostica: ¿qué prueba uso?</h2>
     <p class="kicker">Dos preguntas llevan a la prueba correcta: ¿qué comparo? y ¿los grupos son distintos o los mismos? (≈67 s).</p>
@@ -648,8 +701,8 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 4 DISEÑOS -->
-  <section class="slide" data-title="Independientes vs. pareadas">
-    <div class="eyebrow">Bloque 2 · El diagnóstico previo</div>
+  <section class="slide" data-tema="3" data-title="Independientes vs. pareadas">
+    <div class="eyebrow">Tema 3 · El diagnóstico previo</div>
     <div class="qmark">🎯 En el simulacro · Pregunta 2 y 3</div>
     <h2>Dos diseños, dos pruebas</h2>
     <p class="lead">Antes de tocar SPSS, la pregunta decisiva es: <b>¿los dos grupos son personas/objetos distintos, o son los mismos medidos dos veces?</b></p>
@@ -684,7 +737,15 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- VIDEO: Video · Verifica -->
-  <section class="slide" data-title="Video · Verifica">
+  <section class="slide temadiv" data-title="Tema 4 · Idea 2 · Verifica" data-tema="4">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 4 <span>de 9</span></div>
+    <h2>Idea 2 · Verifica</h2>
+    <p class="lead">Supuestos, prueba de Levene (qué fila leer) y una o dos colas.</p>
+    <div class="div-list" data-list="4"></div>
+  </section>
+
+  <section class="slide" data-tema="4" data-title="Video · Verifica">
     <div class="eyebrow" style="color:var(--teal)">Video · antes de la idea 2</div>
     <h2>Verifica antes de interpretar</h2>
     <p class="kicker">Supuestos, prueba de Levene (qué fila leer) y una o dos colas (≈73 s).</p>
@@ -692,8 +753,8 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 5 SUPUESTOS -->
-  <section class="slide" data-title="Supuestos y criterios">
-    <div class="eyebrow">Bloque 3 · Reglas del juego</div>
+  <section class="slide" data-tema="4" data-title="Supuestos y criterios">
+    <div class="eyebrow">Tema 4 · Reglas del juego</div>
     <h2>Supuestos y cómo elegir</h2>
     <div class="grid g2">
       <div>
@@ -728,7 +789,22 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- VIDEO: Video · Interpreta -->
-  <section class="slide" data-title="Video · Interpreta">
+  <section class="slide" data-title="Video · Supuestos" data-tema="4">
+    <div class="eyebrow" style="color:var(--teal)">Video · profundiza la idea 2</div>
+    <h2>Los supuestos de la prueba t</h2>
+    <p class="kicker">Qué se revisa, cómo se revisa y qué hacer si algo falla, con los datos de los ejercicios E1–E5 (≈115 s).</p>
+    <div class="vid-wrap"><video class="deck-video" controls preload="metadata" playsinline poster="videos/v4_supuestos.jpg" src="videos/v4_supuestos.mp4"></video></div>
+  </section>
+
+  <section class="slide temadiv" data-title="Tema 5 · Idea 3 · Interpreta" data-tema="5">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 5 <span>de 9</span></div>
+    <h2>Idea 3 · Interpreta</h2>
+    <p class="lead">Valor p, intervalo de confianza y tamaño del efecto.</p>
+    <div class="div-list" data-list="5"></div>
+  </section>
+
+  <section class="slide" data-tema="5" data-title="Video · Interpreta">
     <div class="eyebrow" style="color:var(--purple)">Video · antes de la idea 3</div>
     <h2>Interpreta: tres lecturas</h2>
     <p class="kicker">Valor p, intervalo de confianza y tamaño del efecto, con el Guiado 1 como adelanto (≈80 s).</p>
@@ -736,8 +812,8 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 6 LOGICA -->
-  <section class="slide" data-title="La lógica de la prueba">
-    <div class="eyebrow">Bloque 3 · La mecánica</div>
+  <section class="slide" data-tema="5" data-title="La lógica de la prueba">
+    <div class="eyebrow">Tema 5 · La mecánica</div>
     <h2>La lógica del estadístico t</h2>
     <p class="lead"><span class="mono">t</span> es una razón <b>señal / ruido</b>: qué tan grande es la diferencia entre medias frente a la variabilidad esperada por azar.</p>
     <div class="grid g3">
@@ -761,7 +837,7 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- EXPLORA A: señal/ruido -->
-  <section class="slide" data-title="Explóralo · ¿señal o ruido?">
+  <section class="slide" data-tema="5" data-title="Explóralo · ¿señal o ruido?">
     <div class="eyebrow">Laboratorio interactivo · muévelo tú</div>
     <div class="qmark">🎯 En el simulacro · Pregunta 1</div>
     <h2>¿Señal o ruido? (muévelo)</h2>
@@ -799,7 +875,7 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- EXPLORA B: tamaño del efecto -->
-  <section class="slide" data-title="Explóralo · tamaño del efecto">
+  <section class="slide" data-tema="5" data-title="Explóralo · tamaño del efecto">
     <div class="eyebrow">Laboratorio interactivo · muévelo tú</div>
     <div class="qmark">🎯 En el simulacro · Pregunta 9</div>
     <h2>Tamaño del efecto (muévelo)</h2>
@@ -835,7 +911,7 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- EXPLORA C: valor-p y las colas -->
-  <section class="slide" data-title="Explóralo · valor-p y colas">
+  <section class="slide" data-tema="5" data-title="Explóralo · valor-p y colas">
     <div class="eyebrow">Laboratorio interactivo · muévelo tú</div>
     <div class="qmark">🎯 En el simulacro · Pregunta 7</div>
     <h2>El valor-p y las colas (muévelo)</h2>
@@ -875,8 +951,47 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 7 SPSS COMO -->
-  <section class="slide" data-title="Cómo se hace en SPSS">
-    <div class="eyebrow">Bloque 3 · Manos al software</div>
+  <section class="slide temadiv" data-title="Tema 6 · Práctica en SPSS · ejercicios guiados" data-tema="6">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 6 <span>de 9</span></div>
+    <h2>Práctica en SPSS · ejercicios guiados</h2>
+    <p class="lead">Los cinco ejercicios, paso a paso en SPSS, con su video y el Plano de la prueba t.</p>
+    <div class="div-list" data-list="6"></div>
+  </section>
+
+  <section class="slide" data-title="Ejercicios guiados · menú" data-tema="6">
+    <div class="eyebrow">Tema 6 · Menú de ejercicios</div>
+    <h2>Ejercicios guiados: elige por dónde entrar</h2>
+    <div class="ej-tools">
+      <a class="ej-tool" href="2026_09_24_V2_Plano_Prueba_T_Interactivo.html" target="_blank" rel="noopener"><span class="ej-tool-k">Guía para todos los ejercicios ↗</span><b>Plano de la prueba t</b><span>12 láminas: modelo, promedios, error estándar, gl, t, p, intervalo y decisión, con la ruta completa de SPSS.</span></a>
+      <a class="ej-tool" href="2026_09_23_V1_Interactivo_IC_Diferencia_Cero.html" target="_blank" rel="noopener"><span class="ej-tool-k">Apoyo interactivo ↗</span><b>El intervalo y el cero</b><span>Mueve la diferencia, el error estándar y la confianza, y observa cuándo el 0 queda dentro o fuera.</span></a>
+    </div>
+    <div class="ej-wrap"><table class="ej-mx">
+      <thead><tr><th></th><th>Ejercicio</th><th>Ir a la diapositiva</th><th>Video explicativo</th></tr></thead>
+      <tbody><tr><td><span class="ej-badge">E1</span></td>
+      <td><b>Software</b><br><span class="ej-sub">Independientes · una cola</span><br><span class="ej-q">¿El nuevo software reduce el tiempo por proyecto?</span></td>
+      <td><div class="ej-go"><button class="btn" data-goto="Guiado 1 · Paso a paso SPSS">Paso a paso SPSS</button><button class="btn" data-goto="Guiado 1 · Resultados">Resultados</button><a class="btn ghost" href="2026_09_24_V2_Plano_Prueba_T_Interactivo.html#E1" target="_blank" rel="noopener">Plano · E1 ↗</a></div></td>
+      <td><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e1_interpretacion.jpg" src="videos/e1_interpretacion.mp4"></video></td></tr><tr><td><span class="ej-badge">E2</span></td>
+      <td><b>TV / radio</b><br><span class="ej-sub">Pareadas · dos colas</span><br><span class="ej-q">¿Difiere el recuerdo del anuncio por TV y por radio?</span></td>
+      <td><div class="ej-go"><button class="btn" data-goto="Guiado 2 · Paso a paso SPSS">Paso a paso SPSS</button><button class="btn" data-goto="Guiado 2 · Resultados">Resultados</button><a class="btn ghost" href="2026_09_24_V2_Plano_Prueba_T_Interactivo.html#E2" target="_blank" rel="noopener">Plano · E2 ↗</a></div></td>
+      <td><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e2_interpretacion.jpg" src="videos/e2_interpretacion.mp4"></video></td></tr><tr><td><span class="ej-badge">E3</span></td>
+      <td><b>Métodos</b><br><span class="ej-sub">Pareadas · dos colas</span><br><span class="ej-q">¿Difiere el desempeño entre dos métodos?</span></td>
+      <td><div class="ej-go"><button class="btn" data-goto="Guiado 3 · Paso a paso SPSS">Paso a paso SPSS</button><button class="btn" data-goto="Guiado 3 · Resultados">Resultados</button><a class="btn ghost" href="2026_09_24_V2_Plano_Prueba_T_Interactivo.html#E3" target="_blank" rel="noopener">Plano · E3 ↗</a></div></td>
+      <td><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e3_interpretacion.jpg" src="videos/e3_interpretacion.mp4"></video></td></tr><tr><td><span class="ej-badge">E4</span></td>
+      <td><b>Araña (grupos distintos)</b><br><span class="ej-sub">Independientes · dos colas</span><br><span class="ej-q">¿Difiere la ansiedad ante la foto y la araña real?</span></td>
+      <td><div class="ej-go"><button class="btn" data-goto="Guiado 4 · Paso a paso SPSS">Paso a paso SPSS</button><button class="btn" data-goto="Guiado 4 · Resultados">Resultados</button><a class="btn ghost" href="2026_09_24_V2_Plano_Prueba_T_Interactivo.html#E4" target="_blank" rel="noopener">Plano · E4 ↗</a></div></td>
+      <td><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e4_interpretacion.jpg" src="videos/e4_interpretacion.mp4"></video></td></tr><tr><td><span class="ej-badge">E5</span></td>
+      <td><b>Araña (mismas personas)</b><br><span class="ej-sub">Pareadas · dos colas</span><br><span class="ej-q">Los mismos datos que E4, con el diseño pareado.</span></td>
+      <td><div class="ej-go"><button class="btn" data-goto="Guiado 5 · Paso a paso SPSS">Paso a paso SPSS</button><button class="btn" data-goto="Guiado 5 · Resultados">Resultados</button><a class="btn ghost" href="2026_09_24_V2_Plano_Prueba_T_Interactivo.html#E5" target="_blank" rel="noopener">Plano · E5 ↗</a></div></td>
+      <td><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e5_interpretacion.jpg" src="videos/e5_interpretacion.mp4"></video></td></tr><tr class="ej-all"><td><span class="ej-badge all">Todos</span></td>
+      <td><b>Para cerrar los cinco</b><br><span class="ej-sub">Comparativo y construcción del intervalo</span></td>
+      <td><div class="ej-vids2"><figure><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e_de_donde_sale_ic.jpg" src="videos/e_de_donde_sale_ic.mp4"></video><figcaption>¿De dónde sale el intervalo?</figcaption></figure></div></td>
+      <td><figure><video class="deck-video ej-vid" controls preload="none" playsinline poster="videos/e_comparativo.jpg" src="videos/e_comparativo.mp4"></video><figcaption>Los cinco, lado a lado</figcaption></figure></td></tr></tbody></table></div>
+    <p class="foot-note">Los enlaces ↗ abren en otra pestaña los archivos HTML que están en la misma carpeta que esta presentación. Cada diapositiva de ejercicio tiene un botón para volver a este menú.</p>
+  </section>
+
+  <section class="slide" data-tema="6" data-title="Cómo se hace en SPSS">
+    <div class="eyebrow">Tema 6 · Manos al software</div>
     <div class="qmark">🎯 En el simulacro · Pregunta 4</div>
     <h2>Las dos rutas en SPSS</h2>
     <div class="grid g2">
@@ -906,8 +1021,9 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 7b PASOS GUIADO 1 -->
-  <section class="slide" data-title="Guiado 1 · Paso a paso SPSS">
-    <div class="eyebrow">Bloque 4 · Ejercicio guiado 1 — háganlo conmigo</div>
+  <section class="slide" data-tema="6" data-title="Guiado 1 · Paso a paso SPSS">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
+    <div class="eyebrow">Tema 6 · Ejercicio guiado 1 — háganlo conmigo</div>
     <h2>En SPSS, paso a paso (independientes)</h2>
     <p class="kicker">Abran <span class="mono">Guiado1_Software_independientes.sav</span> y síganme uno por uno.</p>
     <div class="grid g2" style="margin-top:14px">
@@ -937,8 +1053,9 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 8 GUIADO 1 -->
-  <section class="slide" data-title="Guiado 1 · Resultados" data-frag="1">
-  <div class="eyebrow">Bloque 4 · Ejercicio guiado 1 — lo hacemos juntos</div>
+  <section class="slide" data-tema="6" data-title="Guiado 1 · Resultados" data-frag="1">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
+  <div class="eyebrow">Tema 6 · Ejercicio guiado 1 — lo hacemos juntos</div>
   <div class="qmark">🎯 En el simulacro · Pregunta 5</div>
     <h2>¿El nuevo software ahorra tiempo?</h2>
   <p class="kicker">24 analistas: 12 con la <b>tecnología actual</b> (325 h) y 12 con el <b>nuevo software</b> (286 h); grupos <b>distintos</b>. Levene p = .917 → varianzas iguales.</p>
@@ -951,8 +1068,9 @@ svg text{ font-family:var(--bfont); }
 </section>
 
   <!-- 8b PASOS GUIADO 2 -->
-  <section class="slide" data-title="Guiado 2 · Paso a paso SPSS">
-    <div class="eyebrow">Bloque 5 · Ejercicio guiado 2 — háganlo conmigo</div>
+  <section class="slide" data-tema="6" data-title="Guiado 2 · Paso a paso SPSS">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
+    <div class="eyebrow">Tema 6 · Ejercicio guiado 2 — háganlo conmigo</div>
     <h2>En SPSS, paso a paso (pareadas)</h2>
     <p class="kicker">Abran <span class="mono">Guiado2_TVRadio_pareadas.sav</span>. Ojo: aquí el par va en la <b>misma fila</b>.</p>
     <div class="grid g2" style="margin-top:14px">
@@ -981,8 +1099,9 @@ svg text{ font-family:var(--bfont); }
   </section>
 
   <!-- 9 GUIADO 2 -->
-  <section class="slide" data-title="Guiado 2 · Resultados" data-frag="1">
-  <div class="eyebrow">Bloque 5 · Ejercicio guiado 2 — lo hacemos juntos</div>
+  <section class="slide" data-tema="6" data-title="Guiado 2 · Resultados" data-frag="1">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
+  <div class="eyebrow">Tema 6 · Ejercicio guiado 2 — lo hacemos juntos</div>
   <h2>¿Se recuerda más la TV o la radio?</h2>
   <p class="kicker">15 personas expuestas a anuncios en <b>televisión y radio</b> (mismos sujetos → pareadas). Correlación r = .934: el pareo era lo correcto.</p>
   <div style="margin-top:6px"><svg viewBox="0 0 1040 324" style="width:100%;height:auto" role="img"><defs><marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7.5,3.2 L0,6.4 Z" fill="var(--muted)"/></marker></defs><text x="155" y="34" text-anchor="middle" style="fill:var(--ink);font-weight:800;font-size:12.5px">1 · Campana · gl=14</text><path d="M221.9 248.0 L221.9 224.0 L223.5 226.1 L225.2 228.1 L226.8 229.8 L228.5 231.5 L230.1 233.0 L231.8 234.4 L233.4 235.6 L235.0 236.8 L236.7 237.8 L238.3 238.8 L240.0 239.7 L241.6 240.5 L243.3 241.2 L244.9 241.9 L246.6 242.5 L248.2 243.0 L249.8 243.5 L251.5 243.9 L253.1 244.3 L254.8 244.7 L256.4 245.0 L258.1 245.3 L259.7 245.6 L261.3 245.8 L263.0 246.0 L264.6 246.2 L266.3 246.4 L267.9 246.6 L269.6 246.7 L271.2 246.8 L272.9 247.0 L274.5 247.1 L276.1 247.2 L277.8 247.2 L279.4 247.3 L281.1 247.4 L282.7 247.4 L284.4 247.5 L286.0 247.6 L286.0 248.0 Z" fill="var(--red)" fill-opacity="0.16"/><path d="M24.0 248.0 L24.0 247.6 L25.6 247.5 L27.3 247.4 L28.9 247.4 L30.6 247.3 L32.2 247.2 L33.9 247.2 L35.5 247.1 L37.1 247.0 L38.8 246.8 L40.4 246.7 L42.1 246.6 L43.7 246.4 L45.4 246.2 L47.0 246.0 L48.7 245.8 L50.3 245.6 L51.9 245.3 L53.6 245.0 L55.2 244.7 L56.9 244.3 L58.5 243.9 L60.2 243.5 L61.8 243.0 L63.4 242.5 L65.1 241.9 L66.7 241.2 L68.4 240.5 L70.0 239.7 L71.7 238.8 L73.3 237.8 L75.0 236.8 L76.6 235.6 L78.2 234.4 L79.9 233.0 L81.5 231.5 L83.2 229.8 L84.8 228.1 L86.5 226.1 L88.1 224.0 L88.1 248.0 Z" fill="var(--red)" fill-opacity="0.16"/><line x1="221.9" y1="44" x2="221.9" y2="248" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="4 3"/><line x1="88.1" y1="44" x2="88.1" y2="248" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="4 3"/><text x="221.9" y="50" text-anchor="middle" style="fill:var(--red);font-size:10px">±2.14</text><line x1="18" y1="248" x2="292" y2="248" stroke="var(--line)"/><path d="M24.0 247.6 L26.2 247.5 L28.4 247.4 L30.6 247.3 L32.8 247.2 L35.0 247.1 L37.2 247.0 L39.4 246.8 L41.6 246.6 L43.8 246.4 L46.0 246.2 L48.2 245.9 L50.4 245.6 L52.6 245.2 L54.8 244.8 L57.0 244.3 L59.2 243.8 L61.4 243.1 L63.6 242.4 L65.8 241.6 L68.0 240.6 L70.2 239.6 L72.4 238.4 L74.6 237.0 L76.8 235.5 L79.0 233.7 L81.2 231.8 L83.4 229.6 L85.6 227.1 L87.8 224.4 L90.1 221.3 L92.3 217.9 L94.5 214.2 L96.7 210.1 L98.9 205.6 L101.1 200.7 L103.3 195.4 L105.5 189.7 L107.7 183.5 L109.9 177.0 L112.1 170.0 L114.3 162.7 L116.5 155.0 L118.7 147.0 L120.9 138.8 L123.1 130.4 L125.3 121.9 L127.5 113.4 L129.7 104.9 L131.9 96.6 L134.1 88.6 L136.3 81.0 L138.5 73.9 L140.7 67.4 L142.9 61.6 L145.1 56.6 L147.3 52.5 L149.5 49.3 L151.7 47.2 L153.9 46.1 L156.1 46.1 L158.3 47.2 L160.5 49.3 L162.7 52.5 L164.9 56.6 L167.1 61.6 L169.3 67.4 L171.5 73.9 L173.7 81.0 L175.9 88.6 L178.1 96.6 L180.3 104.9 L182.5 113.4 L184.7 121.9 L186.9 130.4 L189.1 138.8 L191.3 147.0 L193.5 155.0 L195.7 162.7 L197.9 170.0 L200.1 177.0 L202.3 183.5 L204.5 189.7 L206.7 195.4 L208.9 200.7 L211.1 205.6 L213.3 210.1 L215.5 214.2 L217.7 217.9 L219.9 221.3 L222.2 224.4 L224.4 227.1 L226.6 229.6 L228.8 231.8 L231.0 233.7 L233.2 235.5 L235.4 237.0 L237.6 238.4 L239.8 239.6 L242.0 240.6 L244.2 241.6 L246.4 242.4 L248.6 243.1 L250.8 243.8 L253.0 244.3 L255.2 244.8 L257.4 245.2 L259.6 245.6 L261.8 245.9 L264.0 246.2 L266.2 246.4 L268.4 246.6 L270.6 246.8 L272.8 247.0 L275.0 247.1 L277.2 247.2 L279.4 247.3 L281.6 247.4 L283.8 247.5 L286.0 247.6" fill="none" stroke="var(--ink-soft)" stroke-width="2"/><line x1="81.5" y1="42" x2="81.5" y2="248" stroke="var(--blue)" stroke-width="2.4"/><text x="76.5" y="48" text-anchor="end" style="fill:var(--blue);font-weight:700;font-size:11.5px">t = -2.36</text><text x="312" y="52" style="fill:var(--ink);font-weight:800;font-size:12.5px">2 · Cada grupo · IC 95%</text><text x="358" y="82" text-anchor="end" style="fill:var(--blue);font-weight:700;font-size:11.5px">TV</text><line x1="389.7" y1="78" x2="523.4" y2="78" stroke="var(--blue)" stroke-width="3"/><line x1="389.7" y1="72" x2="389.7" y2="84" stroke="var(--blue)" stroke-width="2.2"/><line x1="523.4" y1="72" x2="523.4" y2="84" stroke="var(--blue)" stroke-width="2.2"/><circle cx="456.6" cy="78" r="5.5" fill="var(--blue)"/><text x="456.6" y="69" text-anchor="middle" style="fill:var(--blue);font-weight:700;font-size:11.5px">18.8</text><text x="358" y="120" text-anchor="end" style="fill:var(--teal);font-weight:700;font-size:11.5px">Radio</text><line x1="416.3" y1="116" x2="550.3" y2="116" stroke="var(--teal)" stroke-width="3"/><line x1="416.3" y1="110" x2="416.3" y2="122" stroke="var(--teal)" stroke-width="2.2"/><line x1="550.3" y1="110" x2="550.3" y2="122" stroke="var(--teal)" stroke-width="2.2"/><circle cx="483.3" cy="116" r="5.5" fill="var(--teal)"/><text x="483.3" y="107" text-anchor="middle" style="fill:var(--teal);font-weight:700;font-size:11.5px">20</text><line x1="352" y1="140" x2="580" y2="140" stroke="var(--line)"/><text x="312" y="184" style="fill:var(--ink);font-weight:800;font-size:12.5px">3 · La diferencia · ¿toca el 0?</text><line x1="538.2" y1="192" x2="538.2" y2="248" stroke="var(--muted)" stroke-dasharray="4 3"/><text x="538.2" y="188" text-anchor="middle" style="fill:var(--muted);font-size:10px">0</text><line x1="361.8" y1="222" x2="529.8" y2="222" stroke="var(--teal)" stroke-width="6" stroke-linecap="round"/><line x1="361.8" y1="214" x2="361.8" y2="230" stroke="var(--teal)" stroke-width="2.4"/><line x1="529.8" y1="214" x2="529.8" y2="230" stroke="var(--teal)" stroke-width="2.4"/><circle cx="445.8" cy="222" r="6" fill="var(--teal)" stroke="#fff" stroke-width="1.2"/><text x="445.8" y="210" text-anchor="middle" style="fill:var(--teal);font-weight:800;font-size:12px">dif = -1.20</text><text x="361.8" y="242" text-anchor="middle" style="fill:var(--teal);font-size:10.5px">-2.29</text><text x="529.8" y="242" text-anchor="middle" style="fill:var(--teal);font-size:10.5px">-0.11</text><g class="frag"><rect x="600" y="8" width="420" height="82" rx="12" fill="var(--panel)" stroke="var(--line)"/><rect x="600" y="8" width="5" height="82" rx="2.5" fill="var(--blue)"/><circle cx="626" cy="31" r="13" fill="var(--blue)"/><text x="626" y="36" text-anchor="middle" style="fill:#fff;font-weight:800;font-size:15px">1</text><text x="648" y="36" style="fill:var(--blue);font-weight:800;font-size:15px">La campana</text><text x="648" y="59" style="fill:var(--ink-soft);font-size:14.5px;font-weight:400"><tspan x="648" dy="0">t = −2.36 pasa el t crítico (±2.15):</tspan><tspan x="648" dy="18">zona de rechazo (dos colas).</tspan></text></g><g class="frag"><rect x="600" y="110" width="420" height="82" rx="12" fill="var(--panel)" stroke="var(--line)"/><rect x="600" y="110" width="5" height="82" rx="2.5" fill="var(--teal)"/><circle cx="626" cy="133" r="13" fill="var(--teal)"/><text x="626" y="138" text-anchor="middle" style="fill:#fff;font-weight:800;font-size:15px">2</text><text x="648" y="138" style="fill:var(--teal);font-weight:800;font-size:15px">Cada grupo</text><text x="648" y="161" style="fill:var(--ink-soft);font-size:14.5px;font-weight:400"><tspan x="648" dy="0">TV 18.8 vs Radio 20.0 (IC 95%). Se</tspan><tspan x="648" dy="18">traslapan, pero el pareo ve la diferencia.</tspan></text></g><g class="frag"><rect x="600" y="213" width="420" height="82" rx="12" fill="var(--panel)" stroke="var(--line)"/><rect x="600" y="213" width="5" height="82" rx="2.5" fill="var(--teal)"/><circle cx="626" cy="236" r="13" fill="var(--teal)"/><text x="626" y="241" text-anchor="middle" style="fill:#fff;font-weight:800;font-size:15px">3</text><text x="648" y="241" style="fill:var(--teal);font-weight:800;font-size:15px">La diferencia y el veredicto</text><text x="648" y="264" style="fill:var(--ink-soft);font-size:14.5px;font-weight:400"><tspan x="648" dy="0">IC [−2.29, −0.11] no toca el 0 → se rechaza</tspan><tspan x="648" dy="18">H₀ (p = .033): más recuerdo por radio.</tspan></text></g></svg></div>
@@ -993,7 +1112,8 @@ svg text{ font-family:var(--bfont); }
   
 </section>
 
-  <section class="slide" data-title="Guiado 3 · Paso a paso SPSS">
+  <section class="slide" data-tema="6" data-title="Guiado 3 · Paso a paso SPSS">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
     <div class="eyebrow">Ejercicio guiado 3 — háganlo conmigo</div>
     <h2>En SPSS, paso a paso (pareadas · Métodos)</h2>
     <p class="kicker">Abran <span class="mono">E3_Metodos_Pareadas.sav</span> (carpeta Datos_Ejercicios). El par va en la misma fila.</p>
@@ -1017,7 +1137,8 @@ svg text{ font-family:var(--bfont); }
     <div class="aterriza"><span class="at-label">Aterrízalo</span> Fija antes si es de una o dos colas: aquí cambia el veredicto (p = .080 a dos colas vs .040 a una).</div>
   </section>
 
-  <section class="slide" data-title="Guiado 3 · Resultados">
+  <section class="slide" data-tema="6" data-title="Guiado 3 · Resultados">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
     <div class="eyebrow">Ejercicio guiado 3 — lo hacemos juntos</div>
     <h2>¿Difiere el desempeño entre dos métodos?</h2>
     <p class="kicker">6 pares emparejados; método 1 vs método 2 (mismos sujetos → pareadas).</p>
@@ -1027,7 +1148,8 @@ svg text{ font-family:var(--bfont); }
     <div class="aterriza"><span class="at-label">Aterrízalo</span> No significativo no es «son iguales»: con estos datos no puedes afirmar la diferencia. Y la dirección (una o dos colas) se fija antes de ver el resultado.</div>
   </section>
 
-  <section class="slide" data-title="Guiado 4 · Paso a paso SPSS">
+  <section class="slide" data-tema="6" data-title="Guiado 4 · Paso a paso SPSS">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
     <div class="eyebrow">Ejercicio guiado 4 — háganlo conmigo</div>
     <h2>En SPSS, paso a paso (independientes · Araña)</h2>
     <p class="kicker">Abran <span class="mono">E4_Arana_Independientes.sav</span> (carpeta Datos_Ejercicios) y síganme uno por uno.</p>
@@ -1052,7 +1174,8 @@ svg text{ font-family:var(--bfont); }
     <div class="aterriza"><span class="at-label">Aterrízalo</span> Con Levene decides la fila (aquí .386 → varianzas iguales). Y compara el veredicto con el guiado 5.</div>
   </section>
 
-  <section class="slide" data-title="Guiado 4 · Resultados">
+  <section class="slide" data-tema="6" data-title="Guiado 4 · Resultados">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
     <div class="eyebrow">Ejercicio guiado 4 — lo hacemos juntos</div>
     <h2>Araña: foto vs araña real (grupos distintos)</h2>
     <p class="kicker">12 personas ven la foto y otras 12 (distintas) la araña real → independientes.</p>
@@ -1062,7 +1185,8 @@ svg text{ font-family:var(--bfont); }
     <div class="aterriza"><span class="at-label">Aterrízalo</span> Aquí no significativo → con este diseño no cambies nada. La sorpresa viene en el guiado 5: los mismos números, pareados, sí detectan la diferencia.</div>
   </section>
 
-  <section class="slide" data-title="Guiado 5 · Paso a paso SPSS">
+  <section class="slide" data-tema="6" data-title="Guiado 5 · Paso a paso SPSS">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
     <div class="eyebrow">Ejercicio guiado 5 — háganlo conmigo</div>
     <h2>En SPSS, paso a paso (pareadas · Araña)</h2>
     <p class="kicker">Abran <span class="mono">E5_Arana_Pareadas.sav</span> (carpeta Datos_Ejercicios). Mismos sujetos: foto y real en columnas.</p>
@@ -1086,7 +1210,8 @@ svg text{ font-family:var(--bfont); }
     <div class="aterriza"><span class="at-label">Aterrízalo</span> Mismos números que el guiado 4, pero pareados: aquí sí se rechaza. Ese es el poder del diseño.</div>
   </section>
 
-  <section class="slide" data-title="Guiado 5 · Resultados">
+  <section class="slide" data-tema="6" data-title="Guiado 5 · Resultados">
+    <button class="btn backmenu" data-goto="Ejercicios guiados · menú">↩ Menú de ejercicios</button>
     <div class="eyebrow">Ejercicio guiado 5 — lo hacemos juntos</div>
     <h2>Araña: los mismos sujetos ven foto y araña real</h2>
     <p class="kicker">Mismos 12 sujetos medidos con foto y con la araña real (los mismos números del guiado 4).</p>
@@ -1098,7 +1223,15 @@ svg text{ font-family:var(--bfont); }
 
 
   <!-- AMPLIACIÓN 1 · medias con σ conocidas e intervalos (Anderson §10.1) -->
-  <section class="slide" data-title="Medias con σ conocidas (z) e IC" data-frag="1">
+  <section class="slide temadiv" data-title="Tema 7 · Más allá de la t" data-tema="7">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 7 <span>de 9</span></div>
+    <h2>Más allá de la t</h2>
+    <p class="lead">Medias con σ conocidas (z) y diferencia de dos proporciones.</p>
+    <div class="div-list" data-list="7"></div>
+  </section>
+
+  <section class="slide" data-tema="7" data-title="Medias con σ conocidas (z) e IC" data-frag="1">
   <div class="eyebrow">Cobertura ampliada · Anderson §10.1</div>
   <div class="qmark">🎯 En el simulacro · Pregunta 6</div>
     <h2>El caso base: σ conocidas e intervalos</h2>
@@ -1112,7 +1245,7 @@ svg text{ font-family:var(--bfont); }
 </section>
 
   <!-- AMPLIACIÓN 2 · dos proporciones (Anderson §10.4) -->
-  <section class="slide" data-title="Dos proporciones (p₁ − p₂)" data-frag="1">
+  <section class="slide" data-tema="7" data-title="Dos proporciones (p₁ − p₂)" data-frag="1">
   <div class="eyebrow">Cobertura ampliada · Anderson §10.4</div>
   <div class="qmark">🎯 En el simulacro · Pregunta 8</div>
     <h2>Comparar porcentajes, no promedios</h2>
@@ -1126,7 +1259,15 @@ svg text{ font-family:var(--bfont); }
 </section>
 
   <!-- AMPLIACIÓN 3 · potencia del diseño pareado (Field §9.6) -->
-  <section class="slide" data-title="Mismos números, distinto diseño">
+  <section class="slide temadiv" data-title="Tema 8 · Decidir sin errores" data-tema="8">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 8 <span>de 9</span></div>
+    <h2>Decidir sin errores</h2>
+    <p class="lead">Mismos números con distinto diseño, qué prueba usar, el costo de equivocarse y los errores comunes.</p>
+    <div class="div-list" data-list="8"></div>
+  </section>
+
+  <section class="slide" data-tema="8" data-title="Mismos números, distinto diseño">
     <div class="eyebrow">Cobertura ampliada · Field §9.6</div>
     <div class="qmark">🎯 En el simulacro · Pregunta 10</div>
     <h2>Por qué el diseño cambia la conclusión</h2>
@@ -3420,7 +3561,7 @@ L 576.36 234.300531
 
   <!-- AMPLIACIÓN 4 · panorama completo -->
     <!-- ARBOL DE DECISION -->
-  <section class="slide" data-title="Árbol de decisión · 2 preguntas">
+  <section class="slide" data-tema="8" data-title="Árbol de decisión · 2 preguntas">
     <div class="eyebrow">Elegir la prueba</div>
     <h2>¿Qué prueba uso? En dos preguntas</h2>
     <p class="lead">Sin memorizar catálogos: dos preguntas de sentido común te llevan a la herramienta correcta.</p>
@@ -3429,7 +3570,7 @@ L 576.36 234.300531
   
   </section>
 
-  <section class="slide" data-title="Panorama · qué prueba uso">
+  <section class="slide" data-tema="8" data-title="Panorama · qué prueba uso">
     <div class="eyebrow">Cobertura ampliada · Mapa completo</div>
     <h2>Panorama: ¿qué prueba uso?</h2>
     <p class="lead">Todo el arco de los capítulos 9 y 10 en una vista, para elegir la técnica correcta según la situación.</p>
@@ -3452,7 +3593,7 @@ L 576.36 234.300531
   </section>
 
   <!-- MATRIZ DE ERRORES DE NEGOCIO -->
-  <section class="slide" data-title="El costo de equivocarse">
+  <section class="slide" data-tema="8" data-title="El costo de equivocarse">
     <div class="eyebrow">Por qué importa decidir bien</div>
     <h2>El costo de equivocarse: los dos errores</h2>
     <p class="lead">Toda decisión bajo incertidumbre puede fallar de dos maneras opuestas. Confundirlas cuesta dinero.</p>
@@ -3467,8 +3608,8 @@ L 576.36 234.300531
   </section>
 
   <!-- 10 ERRORES -->
-  <section class="slide" data-title="Errores comunes">
-    <div class="eyebrow">Bloque 5 · Antes de interpretar</div>
+  <section class="slide" data-tema="8" data-title="Errores comunes">
+    <div class="eyebrow">Tema 8 · Antes de interpretar</div>
     <h2>Los errores que más se ven</h2>
     <div class="grid g2">
       <div class="card accent-red"><span class="tag">Error 1</span><h3>Usar independientes cuando son pareadas</h3><p class="kicker">Si son los mismos sujetos medidos dos veces y aplicas la prueba independiente, pierdes potencia y puedes no detectar un efecto real.</p></div>
@@ -3481,8 +3622,16 @@ L 576.36 234.300531
   </section>
 
   <!-- 11 ARTICULO -->
-  <section class="slide" data-title="Aplicación en investigación">
-    <div class="eyebrow">Bloque 6 · Aplicación en investigación</div>
+  <section class="slide temadiv" data-title="Tema 9 · Aplicación y cierre" data-tema="9">
+    <div class="eyebrow">Cambio de tema</div>
+    <div class="div-num">Tema 9 <span>de 9</span></div>
+    <h2>Aplicación y cierre</h2>
+    <p class="lead">Aplicación en investigación, ejercicio integral, materiales, repaso y cierre.</p>
+    <div class="div-list" data-list="9"></div>
+  </section>
+
+  <section class="slide" data-tema="9" data-title="Aplicación en investigación">
+    <div class="eyebrow">Tema 9 · Aplicación en investigación</div>
     <h2>La técnica en un artículo real</h2>
     <div class="card accent-purple">
       <span class="tag">Artículo científico publicado · Scopus / Emerald</span>
@@ -3502,8 +3651,8 @@ L 576.36 234.300531
   </section>
 
   <!-- 12 INTEGRAL -->
-  <section class="slide" data-title="Ejercicio integral">
-    <div class="eyebrow">Bloque 6 · Ejercicio integral — lo resuelves tú</div>
+  <section class="slide" data-tema="9" data-title="Ejercicio integral">
+    <div class="eyebrow">Tema 9 · Ejercicio integral — lo resuelves tú</div>
     <h2>Caso Par, Inc. (golf)</h2>
     <div class="grid g2">
       <div>
@@ -3533,7 +3682,7 @@ L 576.36 234.300531
   </section>
 
   <!-- MATERIALES -->
-  <section class="slide" data-title="Materiales · descargas">
+  <section class="slide" data-tema="9" data-title="Materiales · descargas">
     <div class="eyebrow">Materiales · descárgalos aquí</div>
     <h2>Materiales de la sesión</h2>
     <p class="lead">Todo lo necesario para resolver los ejercicios en <b>IBM SPSS Statistics 25 (español)</b>.</p>
@@ -3572,7 +3721,7 @@ L 576.36 234.300531
   </section>
 
   <!-- QUIZ -->
-  <section class="slide" data-title="Quiz de repaso">
+  <section class="slide" data-tema="9" data-title="Quiz de repaso">
     <div class="eyebrow">Refuerza lo aprendido</div>
     <h2>Quiz rápido</h2>
     <p class="kicker">Responde y recibe retroalimentación al instante. Puedes reiniciarlo cuantas veces quieras.</p>
@@ -3583,7 +3732,7 @@ L 576.36 234.300531
 
   <!-- 13 CIERRE -->
     <!-- FRASE DE DECISION (plantilla) -->
-  <section class="slide" data-title="La frase de decisión">
+  <section class="slide" data-tema="9" data-title="La frase de decisión">
     <div class="eyebrow">Comunicar para decidir</div>
     <h2>Todo análisis termina en una frase, no en un valor-p</h2>
     <p class="lead">Quien decide no necesita el valor de t; necesita saber qué hacer y con cuánta confianza.</p>
@@ -3595,7 +3744,7 @@ L 576.36 234.300531
       Siempre una frase de <b>tamaño</b> (IC o d de Cohen) junto a la de <b>significancia</b>. Nunca solo el valor-p.</div></div>
   </section>
 
-  <section class="slide" data-title="Cierre y referencias">
+  <section class="slide" data-tema="9" data-title="Cierre y referencias">
     <div class="eyebrow">Cierre</div>
     <h2>Para llevarte</h2>
     <div class="grid g3">
@@ -3615,7 +3764,7 @@ L 576.36 234.300531
 </main>
 
 <div class="menu" id="menu" role="dialog" aria-label="Índice de la sesión">
-  <h2>Bloques de la sesión</h2>
+  <h2>Índice por temas · clic en un tema para ver sus diapositivas</h2>
   <div class="menu-grid" id="menuGrid"></div>
 </div>
 
@@ -3635,13 +3784,33 @@ L 576.36 234.300531
       progress=document.getElementById('progress'), barEyebrow=document.getElementById('barEyebrow'),
       menu=document.getElementById('menu'), menuGrid=document.getElementById('menuGrid');
 
+var TEMAS={"1": "Apertura · ¿nos engaña una diferencia?", "2": "Introducción", "3": "Idea 1 · Diagnostica", "4": "Idea 2 · Verifica", "5": "Idea 3 · Interpreta", "6": "Práctica en SPSS · ejercicios guiados", "7": "Más allá de la t", "8": "Decidir sin errores", "9": "Aplicación y cierre"};
+  var temaBoxes={};
   slides.forEach(function(s,k){
     var d=document.createElement('button'); d.className='dot'; d.setAttribute('aria-label','Ir a '+(s.dataset.title||('slide '+(k+1))));
     d.addEventListener('click',function(){go(k)}); dots.appendChild(d);
-    var mi=document.createElement('button'); mi.className='menu-item';
-    mi.innerHTML='<span class="num">'+String(k+1).padStart(2,'0')+'</span><span><span class="ttl">'+(s.dataset.title||'')+'</span><span class="sub">'+(subtitles[k]||'')+'</span></span>';
-    mi.addEventListener('click',function(){go(k);closeMenu()}); menuGrid.appendChild(mi);
+    var tn=s.dataset.tema||'0';
+    if(!temaBoxes[tn]){
+      var box=document.createElement('div'); box.className='tema'; box.dataset.tema=tn;
+      box.innerHTML='<button class="tema-head" aria-expanded="false"><span class="tn">Tema '+tn+'</span><span class="tt">'+(TEMAS[tn]||'')+'</span><span class="tr"></span><span class="chev">▸</span></button><div class="tema-body"></div>';
+      box.querySelector('.tema-head').addEventListener('click',function(){var o=box.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');});
+      menuGrid.appendChild(box); temaBoxes[tn]={box:box,first:k,last:k,n:0};
+    }
+    var tb=temaBoxes[tn]; tb.last=k; tb.n++;
+    var mi=document.createElement('button'); mi.className='menu-item'+(s.classList.contains('temadiv')?' is-div':'');
+    mi.innerHTML='<span class="num">'+String(k+1).padStart(2,'0')+'</span><span><span class="ttl">'+(s.classList.contains('temadiv')?'▶ Cambio de tema':(s.dataset.title||''))+'</span></span>';
+    mi.addEventListener('click',function(){go(k);closeMenu()}); tb.box.querySelector('.tema-body').appendChild(mi);
   });
+  Object.keys(temaBoxes).forEach(function(tn){var tb=temaBoxes[tn];tb.box.querySelector('.tr').textContent=String(tb.first+1).padStart(2,'0')+'–'+String(tb.last+1).padStart(2,'0')+' · '+tb.n+' diapositivas';});
+  var mtools=document.createElement('div');mtools.className='menu-tools';
+  mtools.innerHTML='<button class="btn" id="mExpand">Abrir todos</button><button class="btn" id="mCollapse">Cerrar todos</button>';
+  menu.insertBefore(mtools,menuGrid);
+  document.getElementById('mExpand').onclick=function(){[].forEach.call(menuGrid.querySelectorAll('.tema'),function(b){b.classList.add('open')})};
+  document.getElementById('mCollapse').onclick=function(){[].forEach.call(menuGrid.querySelectorAll('.tema'),function(b){b.classList.remove('open')})};
+  function idxOf(t){for(var q=0;q<slides.length;q++){if(slides[q].dataset.title===t)return q;}return -1;}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-goto]');if(b){var q=idxOf(b.dataset.goto);if(q>=0){e.preventDefault();go(q);}}var r=e.target.closest('.sref');if(r){var q2=idxOf(r.dataset.to);if(q2>=0){go(q2);}}});
+  [].forEach.call(document.querySelectorAll('.sref'),function(r){var q=idxOf(r.dataset.to);r.textContent=q>=0?String(q+1):'?';r.title=r.dataset.to;});
+  [].forEach.call(document.querySelectorAll('[data-list]'),function(L){var tn=L.dataset.list,h='';slides.forEach(function(s,k){if(s.dataset.tema===tn&&!s.classList.contains('temadiv'))h+='<button class="btn" data-goto="'+(s.dataset.title||'').replace(/"/g,'&quot;')+'"><span class="n">'+String(k+1).padStart(2,'0')+'</span> '+(s.dataset.title||'')+'</button>';});L.innerHTML=h;});
   var dotEls=[].slice.call(dots.children);
 
   function go(k){
@@ -3668,7 +3837,7 @@ L 576.36 234.300531
     else if(/^[1-9]$/.test(e.key)){go(parseInt(e.key,10)-1)}
   });
 
-  function openMenu(){menu.classList.add('open')}
+  function openMenu(){var ct=slides[i].dataset.tema;[].forEach.call(menuGrid.querySelectorAll('.tema'),function(b){b.classList.toggle('cur',b.dataset.tema===ct);if(b.dataset.tema===ct)b.classList.add('open');});menu.classList.add('open')}
   function closeMenu(){menu.classList.remove('open')}
   document.getElementById('menuBtn').addEventListener('click',function(){menu.classList.contains('open')?closeMenu():openMenu()});
   menu.addEventListener('click',function(e){if(e.target===menu)closeMenu()});

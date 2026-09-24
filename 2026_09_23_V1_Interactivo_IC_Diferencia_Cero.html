@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El intervalo y el cero</title>
+<meta name="author" content="esalas@eduardosalas.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F4F7F9; --panel:#FFFFFF; --ink:#1B2631; --muted:#566573; --line:#D5D8DC; --soft:#EEF2F5;
+  --green:#27AE60; --green-s:#D5F5E3; --amber:#E67E22; --amber-s:#FAE5D3;
+  --blue:#2980B9; --blue-s:#D6EAF8; --red:#C0392B; --red-s:#F2D7D5; --purple:#8E44AD; --purple-s:#E8DAEF;
+  --teal:#1ABC9C; --teal-s:#D1F2EB; --curve:#EEF1F4;
+  --f-disp:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#10171D; --panel:#1B2631; --ink:#E9EEF2; --muted:#9AA7B2; --line:#34424F; --soft:#223140;
+    --green:#3DD17F; --green-s:#173A28; --amber:#F39C4A; --amber-s:#3E2A17;
+    --blue:#5DADE2; --blue-s:#16324A; --red:#E0645A; --red-s:#3F1E1C; --purple:#BB8FCE; --purple-s:#33243D;
+    --teal:#48D1B4; --teal-s:#153A33; --curve:#243442;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#10171D; --panel:#1B2631; --ink:#E9EEF2; --muted:#9AA7B2; --line:#34424F; --soft:#223140;
+  --green:#3DD17F; --green-s:#173A28; --amber:#F39C4A; --amber-s:#3E2A17;
+  --blue:#5DADE2; --blue-s:#16324A; --red:#E0645A; --red-s:#3F1E1C; --purple:#BB8FCE; --purple-s:#33243D;
+  --teal:#48D1B4; --teal-s:#153A33; --curve:#243442;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;padding:28px 20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-disp);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,5vw,50px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,28px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+header{display:flex;flex-direction:column;gap:10px}
+header .lede{font-size:18px;color:var(--muted)}
+.rule{display:flex;flex-wrap:wrap;gap:10px}
+.rule span{padding:6px 12px;border-radius:999px;font-weight:700;font-size:15px}
+.r-yes{background:var(--green-s);color:var(--green)}
+.r-no{background:var(--amber-s);color:var(--amber)}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.sec-head{display:flex;flex-direction:column;gap:6px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;background:var(--soft);color:var(--muted);vertical-align:middle;margin-left:6px}
+/* laboratorio */
+.lab{display:grid;grid-template-columns:minmax(260px,330px) 1fr;gap:22px}
+@media (max-width:820px){.lab{grid-template-columns:1fr}}
+.controls{display:flex;flex-direction:column;gap:18px}
+.presets{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.presets button,.seg button{font:inherit;font-weight:700;font-size:14px;padding:8px 0;border-radius:8px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.presets button[aria-pressed="true"],.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.preset-desc{font-size:14px;color:var(--muted);min-height:2.6em}
+.ctl{display:flex;flex-direction:column;gap:6px}
+.ctl label{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:14px}
+.ctl label output{font-family:var(--f-mono);font-weight:600}
+.ctl small{color:var(--muted);font-size:13px}
+input[type=range]{width:100%;accent-color:var(--blue);height:28px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{font:inherit;font-weight:700;font-size:14px;padding:10px 12px;border-radius:8px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .2s,border-color .2s,color .2s}
+.btn .ico{font-size:17px;line-height:1}
+.btn.hot{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn:hover{border-color:var(--blue)}
+.stage-top{display:flex;justify-content:flex-end}
+.stage-top .btn{padding:6px 12px;font-size:13px}
+.stage-top .btn[hidden]{display:none!important}
+.stage{display:flex;flex-direction:column;gap:12px;min-width:0}
+.verdict{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:14px 16px;border-radius:10px;transition:background .25s}
+.verdict.yes{background:var(--green-s)} .verdict.no{background:var(--amber-s)}
+.verdict .big{font-family:var(--f-disp);font-weight:800;font-size:22px}
+.verdict.yes .big{color:var(--green)} .verdict.no .big{color:var(--amber)}
+.verdict .sub{font-size:15px;flex-basis:100%}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--soft);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column}
+.stat b{font-family:var(--f-mono);font-size:18px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+.fig{width:100%;height:auto;display:block;touch-action:none}
+.figcap{font-size:13px;color:var(--muted)}
+.note{border-left:4px solid var(--purple);background:var(--purple-s);padding:10px 14px;border-radius:0 8px 8px 0;font-size:15px}
+.note[hidden]{display:none!important}
+svg text{font-family:var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+span.m{color:var(--muted)}
+svg .m{fill:var(--muted)} svg .mono{font-family:var(--f-mono)}
+/* tres ideas */
+.ideas{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.ideas{grid-template-columns:1fr}}
+.idea{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:10px;background:var(--soft)}
+.idea h3{font-size:17px}
+.idea p{font-size:15px}
+.rows-hint{font-size:14px;color:var(--muted)}
+
+/* cálculo paso a paso */
+.calc-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.calc-top .presets{grid-template-columns:repeat(5,56px)}
+.calc-mode{font-size:14px;font-weight:700;padding:4px 10px;border-radius:999px}
+.calc-mode.real{background:var(--teal-s);color:var(--ink)} .calc-mode.hyp{background:var(--purple-s);color:var(--purple)}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.step{display:grid;grid-template-columns:40px 1fr;gap:4px 14px;padding:12px 14px;border:1px solid var(--line);border-radius:10px}
+.step .n{grid-row:span 3;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--panel);display:grid;place-items:center;font-family:var(--f-disp);font-weight:800;font-size:17px}
+.step h3{font-size:17px}
+.step .why{font-size:15px;color:var(--muted)}
+.step .math{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:15px;background:var(--soft);border-radius:6px;padding:8px 10px;overflow-x:auto;white-space:nowrap}
+.step .math b{color:var(--blue)}
+.step.s5 .math b{color:var(--ink)}
+@media (max-width:600px){.step{grid-template-columns:1fr}.step .n{grid-row:auto}.step .math{white-space:normal;font-size:14px}}
+.key{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:10px}
+.key.yes{background:var(--green-s)} .key.no{background:var(--amber-s)}
+.key h3{font-size:19px}
+.key .math{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.tbl-wrap{overflow-x:auto}
+table.sum{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+table.sum th,table.sum td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.sum th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700}
+table.sum td:first-child,table.sum th:first-child,table.sum td:nth-child(2),table.sum th:nth-child(2){text-align:left}
+table.sum td{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+table.sum td:first-child,table.sum td:nth-child(2){font-family:var(--f-body)}
+table.sum tr.cur td{background:var(--blue-s)}
+table.sum .ok{color:var(--green);font-weight:700} table.sum .nok{color:var(--amber);font-weight:700}
+
+/* grados de libertad */
+.gl-box{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:16px;border:1px solid var(--line);border-radius:12px}
+@media (max-width:820px){.gl-box{grid-template-columns:1fr}}
+.gl-box h3{font-size:19px}
+.gl-rule{font-family:var(--f-mono);font-size:15px;background:var(--soft);border-radius:8px;padding:10px 12px}
+.gl-col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.gl-col p{font-size:15px}
+.demo{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:10px;background:var(--soft)}
+.demo-vals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dv{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;border-radius:8px;background:var(--panel);border:1.5px solid var(--line)}
+.dv b{font-family:var(--f-mono);font-size:24px}
+.dv span{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.dv.free b{color:var(--blue)} .dv.fixed{border-color:var(--red);border-style:dashed} .dv.fixed b{color:var(--red)}
+.demo .res{font-family:var(--f-mono);font-size:14px}
+table.gl-t{border-collapse:collapse;width:100%;font-size:14px}
+table.gl-t th,table.gl-t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.gl-t th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+table.gl-t td.f{font-family:var(--f-mono);white-space:nowrap}
+footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>[hidden]{display:none!important}body{margin:0}</style>
+</head><body>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Inferencia acerca de medias con dos poblaciones · SPSS 25</span>
+  <h1>El intervalo y el cero</h1>
+  <p class="lede">El intervalo de confianza de la <b>diferencia</b> contiene los valores de esa diferencia que los datos no descartan. El 0 significa “no hay diferencia”. Por eso importa si el 0 queda dentro o fuera.</p>
+  <div class="rule">
+    <span class="r-yes">0 fuera del IC 95 % → se rechaza H₀ (dos colas, α = .05)</span>
+    <span class="r-no">0 dentro del IC 95 % → no se rechaza H₀</span>
+  </div>
+</header>
+
+<section aria-labelledby="lab-t">
+  <div class="sec-head">
+    <span class="eyebrow">1 · Laboratorio</span>
+    <h2 id="lab-t">Mueve el intervalo y observa qué pasa con el cero</h2>
+    <p>Elige un ejercicio para cargar sus cifras reales. Luego mueve la diferencia, el error estándar o el nivel de confianza. También puedes arrastrar el intervalo con el mouse o el dedo.</p>
+  </div>
+  <div class="lab">
+    <div class="controls">
+      <div class="ctl">
+        <label>Cargar ejercicio</label>
+        <div class="presets" role="group" aria-label="Ejercicios">
+          <button type="button" id="p-E1" data-k="E1">E1</button>
+          <button type="button" id="p-E2" data-k="E2">E2</button>
+          <button type="button" id="p-E3" data-k="E3">E3</button>
+          <button type="button" id="p-E4" data-k="E4">E4</button>
+          <button type="button" id="p-E5" data-k="E5">E5</button>
+        </div>
+        <div class="preset-desc" id="pdesc"></div>
+      </div>
+      <div class="ctl">
+        <label for="s-dif">Diferencia de medias <output id="o-dif"></output></label>
+        <input type="range" id="s-dif">
+        <small>Mueve el centro del intervalo.</small>
+      </div>
+      <div class="ctl">
+        <label for="s-se">Error estándar (EE) <output id="o-se"></output></label>
+        <input type="range" id="s-se">
+        <small>EE más chico = más datos o menos variación. El intervalo se angosta.</small>
+      </div>
+      <div class="ctl">
+        <label for="s-gl">Grados de libertad (gl) <output id="o-gl"></output></label>
+        <input type="range" id="s-gl" min="2" max="60" step="1">
+        <small>Con pocos gl, el valor crítico de t crece y el intervalo se abre.</small>
+      </div>
+      <div class="ctl">
+        <label>Nivel de confianza</label>
+        <div class="seg" role="group" aria-label="Nivel de confianza">
+          <button type="button" id="c-90" data-c="0.90">90 %</button>
+          <button type="button" id="c-95" data-c="0.95">95 %</button>
+          <button type="button" id="c-99" data-c="0.99">99 %</button>
+        </div>
+        <small>Cada nivel equivale a una prueba de dos colas con α = 1 − confianza.</small>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="reset" title="Regresa la diferencia, el EE, los gl y el 95 % a las cifras reales del ejercicio elegido"><span class="ico" aria-hidden="true">↺</span>Restablecer</button>
+        <button type="button" class="btn" id="home" title="Regresa todo al estado inicial: E1 con sus cifras reales y 95 %"><span class="ico" aria-hidden="true">⌂</span>Inicio (E1)</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-top"><button type="button" class="btn hot" id="reset2" hidden><span class="ico" aria-hidden="true">↺</span>Restablecer cifras reales</button></div>
+      <div class="verdict" id="verdict" aria-live="polite">
+        <span class="big" id="v-big"></span>
+        <span class="sub" id="v-sub"></span>
+      </div>
+      <div class="stats">
+        <div class="stat"><span>IC</span><b id="k-ci"></b></div>
+        <div class="stat"><span>t = dif ÷ EE</span><b id="k-t"></b></div>
+        <div class="stat"><span>t crítico</span><b id="k-tc"></b></div>
+        <div class="stat"><span>p bilateral</span><b id="k-p"></b></div>
+      </div>
+      <svg class="fig" id="fig-ci" viewBox="0 0 800 200" role="img" aria-label="Intervalo de confianza de la diferencia sobre una recta con el cero marcado"></svg>
+      <svg class="fig" id="fig-t" viewBox="0 0 800 230" role="img" aria-label="Distribución t con zonas de rechazo y t observado"></svg>
+      <p class="figcap">Arriba, el intervalo en las unidades de la variable. Abajo, la misma prueba vista como campana t. El 0 queda fuera del intervalo exactamente cuando el t observado cae en una zona roja. Son dos vistas de un mismo cálculo.</p>
+      <div class="note" id="note"></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="calc-t">
+  <div class="sec-head">
+    <span class="eyebrow">2 · Paso a paso</span>
+    <h2 id="calc-t">¿De dónde sale el intervalo?</h2>
+    <p>El intervalo se arma en cinco pasos: un punto central (la diferencia) y un margen hacia cada lado. El margen depende de cuánto variaría la diferencia por azar (el error estándar) y de qué tan seguros queremos estar (el valor crítico de t). Los números de abajo siguen al laboratorio: si mueves un control, el cálculo cambia con él.</p>
+  </div>
+  <div class="calc-top">
+    <div class="presets" role="group" aria-label="Ejercicio para el cálculo">
+      <button type="button" id="q-E1" data-k="E1">E1</button>
+      <button type="button" id="q-E2" data-k="E2">E2</button>
+      <button type="button" id="q-E3" data-k="E3">E3</button>
+      <button type="button" id="q-E4" data-k="E4">E4</button>
+      <button type="button" id="q-E5" data-k="E5">E5</button>
+    </div>
+    <span class="calc-mode" id="calc-mode"></span>
+  </div>
+  <ol class="steps" id="steps"></ol>
+  <svg class="fig" id="fig-calc" viewBox="0 0 800 150" role="img" aria-label="La diferencia con el margen hacia cada lado y la distancia al cero"></svg>
+  <div class="key" id="key"></div>
+  <div class="gl-box" id="gl-box" aria-labelledby="gl-t">
+    <div class="gl-col">
+      <h3 id="gl-t">¿De dónde salen los grados de libertad?</h3>
+      <p>Los grados de libertad (gl) cuentan cuántos datos pueden variar libremente después de calcular algo con ellos. Para medir la variación de un grupo primero hay que calcular su media. Con la media ya fija, el último dato queda obligado: no es libre.</p>
+      <div class="gl-rule">gl = datos con que se mide la variación − medias que se estimaron antes</div>
+      <div class="tbl-wrap">
+      <table class="gl-t">
+        <thead><tr><th>Prueba</th><th>Fórmula</th><th>En clase</th></tr></thead>
+        <tbody>
+          <tr><td>t de una muestra (tema anterior)</td><td class="f">n − 1</td><td>una media estimada</td></tr>
+          <tr><td>t independientes, varianzas iguales</td><td class="f">n₁ + n₂ − 2</td><td>E1 y E4: 12 + 12 − 2 = 22</td></tr>
+          <tr><td>t pareadas (una columna de diferencias)</td><td class="f">pares − 1</td><td>E2: 15 − 1 = 14 · E3: 6 − 1 = 5 · E5: 12 − 1 = 11</td></tr>
+          <tr><td>t independientes, varianzas distintas (Welch)</td><td class="f">ajuste de Welch</td><td>SPSS lo da con decimales; en E1: 21.803</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="figcap">E4 y E5 usan los mismos datos, pero E4 tiene 22 gl y E5 solo 11: en pareadas se trabaja con una sola columna de 12 diferencias. Menos gl dan un t crítico mayor (2.074 contra 2.201). En SPSS, los gl están en la columna «gl» de la tabla de la prueba. <span class="tag">VERIFICABLE</span></p>
+    </div>
+    <div class="gl-col">
+      <h3>Pruébalo: tres datos que deben promediar 10</h3>
+      <p>Mueve los dos primeros. El tercero no se puede elegir: queda obligado para que el promedio siga siendo 10. Por eso, con 3 datos y la media fija, hay solo 2 grados de libertad.</p>
+      <div class="demo">
+        <div class="ctl"><label for="d-a">Dato 1 <output id="o-a"></output></label><input type="range" id="d-a" min="0" max="20" step="1" value="8"></div>
+        <div class="ctl"><label for="d-b">Dato 2 <output id="o-b"></output></label><input type="range" id="d-b" min="0" max="20" step="1" value="12"></div>
+        <div class="demo-vals">
+          <div class="dv free"><span>Dato 1 · libre</span><b id="v-a"></b></div>
+          <div class="dv free"><span>Dato 2 · libre</span><b id="v-b"></b></div>
+          <div class="dv fixed"><span>Dato 3 · obligado</span><b id="v-c"></b></div>
+        </div>
+        <div class="res" id="d-res"></div>
+      </div>
+      <p>Con dos grupos independientes pasa lo mismo en cada uno: 12 datos, 11 libres por grupo, 11 + 11 = 22. <span class="tag">INTERPRETACIÓN</span> El ejemplo de los tres datos es ilustrativo, no viene de los ejercicios.</p>
+    </div>
+  </div>
+  <div class="sec-head">
+    <h3>Los cinco ejercicios, con los mismos pasos (cifras reales, 95 %)</h3>
+  </div>
+  <div class="tbl-wrap">
+    <table class="sum" id="sum">
+      <thead><tr><th>Ejercicio</th><th>Diseño</th><th>Diferencia</th><th>EE</th><th>gl</th><th>t crítico</th><th>Margen</th><th>IC 95 %</th><th>¿Margen &lt; |diferencia|?</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="figcap">Fuente: medias, desviaciones y n de cada ejercicio (Datos_Ejercicios), recalculadas; el intervalo resultante coincide con el reportado por SPSS. <span class="tag">VERIFICABLE</span></p>
+</section>
+
+<section aria-labelledby="five-t">
+  <div class="sec-head">
+    <span class="eyebrow">3 · Los cinco ejercicios en la misma regla</span>
+    <h2 id="five-t">¿Dónde queda el cero en cada ejercicio?</h2>
+    <p class="rows-hint">Cada ejercicio mide cosas distintas. Para alinearlos, cada intervalo se dividió entre su error estándar: queda <span class="mono">t ± t crítico</span>. Esa división no cambia de qué lado está el cero. <span class="tag">VERIFICABLE</span> Toca una fila para cargarla en el laboratorio.</p>
+  </div>
+  <svg class="fig" id="fig-five" viewBox="0 0 800 330" role="img" aria-label="Cinco intervalos de confianza estandarizados alineados sobre el cero"></svg>
+</section>
+
+<section aria-labelledby="trap-t">
+  <div class="sec-head">
+    <span class="eyebrow">4 · La trampa del traslape</span>
+    <h2 id="trap-t">Los intervalos de cada grupo no deciden nada</h2>
+    <p>En los tres casos, los intervalos de los dos grupos (gris) se enciman. Aun así, en E1, E2 y E5 el intervalo de la <b>diferencia</b> deja fuera al cero. La decisión se toma con el intervalo de la diferencia, nunca comparando si los intervalos de los grupos se tocan.</p>
+  </div>
+  <svg class="fig" id="fig-trap" viewBox="0 0 800 370" role="img" aria-label="Intervalos de cada grupo comparados con el intervalo de la diferencia"></svg>
+  <p class="figcap">Cada caso tiene su propia escala. La barra de color es el IC 95 % de la diferencia, dibujado sobre su propia recta con el cero marcado.</p>
+</section>
+
+<section aria-labelledby="ideas-t">
+  <div class="sec-head">
+    <span class="eyebrow">5 · Para llevarse</span>
+    <h2 id="ideas-t">Tres lecturas del mismo intervalo</h2>
+  </div>
+  <div class="ideas">
+    <div class="idea"><h3>El intervalo dice más que el sí o no</h3><p>E1 excluye el cero, pero el intervalo va de 3.4 a 74.6 horas. La diferencia puede ser pequeña o muy grande. La amplitud muestra la precisión de la estimación.</p></div>
+    <div class="idea"><h3>Incluir el cero no prueba igualdad</h3><p>E4 incluye el 0, pero también incluye −15.6. Los datos no alcanzan para decidir. “No se rechaza H₀” es un resultado inconcluso.</p></div>
+    <div class="idea"><h3>Mismos datos, distinto diseño</h3><p>E4 y E5 tienen la misma diferencia (−7). Con pareadas, el EE baja de 4.163 a 2.831, el intervalo se angosta y deja fuera al cero.</p></div>
+  </div>
+</section>
+
+<footer>
+  <span>Cifras: ejercicios E1–E5 (Datos_Ejercicios, SPSS), recalculadas de forma independiente. Coinciden con la ficha de handoff V2. En el laboratorio, el EE de cada ejercicio se usa sin redondear (calculado de los datos). Los valores coinciden con SPSS hasta el redondeo de la tercera decimal.</span>
+  <span>Clase del 24-sep-2026 · Proyecto 260814 · Procesamiento y análisis de datos · Mtro. Eduardo Salas García · esalas@eduardosalas.com · V1 · 23-sep-2026, actualizada 24-sep-2026</span>
+</footer>
+</div>
+
+<script>
+(function(){
+/* ---------- distribución t (función beta incompleta regularizada) ---------- */
+function lgamma(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(let j=0;j<6;j++)s+=c[j]/++y;return -t+Math.log(2.5066282746310005*s/x);}
+function betacf(a,b,x){const MAX=300,EPS=3e-14,FP=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<FP)d=FP;d=1/d;let h=d;for(let m=1;m<=MAX;m++){let m2=2*m,aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<FP)d=FP;c=1+aa/c;if(Math.abs(c)<FP)c=FP;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<FP)d=FP;c=1+aa/c;if(Math.abs(c)<FP)c=FP;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<EPS)break;}return h;}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b;}
+function p2(t,df){return ibeta(df/2,.5,df/(df+t*t));}               // p bilateral
+function tq(prob,df){let lo=0,hi=200;for(let i=0;i<200;i++){const m=(lo+hi)/2;(1-p2(m,df)/2)<prob?lo=m:hi=m;}return (lo+hi)/2;} // cuantil superior
+function tpdf(x,df){return Math.exp(lgamma((df+1)/2)-lgamma(df/2)-.5*Math.log(df*Math.PI)-(df+1)/2*Math.log(1+x*x/df));}
+
+/* ---------- cifras verificadas ---------- */
+const EX={
+ E1:{dif:39,se:17.165,t:2.272,gl:22,dec:2,unit:"horas",desc:"Software · grupos independientes · H₁ planteada de una cola (p una cola = .017).",ci:[3.40,74.60],g:[[299.59,350.41],[258.05,313.95]]},
+ E2:{dif:-1.2,se:0.5089672,t:-2.358,gl:14,dec:2,unit:"",desc:"TV / radio · muestras pareadas · dos colas.",ci:[-2.29,-0.11],g:[[15.8,21.8],[17.0,23.0]]},
+ E3:{dif:0.3,se:0.1366260,t:2.196,gl:5,dec:3,unit:"",desc:"Métodos · muestras pareadas · dos colas · solo 6 pares.",ci:[-0.05,0.65]},
+ E4:{dif:-7,se:4.163319,t:-1.681,gl:22,dec:2,unit:"",desc:"Araña analizada como independientes · dos colas.",ci:[-15.63,1.63],g:[[34.1,45.9],[39.99,54.01]]},
+ E5:{dif:-7,se:2.8311043,t:-2.473,gl:11,dec:2,unit:"",desc:"Araña analizada como pareadas (el diseño correcto) · dos colas.",ci:[-13.23,-0.77],g:[[34.1,45.9],[39.99,54.01]]}
+};
+for(const k in EX){EX[k].t=EX[k].dif/EX[k].se;} // t con EE sin redondear
+
+const $=id=>document.getElementById(id);
+const S={k:"E1",dif:0,se:1,gl:2,conf:.95,axis:[0,1]};
+const NS="http://www.w3.org/2000/svg";
+function el(tag,at,parent,text){const e=document.createElementNS(NS,tag);for(const a in at)e.setAttribute(a,at[a]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function fmt(v,d){const s=v.toFixed(d);return (s.startsWith("-")?"−"+s.slice(1):s).replace(/^−0(\.0+)?$/,"0$1");}
+function fp(p){return p<.001?"< .001":p.toFixed(3).replace(/^0/,"");}
+function nice(span){const r=span/6,m=Math.pow(10,Math.floor(Math.log10(r)));for(const f of[1,2,2.5,5,10])if(f*m>=r)return f*m;return 10*m;}
+
+function load(k){
+  const e=EX[k];S.k=k;S.dif=e.dif;S.se=e.se;S.gl=e.gl;S.conf=.95;
+  const A=Math.abs(e.dif)+2.2*Math.abs(e.se);
+  const dr=$("s-dif"),sr=$("s-se");
+  const step=Math.pow(10,-e.dec);
+  dr.min=(-A).toFixed(e.dec);dr.max=A.toFixed(e.dec);dr.step=step;
+  sr.min=(Math.abs(e.se)*.25).toFixed(e.dec+1);sr.max=(Math.abs(e.se)*2.5).toFixed(e.dec+1);sr.step=Math.pow(10,-(e.dec+1));
+  S.se=Math.abs(e.se);
+  const half=Math.abs(e.dif)+3.3*Math.abs(e.se)+Math.abs(e.se)*1.5;
+  S.axis=[-half,half];
+  dr.value=S.dif;sr.value=S.se;$("s-gl").value=S.gl;
+  document.querySelectorAll(".presets button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));
+  $("pdesc").textContent=e.desc;
+  try{localStorage.setItem("icCeroPreset",k);}catch(_){}
+  render();
+}
+
+function render(){
+  const e=EX[S.k],d=e.dec;
+  const tc=tq(1-(1-S.conf)/2,S.gl),lo=S.dif-tc*S.se,hi=S.dif+tc*S.se,t=S.dif/S.se,p=p2(t,S.gl),alpha=1-S.conf;
+  const inc=lo<=0&&hi>=0;
+  $("o-dif").textContent=fmt(S.dif,d)+(e.unit?" "+e.unit:"");
+  $("o-se").textContent=S.se.toFixed(d+1);
+  $("o-gl").textContent=S.gl;
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",Math.abs(+b.dataset.c-S.conf)<1e-9));
+  const pct=Math.round(S.conf*100);
+  $("k-ci").textContent=fmt(lo,d)+" a "+fmt(hi,d);
+  $("k-t").textContent=fmt(t,3);
+  $("k-tc").textContent="±"+tc.toFixed(3);
+  $("k-p").textContent=fp(p);
+  const v=$("verdict");v.className="verdict "+(inc?"no":"yes");
+  $("v-big").textContent=inc?"El 0 está dentro":"El 0 queda fuera";
+  $("v-sub").textContent=inc
+    ?`IC ${pct} % de ${fmt(lo,d)} a ${fmt(hi,d)}. No se rechaza H₀ (dos colas, α = ${fmt(alpha,2).replace(/^0/,"")}): p = ${fp(p)} ≥ ${fmt(alpha,2).replace(/^0/,"")}. Resultado inconcluso, no prueba de igualdad.`
+    :`IC ${pct} % de ${fmt(lo,d)} a ${fmt(hi,d)}. Se rechaza H₀ (dos colas, α = ${fmt(alpha,2).replace(/^0/,"")}): p = ${fp(p)} < ${fmt(alpha,2).replace(/^0/,"")}. La diferencia es ${S.dif>0?"positiva":"negativa"}.`;
+  drawCI(lo,hi,inc);drawT(t,tc,inc);note(lo,hi,inc);renderCalc();
+  document.querySelectorAll('#sum tbody tr').forEach(r=>r.classList.toggle('cur',r.id==='row-'+S.k));
+}
+
+/* ---------- figura: IC sobre la recta ---------- */
+let X=null;
+function drawCI(lo,hi,inc){
+  const g=$("fig-ci");g.innerHTML="";const e=EX[S.k];
+  const [a,b]=S.axis,L=40,R=760;X=v=>L+(v-a)/(b-a)*(R-L);
+  const cx=v=>Math.max(L,Math.min(R,X(v)));
+  const y=92,base=150;
+  el("line",{x1:L,y1:base,x2:R,y2:base,stroke:css("--muted"),"stroke-width":1.5},g);
+  const st=nice(b-a);for(let v=Math.ceil(a/st)*st;v<=b+1e-9;v+=st){const x=X(v);el("line",{x1:x,y1:base-5,x2:x,y2:base+5,stroke:css("--muted"),"stroke-width":1.2},g);el("text",{x:x,y:base+24,"text-anchor":"middle","font-size":14,class:"m mono"},g,fmt(v,st<1?(st<.1?2:1):0));}
+  // cero
+  el("rect",{x:X(0)-1.5,y:18,width:3,height:base-18,fill:css("--ink")},g);
+  el("text",{x:X(0),y:14,"text-anchor":"middle","font-size":14,"font-weight":700},g,"0 = sin diferencia");
+  const col=inc?css("--amber"):css("--green");
+  const x1=cx(lo),x2=cx(hi);
+  el("rect",{x:x1,y:y-9,width:Math.max(2,x2-x1),height:18,rx:9,fill:col,opacity:.9,id:"ci-bar",style:"cursor:grab"},g);
+  if(X(lo)<L)el("path",{d:`M${L} ${y} l12 -12 v24z`,fill:col},g);
+  if(X(hi)>R)el("path",{d:`M${R} ${y} l-12 -12 v24z`,fill:col},g);
+  el("circle",{cx:cx(S.dif),cy:y,r:10,fill:css("--blue"),stroke:css("--panel"),"stroke-width":3,style:"cursor:grab"},g);
+  el("text",{x:x1,y:y+34,"text-anchor":"middle","font-size":14,class:"mono","font-weight":600},g,fmt(lo,e.dec));
+  el("text",{x:x2,y:y+34,"text-anchor":"middle","font-size":14,class:"mono","font-weight":600},g,fmt(hi,e.dec));
+  el("text",{x:cx(S.dif),y:y-20,"text-anchor":"middle","font-size":14,"font-weight":700,fill:css("--blue")},g,"diferencia "+fmt(S.dif,e.dec));
+  if(e.unit)el("text",{x:R,y:base+44,"text-anchor":"end","font-size":13,class:"m"},g,e.unit);
+}
+
+/* ---------- figura: campana t ---------- */
+function drawT(t,tc,inc){
+  const g=$("fig-t");g.innerHTML="";
+  const lim=Math.max(5,Math.min(9,Math.abs(t)+1)),L=40,R=760,base=190,H=150;
+  const X2=v=>L+(v+lim)/(2*lim)*(R-L),pk=tpdf(0,S.gl),Y=v=>base-tpdf(v,S.gl)/pk*H;
+  let pts=[];for(let i=0;i<=300;i++){const v=-lim+2*lim*i/300;pts.push([X2(v),Y(v)]);}
+  el("path",{d:"M"+X2(-lim)+" "+base+" L"+pts.map(p=>p.join(" ")).join(" L")+" L"+X2(lim)+" "+base+"Z",fill:css("--curve")},g);
+  for(const sg of[1,-1]){const a=sg*tc,b=sg*lim,seg=[];for(let i=0;i<=80;i++){const v=a+(b-a)*i/80;seg.push([X2(v),Y(v)]);}
+    el("path",{d:"M"+X2(a)+" "+base+" L"+seg.map(p=>p.join(" ")).join(" L")+" L"+X2(b)+" "+base+"Z",fill:css("--red-s")},g);
+    el("line",{x1:X2(a),y1:base,x2:X2(a),y2:base-H*.75,stroke:css("--red"),"stroke-width":2,"stroke-dasharray":"6 5"},g);
+    el("text",{x:X2(a)+(sg>0?6:-6),y:base-H*.78,"text-anchor":sg>0?"start":"end","font-size":13,"font-weight":700,fill:css("--red"),class:"mono"},g,(sg>0?"":"−")+tc.toFixed(3));}
+  el("path",{d:"M"+pts.map(p=>p.join(" ")).join(" L"),fill:"none",stroke:css("--ink"),"stroke-width":2.2},g);
+  el("line",{x1:L,y1:base,x2:R,y2:base,stroke:css("--muted"),"stroke-width":1.3},g);
+  for(let v=-Math.floor(lim);v<=Math.floor(lim);v++){el("line",{x1:X2(v),y1:base,x2:X2(v),y2:base+5,stroke:css("--muted")},g);el("text",{x:X2(v),y:base+22,"text-anchor":"middle","font-size":13,class:"m mono"},g,fmt(v,0));}
+  const tx=X2(Math.max(-lim,Math.min(lim,t)));
+  el("line",{x1:tx,y1:base,x2:tx,y2:base-H*.95,stroke:css("--blue"),"stroke-width":4},g);
+  el("text",{x:tx,y:base-H*.95-8,"text-anchor":"middle","font-size":14,"font-weight":700,fill:css("--blue"),class:"mono"},g,"t = "+fmt(t,3));
+  el("text",{x:L,y:18,"font-size":13,class:"m"},g,`Distribución t con ${S.gl} gl · zonas rojas: rechazo con α = ${(1-S.conf).toFixed(2).replace(/^0/,"")} en dos colas`);
+}
+
+/* ---------- notas contextuales ---------- */
+function note(lo,hi,inc){
+  const n=$("note"),k=S.k,real=Math.abs(S.dif-EX[k].dif)<1e-9&&Math.abs(S.se-Math.abs(EX[k].se))<1e-9&&S.gl===EX[k].gl;
+  let s="";
+  if(!real){s="Estás viendo un escenario hipotético, no el resultado del ejercicio. Sirve para ver el efecto de cada cambio. <span class='tag'>INTERPRETACIÓN</span>";}
+  else if(k==="E1"&&S.conf===.9)s="E1 se planteó con H₁ de una cola. La prueba de una cola con α = .05 equivale al IC 90 %: su límite inferior (9.53 h) está sobre el 0, en el sentido esperado. Por eso p una cola = .017 lleva a rechazar. <span class='tag'>VERIFICABLE</span>";
+  else if(k==="E1"&&S.conf===.99)s="Con 99 % de confianza (α = .01) el intervalo de E1 ya incluye el 0: la decisión depende del α que se fije antes de ver los datos. <span class='tag'>VERIFICABLE</span>";
+  else if(k==="E1")s="E1 se planteó de una cola. El IC 95 % que da SPSS corresponde a dos colas; también excluye el 0. Cambia a 90 % para ver el equivalente de la prueba de una cola. <span class='tag'>VERIFICABLE</span>";
+  else if(S.conf!==.95)s=`Cambiaste el nivel de confianza: ahora α = ${(1-S.conf).toFixed(2).replace(/^0/,"")}. La regla del cero se mantiene, pero la decisión puede cambiar. El resultado reportado en clase usa 95 %. <span class='tag'>INTERPRETACIÓN</span>`;
+  else if(k==="E3")s="E3 tiene solo 5 gl: el valor crítico es 2.571. Con t = 2.196 no alcanza, y el intervalo apenas toca el 0 (−0.05). Prueba subir los gl y verás cómo se cierra. <span class='tag'>INTERPRETACIÓN</span>";
+  else if(k==="E4")s="E4 incluye el 0, pero también valores tan lejanos como −15.63. No se puede afirmar que las medias son iguales. Compara con E5: mismos datos, analizados como pareados. <span class='tag'>INTERPRETACIÓN</span>";
+  else if(k==="E5")s="E5 usa los mismos datos que E4 con el diseño pareado. El EE baja de 4.163 a 2.831 y el intervalo deja fuera al 0. <span class='tag'>VERIFICABLE</span>";
+  else if(k==="E2")s="En E2 el intervalo completo es negativo: la media de la segunda medición supera a la de la primera en todo el rango de valores plausibles. <span class='tag'>INTERPRETACIÓN</span>";
+  n.innerHTML=s;n.hidden=!s;
+  const mod=!real||S.conf!==.95;$("reset").classList.toggle("hot",mod);$("reset2").hidden=!mod;
+}
+
+
+/* ---------- cálculo paso a paso ---------- */
+const CALC={
+ E1:{ind:true,m:[325.00,286.00],sd:[39.995,43.998],n:[12,12],d:2,de:3},
+ E2:{ind:false,m:[18.80,20.00],sd:1.971,n:15,d:2,de:3},
+ E3:{ind:false,m:[6.10,5.80],sd:0.3347,n:6,d:3,de:4},
+ E4:{ind:true,m:[40.00,47.00],sd:[9.293,11.029],n:[12,12],d:2,de:3},
+ E5:{ind:false,m:[40.00,47.00],sd:9.807,n:12,d:2,de:3}
+};
+function renderCalc(real){
+  const k=S.k,c=CALC[k],e=EX[k],d=c.d,de=c.de,pct=Math.round(S.conf*100),alpha=1-S.conf;
+  const tc=+tq(1-alpha/2,S.gl).toFixed(4),m=tc*(+S.se.toFixed(de)),lo=S.dif-m,hi=S.dif+m,inc=lo<=0&&hi>=0; // con valores redondeados como se muestran, para que se pueda rehacer a mano
+  const tcS=tc.toFixed(4),seS=S.se.toFixed(de),mS=fmt(m,de),difS=fmt(S.dif,d);
+  const glReal=S.gl===e.gl, difReal=Math.abs(S.dif-e.dif)<1e-9, seReal=Math.abs(S.se-Math.abs(e.se))<1e-9;
+  document.querySelectorAll("#calc-t ~ .calc-top .presets button, .calc-top .presets button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));
+  const cm=$("calc-mode");const hyp=!(difReal&&seReal&&glReal&&S.conf===.95);
+  cm.className="calc-mode "+(hyp?"hyp":"real");cm.textContent=hyp?"Escenario movido en el laboratorio":"Cifras reales de "+k;
+  const st=[];
+  // 1
+  let m1;
+  if(difReal){m1=c.ind?`x̄₁ − x̄₂ = ${fmt(c.m[0],2)} − ${fmt(c.m[1],2)} = <b>${difS}</b>`:`d̄ = media de las diferencias = ${fmt(c.m[0],2)} − ${fmt(c.m[1],2)} = <b>${difS}</b>`;}
+  else m1=`diferencia movida con el control = <b>${difS}</b> <span class="m">(real: ${fmt(e.dif,d)})</span>`;
+  st.push(["La diferencia observada (el centro)",c.ind?"Se restan las medias de los dos grupos.":"En pareadas se resta cada par y se promedian esas diferencias. El resultado es igual a restar las medias.",m1]);
+  // 2
+  let m2,w2;
+  if(seReal){
+    if(c.ind){const n1=c.n[0],n2=c.n[1],gl=n1+n2-2,sp2=((n1-1)*c.sd[0]**2+(n2-1)*c.sd[1]**2)/gl,sp=Math.sqrt(sp2),r=Math.sqrt(1/n1+1/n2);
+      w2="Mide cuánto cambiaría la diferencia si repitiéramos el estudio con otras muestras. Como Levene no rechazó varianzas iguales, se combinan las dos desviaciones en una sola (varianza combinada).";
+      m2=`s²ₚ = [(${n1}−1)·${c.sd[0]}² + (${n2}−1)·${c.sd[1]}²] ÷ ${gl} = ${sp2.toFixed(2)} → sₚ = ${sp.toFixed(3)}<br>EE = sₚ · √(1/${n1} + 1/${n2}) = ${sp.toFixed(3)} × ${r.toFixed(5)} = ${(sp*r).toFixed(de)}`+(((sp*r).toFixed(de)!==seS)?` <span class="m">→ SPSS: <b>${seS}</b> (usa las desviaciones sin redondear)</span>`:` → <b>${seS}</b>`);}
+    else{w2="Mide cuánto cambiaría la diferencia promedio con otras muestras. Se usa la desviación estándar de las diferencias de cada par (s_d) y el número de pares.";
+      const q=(c.sd/Math.sqrt(c.n)).toFixed(de);m2=`EE = s_d ÷ √n = ${c.sd} ÷ √${c.n} = ${c.sd} ÷ ${Math.sqrt(c.n).toFixed(4)} = `+(q===seS?`<b>${seS}</b>`:`${q} <span class="m">→ SPSS: <b>${seS}</b></span>`);}
+  }else{w2="Aquí el error estándar se movió a mano en el laboratorio. En un ejercicio real sale de las desviaciones estándar y de n: más datos o menos variación dan un EE más chico.";
+    m2=`EE movido con el control = <b>${seS}</b> <span class="m">(real: ${Math.abs(e.se).toFixed(de)})</span>`;}
+  st.push(["El error estándar de la diferencia (EE)",w2,m2]);
+  // 3
+  const glTxt=glReal?(c.ind?`gl = n₁ + n₂ − 2 = ${c.n[0]} + ${c.n[1]} − 2 = ${S.gl}  <span class="m">(cada grupo pierde un dato al calcular su media: ${c.n[0]-1} + ${c.n[1]-1})</span>`:`gl = pares − 1 = ${c.n} − 1 = ${S.gl}  <span class="m">(una sola columna de ${c.n} diferencias y una media estimada)</span>`):`gl movidos con el control = ${S.gl} (real: ${e.gl})`;
+  st.push(["El valor crítico de t",`Es el número de errores estándar que hay que abrir hacia cada lado para tener ${pct} % de confianza. Deja ${(alpha/2*100).toFixed(1).replace(/\.0$/,"")} % en cada cola de la distribución t. Depende de los grados de libertad (ver el recuadro de abajo). Se busca en tablas o en Excel con INV.T.2C(${alpha.toFixed(2)}, gl).`,`${glTxt}<br>t crítico (${pct} %, dos colas, ${S.gl} gl) = <b>${tcS}</b>`]);
+  // 4
+  st.push(["El margen de error","Cuánto se abre el intervalo hacia cada lado del centro.",`margen = t crítico × EE = ${tcS} × ${seS} = <b>${mS}</b>`]);
+  // 5
+  st.push(["El intervalo","Centro menos margen y centro más margen.",`límite inferior = ${difS} − ${mS} = <b>${fmt(lo,d)}</b><br>límite superior = ${difS} + ${mS} = <b>${fmt(hi,d)}</b><br>IC ${pct} % = <b>[ ${fmt(lo,d)} ; ${fmt(hi,d)} ]</b>`]);
+  $("steps").innerHTML=st.map((x,i)=>`<li class="step s${i+1}"><span class="n">${i+1}</span><h3>${x[0]}</h3><p class="why">${x[1]}</p><div class="math">${x[2]}</div></li>`).join("");
+  // clave
+  const dist=Math.abs(S.dif),t=S.dif/S.se;
+  const kk=$("key");kk.className="key "+(inc?"no":"yes");
+  kk.innerHTML=inc
+   ?`<h3>¿Y el cero? El margen alcanza a cubrirlo</h3><p>La diferencia está a ${fmt(dist,d)} del 0 y el margen mide ${mS}. Como el margen es mayor, el intervalo se estira hasta pasar el 0: <b>no se rechaza H₀</b>.</p><div class="math">margen ${mS} ≥ distancia al 0 ${fmt(dist,d)} &nbsp;⇔&nbsp; |t| = ${fmt(Math.abs(t),3)} ≤ t crítico ${tcS}</div>`
+   :`<h3>¿Y el cero? El margen no alcanza a cubrirlo</h3><p>La diferencia está a ${fmt(dist,d)} del 0 y el margen mide solo ${mS}. El intervalo no llega al 0: <b>se rechaza H₀</b>.</p><div class="math">margen ${mS} &lt; distancia al 0 ${fmt(dist,d)} &nbsp;⇔&nbsp; |t| = ${fmt(Math.abs(t),3)} &gt; t crítico ${tcS}</div>`;
+  kk.innerHTML+=`<p class="why" style="font-size:14px">Las dos comparaciones son la misma: dividir margen y distancia entre el EE da t crítico y |t|. Por eso el intervalo y la prueba t siempre coinciden. <span class="tag">VERIFICABLE</span></p>`;
+  drawCalc(lo,hi,m,inc,d,mS);
+}
+function drawCalc(lo,hi,m,inc,d,mS){
+  const g=$("fig-calc");g.innerHTML="";
+  const a0=Math.min(0,lo),b0=Math.max(0,hi),pad=(b0-a0)*.08,a=a0-pad,b=b0+pad,L=40,R=760,X=v=>L+(v-a)/(b-a)*(R-L);
+  const y=70,col=inc?css("--amber"):css("--green"),blue=css("--blue");
+  el("line",{x1:L,y1:128,x2:R,y2:128,stroke:css("--muted"),"stroke-width":1.3},g);
+  el("rect",{x:X(0)-1.5,y:16,width:3,height:112,fill:css("--ink")},g);
+  el("text",{x:X(0),y:146,"text-anchor":"middle","font-size":13,"font-weight":700},g,"0");
+  el("rect",{x:X(lo),y:y-8,width:X(hi)-X(lo),height:16,rx:8,fill:col,opacity:.35},g);
+  const arrow=(x1,x2,yy,c)=>{el("line",{x1,y1:yy,x2,y2:yy,stroke:c,"stroke-width":3},g);const s=x2>x1?-1:1;el("path",{d:`M${x2} ${yy} l${s*9} -6 v12z`,fill:c},g);};
+  arrow(X(S.dif),X(lo),y,col);arrow(X(S.dif),X(hi),y,col);
+  el("text",{x:(X(S.dif)+X(lo))/2,y:y-16,"text-anchor":"middle","font-size":13,"font-weight":700,fill:col},g,"− margen "+mS);
+  el("text",{x:(X(S.dif)+X(hi))/2,y:y-16,"text-anchor":"middle","font-size":13,"font-weight":700,fill:col},g,"+ margen "+mS);
+  el("circle",{cx:X(S.dif),cy:y,r:8,fill:blue,stroke:css("--panel"),"stroke-width":2},g);
+  el("text",{x:X(lo),y:y+30,"text-anchor":"middle","font-size":13,class:"mono","font-weight":600},g,fmt(lo,d));
+  el("text",{x:X(hi),y:y+30,"text-anchor":"middle","font-size":13,class:"mono","font-weight":600},g,fmt(hi,d));
+  // distancia al cero
+  const yd=112;el("line",{x1:X(0),y1:yd,x2:X(S.dif),y2:yd,stroke:blue,"stroke-width":2,"stroke-dasharray":"5 4"},g);
+  el("text",{x:(X(0)+X(S.dif))/2,y:yd-6,"text-anchor":"middle","font-size":12,fill:blue,"font-weight":700},g,"distancia al 0: "+fmt(Math.abs(S.dif),d));
+}
+function drawSum(){
+  const tb=document.querySelector("#sum tbody");tb.innerHTML="";
+  Object.keys(EX).forEach(k=>{const e=EX[k],c=CALC[k],tc=+tq(.975,e.gl).toFixed(4),se=+Math.abs(e.se).toFixed(c.de),m=tc*se,lo=e.dif-m,hi=e.dif+m,ok=m<Math.abs(e.dif);
+    const tr=document.createElement("tr");tr.id="row-"+k;
+    tr.innerHTML=`<td><b>${k}</b></td><td>${c.ind?"Independientes":"Pareadas"}</td><td>${fmt(e.dif,c.d)}</td><td>${se.toFixed(c.de)}</td><td>${e.gl} <span class="m" style="font-size:12px">(${c.ind?c.n[0]+" + "+c.n[1]+" − 2":c.n+" − 1"})</span></td><td>${tc.toFixed(4)}</td><td>${fmt(m,c.de)}</td><td>${fmt(lo,c.d)} a ${fmt(hi,c.d)}</td><td class="${ok?"ok":"nok"}">${ok?"Sí → 0 fuera":"No → 0 dentro"}</td>`;
+    tb.appendChild(tr);});
+}
+
+/* ---------- figura: cinco ejercicios ---------- */
+function drawFive(){
+  const g=$("fig-five");g.innerHTML="";
+  const L=190,R=770,a=-5.5,b=5.5,X3=v=>L+(v-a)/(b-a)*(R-L),top=40,step=52;
+  el("text",{x:X3(0),y:18,"text-anchor":"middle","font-size":14,"font-weight":700},g,"0");
+  el("rect",{x:X3(0)-1.5,y:24,width:3,height:5*step+8,fill:css("--ink")},g);
+  const yb=top+5*step;
+  el("line",{x1:L,y1:yb,x2:R,y2:yb,stroke:css("--muted")},g);
+  for(let v=-5;v<=5;v++){el("line",{x1:X3(v),y1:yb,x2:X3(v),y2:yb+5,stroke:css("--muted")},g);el("text",{x:X3(v),y:yb+22,"text-anchor":"middle","font-size":13,class:"m mono"},g,fmt(v,0));}
+  el("text",{x:(L+R)/2,y:yb+42,"text-anchor":"middle","font-size":13,class:"m"},g,"Intervalo en unidades de error estándar (IC 95 % ÷ EE)");
+  Object.keys(EX).forEach((k,i)=>{
+    const e=EX[k],tc=tq(.975,e.gl),lo=e.t-tc,hi=e.t+tc,inc=lo<=0&&hi>=0,y=top+i*step+10,col=inc?css("--amber"):css("--green");
+    const row=el("g",{style:"cursor:pointer",tabindex:0,role:"button","aria-label":"Cargar "+k+" en el laboratorio"},g);
+    el("rect",{x:0,y:y-22,width:800,height:44,fill:"transparent"},row);
+    el("text",{x:0,y:y-3,"font-size":16,"font-weight":700},row,k);
+    el("text",{x:34,y:y-3,"font-size":13,class:"m mono"},row,`${fmt(e.ci[0],2)} a ${fmt(e.ci[1],2)}`);
+    el("text",{x:0,y:y+15,"font-size":13,"font-weight":700,fill:col},row,inc?"0 dentro · no se rechaza":"0 fuera · se rechaza");
+    el("rect",{x:X3(lo),y:y-7,width:X3(hi)-X3(lo),height:14,rx:7,fill:col,opacity:.9},row);
+    el("circle",{cx:X3(e.t),cy:y,r:7,fill:css("--blue"),stroke:css("--panel"),"stroke-width":2},row);
+    const go=()=>{load(k);document.getElementById("lab-t").scrollIntoView({behavior:"smooth",block:"start"});};
+    row.addEventListener("click",go);row.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();go();}});
+  });
+}
+
+/* ---------- figura: trampa del traslape ---------- */
+function drawTrap(){
+  const g=$("fig-trap");g.innerHTML="";
+  const cases=[
+    {k:"E1",title:"E1 · independientes",g:EX.E1.g,d:[EX.E1.ci],dl:["IC diferencia"]},
+    {k:"E2",title:"E2 · pareadas",g:EX.E2.g,d:[EX.E2.ci],dl:["IC diferencia"]},
+    {k:"E4/E5",title:"E4 y E5 · mismos datos",g:EX.E4.g,d:[EX.E4.ci,EX.E5.ci],dl:["E4 indep.","E5 pareadas"]}
+  ];
+  const colW=800/3;
+  cases.forEach((c,i)=>{
+    const x0=i*colW+10,w=colW-30;
+    el("text",{x:x0,y:22,"font-size":15,"font-weight":700},g,c.title);
+    // grupos
+    const ga=Math.min(c.g[0][0],c.g[1][0]),gb=Math.max(c.g[0][1],c.g[1][1]),pad=(gb-ga)*.24;
+    const G=v=>x0+10+(v-(ga-pad))/((gb+pad)-(ga-pad))*(w-20);
+    el("text",{x:x0,y:52,"font-size":12,class:"m"},g,"IC 95 % de cada grupo");
+    c.g.forEach((iv,j)=>{const y=74+j*26;el("rect",{x:G(iv[0]),y:y-6,width:G(iv[1])-G(iv[0]),height:12,rx:6,fill:css("--muted"),opacity:.55},g);
+      el("text",{x:G(iv[0])-4,y:y+4,"text-anchor":"end","font-size":11,class:"m mono"},g,fmt(iv[0],1));el("text",{x:G(iv[1])+4,y:y+4,"font-size":11,class:"m mono"},g,fmt(iv[1],1));});
+    const ov=[Math.max(c.g[0][0],c.g[1][0]),Math.min(c.g[0][1],c.g[1][1])];
+    el("rect",{x:G(ov[0]),y:62,width:G(ov[1])-G(ov[0]),height:50,fill:css("--purple"),opacity:.15},g);
+    el("text",{x:(G(ov[0])+G(ov[1]))/2,y:128,"text-anchor":"middle","font-size":12,"font-weight":700,fill:css("--purple")},g,"se enciman");
+    // diferencia
+    const all=c.d.flat().concat([0]),da=Math.min(...all),db=Math.max(...all),dp=(db-da)*.15;
+    const D=v=>x0+10+(v-(da-dp))/((db+dp)-(da-dp))*(w-20);
+    el("text",{x:x0,y:172,"font-size":12,class:"m"},g,"IC 95 % de la diferencia");
+    el("rect",{x:D(0)-1.2,y:182,width:2.4,height:40+c.d.length*44,fill:css("--ink")},g);
+    el("text",{x:D(0),y:236+c.d.length*44,"text-anchor":"middle","font-size":12,"font-weight":700},g,"0");
+    c.d.forEach((iv,j)=>{const y=204+j*44,inc=iv[0]<=0&&iv[1]>=0,col=inc?css("--amber"):css("--green");
+      el("rect",{x:D(iv[0]),y:y-7,width:D(iv[1])-D(iv[0]),height:14,rx:7,fill:col},g);
+      el("text",{x:(D(iv[0])+D(iv[1]))/2,y:y+24,"text-anchor":"middle","font-size":11,class:"mono"},g,`${c.dl[j]}: ${fmt(iv[0],2)} a ${fmt(iv[1],2)}`);});
+    const y2=290+(c.d.length-1)*30;
+    const verdict=c.d.map((iv,j)=>(iv[0]<=0&&iv[1]>=0)?"incluye 0":"excluye 0");
+    el("text",{x:x0,y:y2+30,"font-size":13,"font-weight":700,fill:css("--ink")},g,c.d.length>1?`E4 ${verdict[0]} · E5 ${verdict[1]}`:`La diferencia ${verdict[0]}`);
+  });
+}
+
+/* ---------- arrastre del intervalo ---------- */
+(function(){
+  const svg=$("fig-ci");let drag=null;
+  function val(ev){const r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width*800;const [a,b]=S.axis;return a+(x-40)/(720)*(b-a);}
+  svg.addEventListener("pointerdown",ev=>{if(!(ev.target.id==="ci-bar"||ev.target.tagName==="circle"))return;drag={v0:val(ev),d0:S.dif};svg.setPointerCapture(ev.pointerId);});
+  svg.addEventListener("pointermove",ev=>{if(!drag)return;const dr=$("s-dif");let v=drag.d0+val(ev)-drag.v0;v=Math.max(+dr.min,Math.min(+dr.max,v));const st=+dr.step;v=Math.round(v/st)*st;S.dif=v;dr.value=v;render();});
+  const end=()=>{drag=null;};svg.addEventListener("pointerup",end);svg.addEventListener("pointercancel",end);
+})();
+
+/* ---------- eventos ---------- */
+document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>load(b.dataset.k)));
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{S.conf=+b.dataset.c;render();}));
+$("s-dif").addEventListener("input",e=>{S.dif=+e.target.value;render();});
+$("s-se").addEventListener("input",e=>{S.se=+e.target.value;render();});
+$("s-gl").addEventListener("input",e=>{S.gl=+e.target.value;render();});
+$("reset").addEventListener("click",()=>load(S.k));
+$("reset2").addEventListener("click",()=>load(S.k));
+$("home").addEventListener("click",()=>{load("E1");window.scrollTo({top:0,behavior:"smooth"});});
+const redrawAll=()=>{drawSum();render();drawFive();drawTrap();};
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redrawAll);}catch(_){}
+new MutationObserver(redrawAll).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+
+/* ---------- demo de grados de libertad ---------- */
+function demo(){const a=+$("d-a").value,b=+$("d-b").value,c=30-a-b;
+  $("o-a").textContent=a;$("o-b").textContent=b;$("v-a").textContent=a;$("v-b").textContent=b;$("v-c").textContent=fmt(c,0);
+  $("d-res").textContent=`(${a} + ${b} + ${fmt(c,0)}) ÷ 3 = 10  →  el dato 3 = 30 − ${a} − ${b} = ${fmt(c,0)}`;}
+$("d-a").addEventListener("input",demo);$("d-b").addEventListener("input",demo);demo();
+
+let start="E1";try{const s=localStorage.getItem("icCeroPreset");if(s&&EX[s])start=s;}catch(_){}
+drawSum();load(start);drawFive();drawTrap();
+})();
+</script>
+
+</body></html>

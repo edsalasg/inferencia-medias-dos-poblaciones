@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plano de la prueba t</title>
+<meta name="author" content="esalas@eduardosalas.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#F3F7FA; --sheet:#FFFFFF; --grid:#DCE7F0; --ink:#1B2631; --muted:#566573; --line:#C9D6E2; --soft:#EEF3F7;
+  --draft:#1F5F8B; --blue:#2980B9; --blue-s:#D6EAF8; --teal:#1ABC9C; --teal-d:#138D75; --teal-s:#D1F2EB;
+  --green:#27AE60; --green-d:#1E8449; --green-s:#D5F5E3; --amber:#E67E22; --amber-d:#AF601A; --amber-s:#FAE5D3;
+  --red:#C0392B; --red-s:#F2D7D5; --purple:#8E44AD; --purple-s:#E8DAEF; --gray-s:#D5D8DC;
+  --f-disp:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --f-body:"Barlow",Arial,sans-serif; --f-mono:"JetBrains Mono",Consolas,monospace;
+  --fs:clamp(13px,1.55vh,16px);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:var(--fs);line-height:1.35;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;padding:8px 12px}
+.app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:6px;max-width:1900px;margin:0 auto}
+h1,h2,h3,h4{margin:0;font-family:var(--f-disp);letter-spacing:.01em}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit}
+button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+/* 1 · barra superior: título + índice horizontal + ejercicio */
+.top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--sheet);border:1.5px solid var(--draft);border-radius:4px;padding:6px 10px}
+.brand h1{font-size:22px;font-weight:700;color:var(--draft);text-transform:uppercase;letter-spacing:.04em;line-height:1}
+.brand span{font-size:11.5px;color:var(--muted)}
+.stepper{display:flex;gap:3px;align-items:stretch;min-width:0}
+.ph{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ph>span{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-left:2px;border-bottom:2px solid var(--line)}
+.ph>div{display:flex;gap:3px}
+.stepper button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 5px;min-width:46px;border:1.5px solid var(--line);border-radius:3px;background:var(--sheet);color:var(--muted);cursor:pointer;line-height:1.05}
+.stepper button b{font-family:var(--f-mono);font-size:12px}
+.stepper button small{font-size:11px;white-space:nowrap}
+.stepper button.done{background:var(--green-s);border-color:var(--green);color:var(--green-d)}
+.stepper button.cur{background:var(--draft);border-color:var(--draft);color:#fff}
+.ex{display:flex;gap:4px;align-items:center}
+.ex .lab{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.ex button{font-size:13px;font-weight:600;padding:3px 8px;border-radius:3px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer;line-height:1.1}
+.ex button small{display:block;font-size:10.5px;font-weight:500;color:var(--muted)}
+.ex button[aria-pressed="true"]{border-color:var(--draft);background:var(--draft);color:#fff}
+.ex button[aria-pressed="true"] small{color:#D6EAF8}
+/* 2 · encabezado de lámina + componentes resueltos */
+.head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:10px;align-items:center;background:var(--sheet);border:1.5px solid var(--draft);border-radius:4px;padding:6px 10px}
+.head .k{font-family:var(--f-mono);font-size:11px;color:var(--draft);font-weight:600;letter-spacing:.06em}
+.head h2{font-size:24px;font-weight:700;line-height:1.05;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.phase{font-family:var(--f-body);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:var(--blue-s);color:var(--draft)}
+.why{margin:2px 0 0;font-size:calc(var(--fs) + 1px)}
+.why b{color:var(--draft)}
+.bom{display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end}
+.bom div{display:flex;flex-direction:column;padding:2px 6px;border:1px solid var(--line);border-radius:3px;background:#FBFCFE;min-width:0}
+.bom div span:first-child{font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.bom div span:last-child{font-family:var(--f-mono);font-size:12px;font-weight:600;white-space:nowrap}
+.bom div.pend{opacity:.45}.bom div.pend span:last-child{font-weight:400}
+.bom div.new{background:#FFF1B8;border-color:var(--amber)}
+/* 3 · mesa de trabajo */
+.work{background:var(--sheet);border:1.5px solid var(--draft);border-radius:4px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.85fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"fig mid route" "band band route";min-height:0;overflow:hidden}
+.c-fig{grid-area:fig}.c-mid{grid-area:mid}.c-route{grid-area:route;border-left:1px solid var(--line)}
+.col{padding:8px 10px;display:flex;flex-direction:column;gap:6px;min-height:0;min-width:0;overflow:hidden}
+.c-mid{border-left:1px solid var(--line)}
+.panel-k{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;flex:none}
+.panel-k i{font-style:normal;display:inline-grid;place-items:center;width:17px;height:17px;border-radius:3px;background:var(--draft);color:#fff;font-size:10.5px}
+.figbox{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+.figbox>svg,.figbox .fit>svg{width:100%;height:100%;min-height:0;flex:1}
+.fit{flex:1;min-height:0;display:flex;flex-direction:column}
+.split{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:10px}
+.split>*{min-height:0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.cap{font-size:12.5px;color:var(--muted);flex:none}
+.card{border:1px solid var(--line);border-radius:4px;padding:7px 9px;display:flex;flex-direction:column;gap:5px;min-height:0}
+.card.f{background:#FBFCFE;border-left:4px solid var(--purple);flex:none}
+.card.s{border-left:4px solid var(--blue);flex:none}
+.card.w{border-left:4px solid var(--teal);flex:1;min-height:0}
+.fx{font-family:var(--f-mono);font-size:calc(var(--fs) - 1.5px);background:var(--soft);border-radius:3px;padding:6px 8px;overflow-x:auto;line-height:1.55}
+.fx b{color:var(--draft)} .fx .res{color:var(--green-d);font-weight:600}
+.does{font-size:calc(var(--fs) - .5px)}
+.path{display:flex;flex-wrap:wrap;gap:3px;align-items:center;font-size:12px}
+.path span{background:#E9EEF3;border:1px solid #C3CDD6;border-radius:2px;padding:0 6px;font-weight:600}
+.path em{color:var(--muted);font-style:normal}
+.tag{font-size:10px;font-weight:700;letter-spacing:.05em;padding:0 4px;border-radius:2px;background:var(--gray-s);color:var(--ink);white-space:nowrap}
+.tag.x{background:var(--amber-s);color:var(--amber-d)}
+/* ruta completa */
+.route-box{flex:1;min-height:0;overflow-y:auto;padding-right:2px}
+.route{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;counter-reset:rt}
+.route li{counter-increment:rt;display:grid;grid-template-columns:20px 1fr;gap:5px;font-size:12.5px;padding:3px 5px;border-radius:3px;color:#8A99A8;line-height:1.3}
+.route li::before{content:counter(rt);display:grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #C3CDD6;font-family:var(--f-mono);font-size:10px;font-weight:600;background:#fff}
+.route li .path{font-size:11.5px}
+.route li .path span{background:#F1F4F7;border-color:#D6DDE3;color:#8A99A8}
+.route li.done{color:var(--muted)}
+.route li.done::before{content:"✓";background:var(--green-s);border-color:var(--green);color:var(--green-d)}
+.route li.now{background:#FFF6D6;color:var(--ink);outline:1.5px solid var(--amber)}
+.route li.now::before{background:var(--draft);border-color:var(--draft);color:#fff}
+.route li.now .path span,.route li.done .path span{background:#E9EEF3;border-color:#C3CDD6;color:var(--ink)}
+.route .sec{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--draft);padding:4px 2px 0;outline:0;background:none}
+.route .sec::before{display:none}
+.route-head{font-size:12px;color:var(--muted);flex:none}
+.route-note{font-size:11px;color:var(--muted);flex:none}
+/* tabla SPSS (banda inferior) */
+.band{grid-area:band;border-top:1.5px solid var(--draft);padding:6px 10px;display:flex;flex-direction:column;gap:3px;max-height:34vh;overflow:auto;background:#FCFDFE}
+.band:empty{display:none}
+.spss-wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+.spss-wrap br{display:none}
+.spss{border-collapse:collapse;font-family:Arial,sans-serif;font-size:11.5px;background:#fff}
+.spss caption{text-align:left;font-weight:700;font-size:12px;padding:0 0 2px;color:#264a60}
+.spss th,.spss td{border:1px solid #cdd4db;padding:2px 6px;white-space:nowrap}
+.spss th{background:#f3f5f7;font-weight:600;color:#264a60;text-align:center}
+.spss td{text-align:right;font-variant-numeric:tabular-nums}
+.spss td.l{text-align:left;background:#f9fafb;color:#264a60}
+.spss td.hid{color:#B8C4CF;letter-spacing:.1em}
+.spss td.hl{background:#FFF1B8;outline:2px solid var(--amber);outline-offset:-2px;font-weight:700}
+.spss-note{font-size:11px;color:var(--muted)}
+/* datos */
+.dv-wrap{flex:1;min-height:0;overflow:auto;border:1px solid var(--line);align-self:start;max-height:100%}
+.dv{border-collapse:collapse;font-family:Arial,sans-serif;font-size:12.5px}
+.dv th,.dv td{border:1px solid #d5dbe1;padding:1px 8px;text-align:right;font-variant-numeric:tabular-nums}
+.dv th{background:#EEF2F6;font-weight:600;position:sticky;top:0}
+.dv td.i{background:#EEF2F6;color:var(--muted);text-align:center}
+.dv td.g1{background:#EAF3FB}.dv td.g2{background:#E6F7F2}.dv td.dd{background:#F2E9F7;font-weight:600}
+.hyp{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:calc(var(--fs) + 1px);align-content:start}
+.hyp>span:nth-child(odd){font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.hyp b{font-family:var(--f-mono)}
+.hyp2{grid-template-columns:auto 1fr auto 1fr;background:var(--soft);border-radius:4px;padding:6px 8px}
+.split.narrow{grid-template-columns:minmax(0,1fr) auto}
+/* decisión */
+.verdict{border-radius:4px;padding:7px 10px;display:flex;flex-direction:column;gap:2px;flex:none}
+.verdict.yes{background:var(--green-s);border:1.5px solid var(--green)} .verdict.no{background:var(--amber-s);border:1.5px solid var(--amber)}
+.verdict strong{font-family:var(--f-disp);font-size:22px}
+.verdict.yes strong{color:var(--green-d)} .verdict.no strong{color:var(--amber-d)}
+.three{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.three>.mini:first-child{grid-row:1 / span 2}
+.mini{border:1px solid var(--line);border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;min-height:0}
+.mini h4{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--draft)}
+.mini svg{flex:1;min-height:0;width:100%;height:100%}
+.work.final{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"fig band"}
+.work.final .c-mid,.work.final .c-route{display:none}
+.work.final .band{border-top:0;border-left:1.5px solid var(--draft);max-height:none}
+.work.final .three{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1.25fr) minmax(0,1fr)}
+.work.final .three>.mini:first-child{grid-row:auto;grid-column:1 / span 2}
+/* 4 · pie: navegación + cartela */
+.foot{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--sheet);border:1.5px solid var(--draft);border-radius:4px;padding:4px 8px}
+.nav{display:flex;gap:6px;align-items:center}
+.nav button{font-weight:700;font-size:14px;padding:6px 14px;border-radius:3px;border:1.5px solid var(--draft);background:var(--sheet);color:var(--draft);cursor:pointer}
+.nav button.primary{background:var(--draft);color:#fff}
+.nav button:disabled{opacity:.35;cursor:default}
+.hint{font-size:11px;color:var(--muted)}
+.cartela{display:grid;grid-template-columns:repeat(6,auto);font-size:11px;border-left:1.5px solid var(--draft)}
+.cartela div{padding:1px 8px;border-right:1px solid var(--line);display:flex;flex-direction:column}
+.cartela div span{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cartela div b{font-family:var(--f-mono);font-size:11px;font-weight:600;white-space:nowrap}
+.trace{font-size:10.5px;color:var(--muted);text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+svg text{font-family:var(--f-body);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.spss th{white-space:normal;max-width:96px;line-height:1.15}
+/* pantallas angostas: se apila y se desplaza */
+@media (max-width:1150px),(max-height:620px){
+  html,body{height:auto}.app{height:auto;display:flex;flex-direction:column}
+  .top{grid-template-columns:1fr}.stepper{flex-wrap:wrap}.head{grid-template-columns:1fr}.bom{justify-content:flex-start}
+  .work,.work.final{grid-template-columns:1fr;grid-template-areas:"fig" "mid" "route" "band";overflow:visible}.c-mid,.c-route{border-left:0;border-top:1px solid var(--line)}
+  .figbox{min-height:320px}.route-box{max-height:none}.band{max-height:none}.split,.three{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr}.cartela{grid-template-columns:repeat(3,auto);border-left:0}.trace{white-space:normal}
+  .work.final .c-mid,.work.final .c-route{display:flex}.work.final{grid-template-areas:"fig" "band"}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<div class="app">
+  <header class="top">
+    <div class="brand"><h1>Plano de la prueba t</h1><span>Dos medias, pieza por pieza · SPSS 25</span></div>
+    <nav class="stepper" id="steps" aria-label="Láminas"></nav>
+    <div class="ex" role="group" aria-label="Ejercicio">
+      <span class="lab">Ejercicio</span>
+      <button type="button" id="ex-E1" data-k="E1">E1<small>Software</small></button>
+      <button type="button" id="ex-E2" data-k="E2">E2<small>TV/radio</small></button>
+      <button type="button" id="ex-E3" data-k="E3">E3<small>Métodos</small></button>
+      <button type="button" id="ex-E4" data-k="E4">E4<small>Araña ind.</small></button>
+      <button type="button" id="ex-E5" data-k="E5">E5<small>Araña par.</small></button>
+    </div>
+  </header>
+
+  <section class="head" aria-live="polite">
+    <div>
+      <div class="k" id="s-k"></div>
+      <h2><span id="s-title"></span><span class="phase" id="s-phase"></span></h2>
+      <p class="why" id="s-why"></p>
+    </div>
+    <div class="bom" id="bom" aria-label="Componentes resueltos"></div>
+  </section>
+
+  <main class="work" id="work">
+    <div class="col c-fig">
+      <div class="panel-k"><i>1</i>Lo que construimos</div>
+      <div class="figbox" id="s-fig"></div>
+      <div class="cap" id="s-cap"></div>
+    </div>
+    <div class="col mid c-mid">
+      <div class="card f"><div class="panel-k"><i>2</i>Fórmula con tus números</div><div id="s-fx"></div></div>
+      <div class="card s"><div class="panel-k"><i>3</i>Qué hace SPSS</div><div class="does" id="s-does"></div></div>
+    </div>
+    <div class="col c-route">
+      <div class="card w"><div class="panel-k"><i>4</i>Dónde le picas en SPSS · ruta completa</div><div id="s-where" style="display:flex;flex-direction:column;gap:4px;min-height:0;flex:1"></div></div>
+    </div>
+    <div class="band" id="s-spss"></div>
+  </main>
+
+  <footer class="foot">
+    <div class="nav">
+      <button type="button" id="prev">← Anterior</button>
+      <button type="button" id="next" class="primary">Siguiente →</button>
+      <span class="hint">o flechas ← →</span>
+    </div>
+    <div class="trace">Cifras calculadas en la página con los datos de Datos_Ejercicios (E1–E5); coinciden con la salida de SPSS 25 del 22–23 sep 2026 · Mtro. Eduardo Salas García · esalas@eduardosalas.com · Proyecto 260814 · V2 · 24-sep-2026</div>
+    <div class="cartela" id="cartela"></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+/* ============ estadística ============ */
+function lgamma(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(let j=0;j<6;j++)s+=c[j]/++y;return -t+Math.log(2.5066282746310005*s/x);}
+function betacf(a,b,x){let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<1e-300)d=1e-300;d=1/d;let h=d;for(let m=1;m<=300;m++){let m2=2*m,aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-300)d=1e-300;c=1+aa/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<1e-300)d=1e-300;c=1+aa/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break;}return h;}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b;}
+const p2=(t,df)=>ibeta(df/2,.5,df/(df+t*t));
+function tq(prob,df){let lo=0,hi=200;for(let i=0;i<200;i++){const m=(lo+hi)/2;(1-p2(m,df)/2)<prob?lo=m:hi=m;}return (lo+hi)/2;}
+const tpdf=(x,df)=>Math.exp(lgamma((df+1)/2)-lgamma(df/2)-.5*Math.log(df*Math.PI)-(df+1)/2*Math.log(1+x*x/df));
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+const sd=a=>{const m=mean(a);return Math.sqrt(a.reduce((s,v)=>s+(v-m)**2,0)/(a.length-1));};
+
+/* ============ datos (Datos_Ejercicios/*.sav) ============ */
+const RAW={"E1":[[300,280,344,385,372,360,288,321,376,290,301,283],[274,220,308,336,198,300,315,258,318,310,332,263]],"E2":[[22,8,25,22,12,26,22,19,21,23,14,14,14,16,24],[25,10,29,19,13,28,23,21,21,23,15,18,17,15,23]],"E3":[[6,5,7,6.2,6,6.4],[5.4,5.2,6.5,5.9,6,5.8]],"E4":[[30,35,45,40,50,35,55,25,30,45,40,50],[40,35,50,55,65,55,50,35,30,50,60,39]],"E5":[[30,35,45,40,50,35,55,25,30,45,40,50],[40,35,50,55,65,55,50,35,30,50,60,39]]};
+const META={
+ E1:{par:false,file:"E1_Software_Independientes.sav",var:"tiempo",g:["Actual","Nuevo"],unit:"horas",varlab:"Tiempo por proyecto (horas)",grp:"grupo",
+   q:"¿El nuevo software reduce el tiempo por proyecto?",ctx:"12 proyectos con la tecnología actual y 12 distintos con el nuevo software.",
+   h0:"μ(actual) = μ(nuevo)",h1:"μ(actual) > μ(nuevo)",tails:1,tailTxt:"una cola: la pregunta tiene dirección (¿reduce?)",dec:2},
+ E2:{par:true,file:"E2_TVRadio_Pareadas.sav",vars:["television","radio"],g:["Televisión","Radio"],unit:"",varlab:"Recuerdo del anuncio",
+   q:"¿Difiere el recuerdo de un anuncio por televisión y por radio?",ctx:"Las mismas 15 personas, medidas con televisión y con radio.",
+   h0:"μ(TV) = μ(radio)",h1:"μ(TV) ≠ μ(radio)",tails:2,tailTxt:"dos colas: no se fijó dirección",dec:2},
+ E3:{par:true,file:"E3_Metodos_Pareadas.sav",vars:["metodo1","metodo2"],g:["Método 1","Método 2"],unit:"",varlab:"Desempeño",
+   q:"¿Difiere el desempeño entre dos métodos?",ctx:"Seis sujetos evaluados con ambos métodos.",
+   h0:"μ(1) = μ(2)",h1:"μ(1) ≠ μ(2)",tails:2,tailTxt:"dos colas: no se fijó dirección",dec:3},
+ E4:{par:false,file:"E4_Arana_Independientes.sav",var:"ansiedad",g:["Foto","Real"],unit:"puntos",varlab:"Ansiedad (0-100)",grp:"grupo",
+   q:"¿Difiere la ansiedad ante la foto de una araña y ante una araña real?",ctx:"12 personas ven la foto y otras 12, distintas, la araña real.",
+   h0:"μ(foto) = μ(real)",h1:"μ(foto) ≠ μ(real)",tails:2,tailTxt:"dos colas: no se fijó dirección",dec:2},
+ E5:{par:true,file:"E5_Arana_Pareadas.sav",vars:["foto","real"],g:["Foto","Real"],unit:"puntos",varlab:"Ansiedad (0-100)",
+   q:"¿Difiere la ansiedad ante la foto y ante la araña real, en las mismas personas?",ctx:"Las mismas 12 personas ven la foto y la araña real.",
+   h0:"μ(foto) = μ(real)",h1:"μ(foto) ≠ μ(real)",tails:2,tailTxt:"dos colas: no se fijó dirección",dec:2}
+};
+
+function compute(k){
+  const M=META[k],[a,b]=RAW[k],R={k,M,a,b};
+  R.n=[a.length,b.length];R.m=[mean(a),mean(b)];R.s=[sd(a),sd(b)];R.se=[R.s[0]/Math.sqrt(R.n[0]),R.s[1]/Math.sqrt(R.n[1])];
+  R.dif=R.m[0]-R.m[1];
+  if(!M.par){
+    const n1=R.n[0],n2=R.n[1];
+    // Levene centrado en la media (como SPSS)
+    const z1=a.map(v=>Math.abs(v-R.m[0])),z2=b.map(v=>Math.abs(v-R.m[1])),zm1=mean(z1),zm2=mean(z2),zm=mean(z1.concat(z2)),N=n1+n2;
+    const num=n1*(zm1-zm)**2+n2*(zm2-zm)**2,den=z1.reduce((s,v)=>s+(v-zm1)**2,0)+z2.reduce((s,v)=>s+(v-zm2)**2,0);
+    R.F=(N-2)*num/den;R.levP=p2(Math.sqrt(R.F),N-2);R.z=[z1,z2];R.zm=[zm1,zm2];
+    R.gl=n1+n2-2;R.sp2=((n1-1)*R.s[0]**2+(n2-1)*R.s[1]**2)/R.gl;R.sp=Math.sqrt(R.sp2);R.ee=R.sp*Math.sqrt(1/n1+1/n2);
+    const v1=R.s[0]**2/n1,v2=R.s[1]**2/n2;R.eeW=Math.sqrt(v1+v2);R.glW=(v1+v2)**2/(v1*v1/(n1-1)+v2*v2/(n2-1));
+    R.welch=R.levP<.05;
+    R.tW=R.dif/R.eeW;R.pW=p2(R.tW,R.glW);const tcW=tq(.975,R.glW);R.loW=R.dif-tcW*R.eeW;R.hiW=R.dif+tcW*R.eeW;
+    R.d=R.dif/R.sp;
+  }else{
+    R.D=a.map((v,i)=>v-b[i]);R.dm=mean(R.D);R.dsd=sd(R.D);R.ee=R.dsd/Math.sqrt(R.n[0]);R.gl=R.n[0]-1;
+    const ma=R.m[0],mb=R.m[1];let sxy=0,sxx=0,syy=0;a.forEach((v,i)=>{sxy+=(v-ma)*(b[i]-mb);sxx+=(v-ma)**2;syy+=(b[i]-mb)**2;});
+    R.r=sxy/Math.sqrt(sxx*syy);R.rP=p2(R.r*Math.sqrt((R.n[0]-2)/(1-R.r*R.r)),R.n[0]-2);R.d=R.dm/R.dsd;
+  }
+  // fila que se usa
+  R.useEE=(!M.par&&R.welch)?R.eeW:R.ee;R.useGl=(!M.par&&R.welch)?R.glW:R.gl;
+  R.t=R.dif/R.useEE;R.p=p2(R.t,R.useGl);R.tc=tq(.975,R.useGl);R.tc1=tq(.95,R.useGl);
+  R.marg=R.tc*R.useEE;R.lo=R.dif-R.marg;R.hi=R.dif+R.marg;
+  R.pUsed=M.tails===1?(R.t>0?R.p/2:1-R.p/2):R.p;R.rej=R.pUsed<.05;
+  R.gci=[0,1].map(i=>{const h=tq(.975,R.n[i]-1)*R.se[i];return [R.m[i]-h,R.m[i]+h];});
+  return R;
+}
+
+/* ============ utilidades de formato ============ */
+const fx=(v,d)=>{const s=(+v).toFixed(d);return s.startsWith("-")?"−"+s.slice(1):s;};
+const sig=p=>p<.001?".000":p.toFixed(3).replace(/^0/,"");
+const pTxt=p=>p<.001?"< .001":p.toFixed(3).replace(/^0/,"");
+const NS="http://www.w3.org/2000/svg";
+function S(w,h,label){const s=document.createElementNS(NS,"svg");s.setAttribute("viewBox",`0 0 ${w} ${h}`);s.setAttribute("class","fig");s.setAttribute("role","img");s.setAttribute("aria-label",label);return s;}
+function E(p,tag,at,txt){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e;}
+const C={ink:"#1B2631",mut:"#566573",line:"#C9D6E2",g1:"#2980B9",g2:"#1ABC9C",g2d:"#138D75",red:"#C0392B",reds:"#F2D7D5",grn:"#27AE60",amb:"#E67E22",pur:"#8E44AD",draft:"#1F5F8B",curve:"#EEF3F7"};
+function niceTicks(a,b,n=6){const span=b-a,r=span/n,m=Math.pow(10,Math.floor(Math.log10(r)));let st=m;for(const f of[1,2,2.5,5,10])if(f*m>=r){st=f*m;break;}const out=[];for(let v=Math.ceil(a/st)*st;v<=b+1e-9;v+=st)out.push(+v.toFixed(10));return {ticks:out,st};}
+function axisY(s,x,y0,y1,a,b,label){const {ticks,st}=niceTicks(a,b,5);const Y=v=>y1-(v-a)/(b-a)*(y1-y0);E(s,"line",{x1:x,y1:y0,x2:x,y2:y1,stroke:C.line});ticks.forEach(v=>{E(s,"line",{x1:x,y1:Y(v),x2:720-20,y2:Y(v),stroke:"#E7EEF4"});E(s,"text",{x:x-6,y:Y(v)+4,"text-anchor":"end","font-size":12,fill:C.mut},fx(v,st<1?(st<.1?2:1):0));});if(label)E(s,"text",{x:14,y:(y0+y1)/2,transform:`rotate(-90 14 ${(y0+y1)/2})`,"text-anchor":"middle","font-size":12,fill:C.mut},label);return Y;}
+function axisX(s,y,x0,x1,a,b,label,dec){const {ticks,st}=niceTicks(a,b,7);const X=v=>x0+(v-a)/(b-a)*(x1-x0);E(s,"line",{x1:x0,y1:y,x2:x1,y2:y,stroke:C.mut});ticks.forEach(v=>{E(s,"line",{x1:X(v),y1:y,x2:X(v),y2:y+4,stroke:C.mut});E(s,"text",{x:X(v),y:y+17,"text-anchor":"middle","font-size":12,fill:C.mut},fx(v,dec!=null?dec:(st<1?(st<.1?2:1):0)));});if(label)E(s,"text",{x:(x0+x1)/2,y:y+34,"text-anchor":"middle","font-size":12,fill:C.mut},label);return X;}
+
+/* ---- gráficas ---- */
+function figDots(R,opts={}){ // puntos crudos por grupo (vertical); pareadas: líneas por sujeto
+  const s=S(720,300,"Datos de cada grupo");const all=R.a.concat(R.b);let lo=Math.min(...all),hi=Math.max(...all);const pad=(hi-lo)*.12;lo-=pad;hi+=pad;
+  const Y=axisY(s,70,20,265,lo,hi,R.M.varlab);const xs=[250,500];
+  R.M.g.forEach((g,i)=>E(s,"text",{x:xs[i],y:290,"text-anchor":"middle","font-size":14,"font-weight":600,fill:C.ink},g));
+  const jit=(i,n)=>((i%5)-2)*9;
+  if(R.M.par&&!opts.noLines)R.a.forEach((v,i)=>E(s,"line",{x1:xs[0]+jit(i),y1:Y(v),x2:xs[1]+jit(i),y2:Y(R.b[i]),stroke:(R.b[i]>v?C.g2:(R.b[i]<v?C.g1:C.mut)),"stroke-width":1.4,opacity:.55}));
+  [R.a,R.b].forEach((arr,g)=>arr.forEach((v,i)=>E(s,"circle",{cx:xs[g]+jit(i),cy:Y(v),r:5.5,fill:g?C.g2:C.g1,stroke:"#fff","stroke-width":1.5,opacity:opts.fade?.35:1})));
+  if(opts.stats){[0,1].forEach(g=>{const m=R.m[g],sdv=R.s[g],x=xs[g]+70;
+    E(s,"line",{x1:xs[g]-50,y1:Y(m),x2:xs[g]+50,y2:Y(m),stroke:C.ink,"stroke-width":3});
+    E(s,"line",{x1:x,y1:Y(m-sdv),x2:x,y2:Y(m+sdv),stroke:C.pur,"stroke-width":2.5});E(s,"line",{x1:x-6,y1:Y(m-sdv),x2:x+6,y2:Y(m-sdv),stroke:C.pur,"stroke-width":2.5});E(s,"line",{x1:x-6,y1:Y(m+sdv),x2:x+6,y2:Y(m+sdv),stroke:C.pur,"stroke-width":2.5});
+    E(s,"text",{x:xs[g]-56,y:Y(m)+4,"text-anchor":"end","font-size":13,"font-weight":700,fill:C.ink},"x̄ = "+fx(m,R.M.dec));
+    E(s,"text",{x:x+9,y:Y(m+sdv)+4,"font-size":12,fill:C.pur,"font-weight":600},"± s = "+fx(sdv,3));});}
+  return s;}
+function figTree(R){
+  const s=S(720,270,"Árbol de decisión del diseño");const par=R.M.par;
+  const box=(x,y,w,h,t,on,sub)=>{E(s,"rect",{x,y,width:w,height:h,rx:4,fill:on?"#EAF3FB":"#fff",stroke:on?C.draft:C.line,"stroke-width":on?2.5:1.2});E(s,"text",{x:x+w/2,y:y+(sub?h/2-3:h/2+5),"text-anchor":"middle","font-size":15,"font-weight":700,fill:on?C.draft:C.mut},t);if(sub)E(s,"text",{x:x+w/2,y:y+h/2+15,"text-anchor":"middle","font-size":12,fill:C.mut},sub);};
+  const ln=(x1,y1,x2,y2,on,t)=>{E(s,"line",{x1,y1,x2,y2,stroke:on?C.draft:C.line,"stroke-width":on?3:1.5});if(t)E(s,"text",{x:(x1+x2)/2+(x2>x1?10:-10),y:(y1+y2)/2,"text-anchor":x2>x1?"start":"end","font-size":13,"font-weight":700,fill:on?C.draft:C.mut},t);};
+  box(230,10,260,50,"¿Comparamos dos medias?",true,"variable de escala · 2 condiciones");
+  ln(360,60,360,90,true);
+  box(210,90,300,50,"¿Mismos sujetos o pares?",true,"¿cada dato tiene su «gemelo»?");
+  ln(300,140,170,190,par,"Sí");ln(420,140,550,190,!par,"No");
+  box(40,190,260,62,"t para muestras relacionadas",par,"pareadas · una columna por medición");
+  box(420,190,260,62,"t para muestras independientes",!par,"una columna de valores + una de grupo");
+  return s;}
+function figDiffs(R){ // pareadas: diferencias por sujeto
+  const s=S(480,300,"Diferencia de cada sujeto");const D=R.D;let lo=Math.min(0,...D),hi=Math.max(0,...D);const pad=(hi-lo)*.15||1;lo-=pad;hi+=pad;
+  const X=axisX(s,250,30,465,lo,hi,`Diferencia por sujeto: ${R.M.g[0]} − ${R.M.g[1]}`,null);
+  E(s,"line",{x1:X(0),y1:20,x2:X(0),y2:250,stroke:C.ink,"stroke-width":2,"stroke-dasharray":"5 4"});E(s,"text",{x:X(0),y:15,"text-anchor":"middle","font-size":12,"font-weight":700,fill:C.ink},"0 = sin cambio");
+  const cnt={};D.forEach((v,i)=>{const k=v.toFixed(3);cnt[k]=(cnt[k]||0)+1;const y=225-(cnt[k]-1)*17;E(s,"circle",{cx:X(v),cy:y,r:7,fill:C.pur,stroke:"#fff","stroke-width":1.5});});
+  E(s,"line",{x1:X(R.dm),y1:40,x2:X(R.dm),y2:250,stroke:C.pur,"stroke-width":3});
+  E(s,"text",{x:X(R.dm),y:34,"text-anchor":"middle","font-size":13,"font-weight":700,fill:C.pur},"d̄ = "+fx(R.dm,3));
+  const neg=D.filter(v=>v<0).length,pos=D.filter(v=>v>0).length,z=D.length-neg-pos;
+  E(s,"text",{x:30,y:60,"font-size":13,fill:C.mut},`${neg} negativas · ${z} en cero · ${pos} positivas`);
+  return s;}
+function figLevene(R){ // desviaciones absolutas por grupo
+  const s=S(720,300,"Distancias a la media en cada grupo");const all=R.z[0].concat(R.z[1]);const hi=Math.max(...all)*1.15;
+  const Y=axisY(s,70,20,255,0,hi,"|x − x̄| (distancia a su media)");const xs=[250,500];
+  R.z.forEach((arr,g)=>{arr.forEach((v,i)=>E(s,"circle",{cx:xs[g]+((i%5)-2)*9,cy:Y(v),r:5.5,fill:g?C.g2:C.g1,stroke:"#fff","stroke-width":1.5}));
+    E(s,"line",{x1:xs[g]-50,y1:Y(R.zm[g]),x2:xs[g]+50,y2:Y(R.zm[g]),stroke:C.ink,"stroke-width":3});
+    E(s,"text",{x:xs[g]+56,y:Y(R.zm[g])+4,"font-size":13,"font-weight":700,fill:C.ink},"promedio "+fx(R.zm[g],2));
+    E(s,"text",{x:xs[g],y:285,"text-anchor":"middle","font-size":14,"font-weight":600,fill:C.ink},R.M.g[g]);});
+  return s;}
+function figNoise(R){ // la diferencia medida en errores estándar
+  const s=S(720,230,"Diferencia contra error estándar");const d=R.dif,ee=R.useEE;const lo=Math.min(0,d)-ee*.8,hi=Math.max(0,d)+ee*.8;
+  const X=axisX(s,190,50,690,lo,hi,`Diferencia de medias (${R.M.g[0]} − ${R.M.g[1]})`,null);
+  E(s,"line",{x1:X(0),y1:30,x2:X(0),y2:190,stroke:C.ink,"stroke-width":2});E(s,"text",{x:X(0),y:24,"text-anchor":"middle","font-size":12,"font-weight":700,fill:C.ink},"0");
+  const n=Math.floor(Math.abs(d)/ee),sg=Math.sign(d)||1;
+  for(let i=0;i<n;i++){const x1=X(sg*i*ee),x2=X(sg*(i+1)*ee);E(s,"rect",{x:Math.min(x1,x2)+1,y:112,width:Math.abs(x2-x1)-2,height:22,rx:3,fill:C.pur,opacity:.8});E(s,"text",{x:(x1+x2)/2,y:127,"text-anchor":"middle","font-size":12,fill:"#fff","font-weight":700},"1 EE");}
+  const rest=Math.abs(d)/ee-n;if(rest>.02){const x1=X(sg*n*ee),x2=X(d);E(s,"rect",{x:Math.min(x1,x2)+1,y:112,width:Math.max(1,Math.abs(x2-x1)-2),height:22,rx:3,fill:C.pur,opacity:.35});}
+  E(s,"circle",{cx:X(d),cy:80,r:8,fill:C.g1,stroke:"#fff","stroke-width":2});E(s,"text",{x:X(d),y:64,"text-anchor":"middle","font-size":13,"font-weight":700,fill:C.g1},"diferencia = "+fx(d,3));
+  E(s,"line",{x1:X(0),y1:80,x2:X(d),y2:80,stroke:C.g1,"stroke-width":2,"stroke-dasharray":"4 3"});
+  E(s,"text",{x:X(0)+sg*6,y:160,"text-anchor":sg>0?"start":"end","font-size":12.5,fill:C.pur,"font-weight":600},`caben ${fx(Math.abs(d)/ee,2)} errores estándar (EE = ${fx(ee,3)})`);
+  return s;}
+function figDF(R){ // grados de libertad: puntos libres y obligados
+  const s=S(720,200,"Grados de libertad");const par=R.M.par;const rows=par?[{n:R.n[0],lab:"Diferencias (1 columna)",c:C.pur}]:[{n:R.n[0],lab:R.M.g[0],c:C.g1},{n:R.n[1],lab:R.M.g[1],c:C.g2}];
+  rows.forEach((r,j)=>{const y=60+j*70;E(s,"text",{x:20,y:y+5,"font-size":14,"font-weight":600,fill:C.ink},r.lab);
+    for(let i=0;i<r.n;i++){const x=200+i*33,last=i===r.n-1;E(s,"circle",{cx:x,cy:y,r:11,fill:last?"#fff":r.c,stroke:last?C.red:"#fff","stroke-width":last?2.5:1.5,"stroke-dasharray":last?"3 2":""});}
+    E(s,"text",{x:200+(r.n-1)*33,y:y+30,"text-anchor":"middle","font-size":11.5,fill:C.red,"font-weight":700},"obligado");
+    E(s,"text",{x:200+r.n*33+6,y:y+5,"font-size":13,fill:C.ink,"font-weight":700},`${r.n-1} libres`);});
+  E(s,"text",{x:20,y:par?140:195-8,"font-size":13,fill:C.mut},par?"Al fijar la media de las diferencias, la última queda obligada.":"Al fijar la media de cada grupo, su último dato queda obligado.");
+  return s;}
+function figBell(R,mode){ // mode: crit | t | p
+  const s=S(720,270,"Distribución t");const df=R.useGl,tc=R.tc,t=R.t;const lim=Math.max(4.5,Math.min(8,Math.abs(t)+1.2));
+  const X=v=>50+(v+lim)/(2*lim)*620,base=225,H=175,pk=tpdf(0,df),Y=v=>base-tpdf(v,df)/pk*H;
+  const path=(a,b)=>{let d=`M${X(a)} ${base}`;for(let i=0;i<=120;i++){const v=a+(b-a)*i/120;d+=` L${X(v).toFixed(1)} ${Y(v).toFixed(1)}`;}return d+` L${X(b)} ${base} Z`;};
+  E(s,"path",{d:path(-lim,lim),fill:C.curve});
+  const one=R.M.tails===1;
+  if(mode!=="p"){ // zonas de rechazo al 95 % (dos colas)
+    [1,-1].forEach(sg=>{E(s,"path",{d:sg>0?path(tc,lim):path(-lim,-tc),fill:C.reds});E(s,"line",{x1:X(sg*tc),y1:base,x2:X(sg*tc),y2:base-H*.72,stroke:C.red,"stroke-width":2,"stroke-dasharray":"6 4"});
+      E(s,"text",{x:X(sg*tc)+(sg>0?-6:6),y:base-H*.76,"text-anchor":sg>0?"end":"start","font-size":12.5,"font-weight":700,fill:C.red},(sg>0?"+":"−")+fx(tc,3));
+      E(s,"text",{x:X(sg*(tc+lim)/2),y:base-12,"text-anchor":"middle","font-size":12,fill:C.red,"font-weight":600},"2.5 %");});
+    E(s,"text",{x:X(0),y:base-H*.32,"text-anchor":"middle","font-size":12.5,fill:C.mut},"95 % central");E(s,"text",{x:X(0),y:base-H*.32+15,"text-anchor":"middle","font-size":11.5,fill:C.mut},"no rechazo");
+    if(one){E(s,"line",{x1:X(R.tc1),y1:base,x2:X(R.tc1),y2:base-H*.45,stroke:C.amb,"stroke-width":2,"stroke-dasharray":"2 3"});E(s,"text",{x:X(R.tc1)-4,y:base-H*.48,"text-anchor":"end","font-size":11.5,fill:C.amb,"font-weight":700},"una cola: "+fx(R.tc1,3));}
+  }else{
+    const at=Math.abs(t);E(s,"path",{d:path(Math.min(at,lim),lim),fill:C.g1,opacity:.55});if(!one)E(s,"path",{d:path(-lim,-Math.min(at,lim)),fill:C.g1,opacity:.55});
+    E(s,"text",{x:X(Math.min((at+lim)/2,lim-.3)),y:base-35,"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:C.g1},one?"p (una cola)":"p/2");
+    if(!one)E(s,"text",{x:X(-Math.min((at+lim)/2,lim-.3)),y:base-35,"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:C.g1},"p/2");
+  }
+  E(s,"path",{d:(()=>{let d="";for(let i=0;i<=240;i++){const v=-lim+2*lim*i/240;d+=(i?" L":"M")+X(v).toFixed(1)+" "+Y(v).toFixed(1);}return d;})(),fill:"none",stroke:C.ink,"stroke-width":2});
+  E(s,"line",{x1:50,y1:base,x2:670,y2:base,stroke:C.mut});
+  for(let v=-Math.floor(lim);v<=Math.floor(lim);v++){E(s,"line",{x1:X(v),y1:base,x2:X(v),y2:base+4,stroke:C.mut});E(s,"text",{x:X(v),y:base+18,"text-anchor":"middle","font-size":12,fill:C.mut},fx(v,0));}
+  E(s,"text",{x:670,y:base+34,"text-anchor":"end","font-size":12,fill:C.mut},`Distribución t con ${R.useGl%1?fx(R.useGl,3):R.useGl} gl, si H₀ fuera cierta`);
+  if(mode!=="crit"){const xt=X(Math.max(-lim,Math.min(lim,t)));E(s,"line",{x1:xt,y1:base,x2:xt,y2:base-H*.95,stroke:C.g1,"stroke-width":4});E(s,"text",{x:xt,y:base-H*.95-8,"text-anchor":"middle","font-size":13.5,"font-weight":700,fill:C.g1},"t = "+fx(t,3));}
+  return s;}
+function figCI(R,small){ // diferencia contra 0
+  const W2=small?480:720;const s=S(W2,small?190:230,"Intervalo de la diferencia");const lo=Math.min(0,R.lo),hi=Math.max(0,R.hi),pad=(hi-lo)*.12;
+  const X=axisX(s,small?150:185,30,W2-25,lo-pad,hi+pad,`Diferencia (${R.M.g[0]} − ${R.M.g[1]})`,null);
+  const y=small?85:105,inc=R.lo<=0&&R.hi>=0,col=inc?C.amb:C.grn;
+  E(s,"line",{x1:X(0),y1:20,x2:X(0),y2:small?150:185,stroke:C.ink,"stroke-width":2.5});E(s,"text",{x:X(0),y:15,"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:C.ink},"0 = sin diferencia");
+  E(s,"rect",{x:X(R.lo),y:y-8,width:X(R.hi)-X(R.lo),height:16,rx:8,fill:col,opacity:.9});
+  E(s,"circle",{cx:X(R.dif),cy:y,r:8,fill:C.g1,stroke:"#fff","stroke-width":2});
+  E(s,"text",{x:X(R.lo),y:y-16,"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:C.ink},fx(R.lo,3));
+  E(s,"text",{x:X(R.hi),y:y-16,"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:C.ink},fx(R.hi,3));
+  if(!small){E(s,"text",{x:(X(R.dif)+X(R.hi))/2,y:y+30,"text-anchor":"middle","font-size":12.5,fill:C.pur,"font-weight":600},"+ margen "+fx(R.marg,3));E(s,"text",{x:(X(R.dif)+X(R.lo))/2,y:y+30,"text-anchor":"middle","font-size":12.5,fill:C.pur,"font-weight":600},"− margen");}
+  E(s,"text",{x:X(R.dif),y:y+(small?28:52),"text-anchor":"middle","font-size":13,"font-weight":700,fill:col},inc?"incluye el 0 → no se rechaza":"no incluye el 0 → se rechaza");
+  return s;}
+function figGroups(R){ // dos líneas horizontales
+  const s=S(480,200,"IC de cada grupo");const lo=Math.min(R.gci[0][0],R.gci[1][0]),hi=Math.max(R.gci[0][1],R.gci[1][1]),pad=(hi-lo)*.12;
+  const X=axisX(s,158,95,465,lo-pad,hi+pad,R.M.varlab,null);
+  const ov=[Math.max(R.gci[0][0],R.gci[1][0]),Math.min(R.gci[0][1],R.gci[1][1])];if(ov[1]>ov[0]){E(s,"rect",{x:X(ov[0]),y:25,width:X(ov[1])-X(ov[0]),height:110,fill:C.pur,opacity:.1});E(s,"text",{x:(X(ov[0])+X(ov[1]))/2,y:20,"text-anchor":"middle","font-size":12,fill:C.pur,"font-weight":700},"se traslapan");}
+  [0,1].forEach(g=>{const y=55+g*55,col=g?C.g2d:C.g1;E(s,"text",{x:10,y:y+5,"font-size":13.5,"font-weight":600,fill:C.ink},R.M.g[g]);
+    E(s,"line",{x1:X(R.gci[g][0]),y1:y,x2:X(R.gci[g][1]),y2:y,stroke:col,"stroke-width":3.5});[0,1].forEach(j=>E(s,"line",{x1:X(R.gci[g][j]),y1:y-7,x2:X(R.gci[g][j]),y2:y+7,stroke:col,"stroke-width":2}));
+    E(s,"circle",{cx:X(R.m[g]),cy:y,r:6.5,fill:col,stroke:"#fff","stroke-width":2});E(s,"text",{x:X(R.m[g]),y:y+22,"text-anchor":"middle","font-size":12,"font-weight":700,fill:col},fx(R.m[g],R.M.dec));});
+  return s;}
+
+/* ============ tablas SPSS (etiquetas de la salida real) ============ */
+function spssTables(R,shown,hl){
+  const M=R.M,cell=(key,val,cls="")=>{const on=shown.has(key);return `<td class="${cls}${on?"":" hid"}${hl.has(key)?" hl":""}">${on?val:"·····"}</td>`;};
+  let h="";
+  if(!M.par){
+    h+=`<table class="spss"><caption>Estadísticas de grupo</caption><tr><th></th><th>grupo</th><th>N</th><th>Media</th><th>Desv. Desviación</th><th>Desv. Error promedio</th></tr>`;
+    [0,1].forEach(g=>{h+=`<tr>${g?"":`<td class="l" rowspan="2">${M.varlab}</td>`}<td class="l">${M.g[g]}</td>${cell("n",R.n[g])}${cell("mean",fx(R.m[g],2))}${cell("sd",fx(R.s[g],3))}${cell("se",fx(R.se[g],3))}</tr>`;});
+    h+=`</table><br><table class="spss"><caption>Prueba de muestras independientes</caption>
+      <tr><th rowspan="3"></th><th rowspan="3"></th><th colspan="2">Prueba de Levene de igualdad de varianzas</th><th colspan="7">prueba t para la igualdad de medias</th></tr>
+      <tr><th rowspan="2">F</th><th rowspan="2">Sig.</th><th rowspan="2">t</th><th rowspan="2">gl</th><th rowspan="2">Sig. (bilateral)</th><th rowspan="2">Diferencia de medias</th><th rowspan="2">Diferencia de error estándar</th><th colspan="2">95% de intervalo de confianza de la diferencia</th></tr>
+      <tr><th>Inferior</th><th>Superior</th></tr>`;
+    const tcP=tq(.975,R.gl),tP=R.dif/R.ee,pP=p2(tP,R.gl);
+    h+=`<tr><td class="l" rowspan="2">${M.varlab}</td><td class="l">Se asumen varianzas iguales</td>${cell("F",fx(R.F,3))}${cell("levsig",sig(R.levP))}${cell("t",fx(tP,3))}${cell("gl",R.gl)}${cell("sig",sig(pP))}${cell("dif",fx(R.dif,3))}${cell("ee",fx(R.ee,3))}${cell("ci",fx(R.dif-tcP*R.ee,3))}${cell("ci",fx(R.dif+tcP*R.ee,3))}</tr>`;
+    h+=`<tr><td class="l">No se asumen varianzas iguales</td><td></td><td></td>${cell("t",fx(R.tW,3))}${cell("gl",fx(R.glW,3))}${cell("sig",sig(R.pW))}${cell("dif",fx(R.dif,3))}${cell("ee",fx(R.eeW,3))}${cell("ci",fx(R.loW,3))}${cell("ci",fx(R.hiW,3))}</tr></table>`;
+  }else{
+    h+=`<table class="spss"><caption>Estadísticas de muestras emparejadas</caption><tr><th></th><th></th><th>Media</th><th>N</th><th>Desv. Desviación</th><th>Desv. Error promedio</th></tr>`;
+    [0,1].forEach(g=>{h+=`<tr>${g?"":`<td class="l" rowspan="2">Par 1</td>`}<td class="l">${M.vars[g]}</td>${cell("mean",fx(R.m[g],2))}${cell("n",R.n[g])}${cell("sd",fx(R.s[g],3))}${cell("se",fx(R.se[g],3))}</tr>`;});
+    h+=`</table><br><table class="spss"><caption>Correlaciones de muestras emparejadas</caption><tr><th></th><th></th><th>N</th><th>Correlación</th><th>Sig.</th></tr><tr><td class="l">Par 1</td><td class="l">${M.vars[0]} &amp; ${M.vars[1]}</td>${cell("n",R.n[0])}${cell("r",fx(R.r,3))}${cell("r",sig(R.rP))}</tr></table><br>`;
+    h+=`<table class="spss"><caption>Prueba de muestras emparejadas</caption><tr><th rowspan="3"></th><th rowspan="3"></th><th colspan="5">Diferencias emparejadas</th><th rowspan="3">t</th><th rowspan="3">gl</th><th rowspan="3">Sig. (bilateral)</th></tr>
+      <tr><th rowspan="2">Media</th><th rowspan="2">Desv. Desviación</th><th rowspan="2">Desv. Error promedio</th><th colspan="2">95% de intervalo de confianza de la diferencia</th></tr><tr><th>Inferior</th><th>Superior</th></tr>
+      <tr><td class="l">Par 1</td><td class="l">${M.vars[0]} - ${M.vars[1]}</td>${cell("dm",fx(R.dm,3))}${cell("dsd",fx(R.dsd,3))}${cell("ee",fx(R.ee,3))}${cell("ci",fx(R.lo,3))}${cell("ci",fx(R.hi,3))}${cell("t",fx(R.t,3))}${cell("gl",R.gl)}${cell("sig",sig(R.p))}</tr></table>`;
+  }
+  return `<div class="panel-k"><i>▦</i>La tabla de SPSS se va llenando <span style="font-weight:500;text-transform:none;letter-spacing:0">· amarillo: lo que resuelve esta lámina · «·····»: pendiente</span></div><div class="spss-wrap">${h}</div><div class="spss-note">Etiquetas tomadas de la salida real de SPSS 25 en español.</div>`;
+}
+function dataView(R){
+  const M=R.M;let h=`<div class="dv-wrap"><table class="dv"><tr><th></th>`;
+  if(!M.par){h+=`<th>${M.grp}</th><th>${M.var}</th></tr>`;R.a.forEach((v,i)=>h+=`<tr><td class="i">${i+1}</td><td class="g1">1</td><td class="g1">${fx(v,2)}</td></tr>`);R.b.forEach((v,i)=>h+=`<tr><td class="i">${R.n[0]+i+1}</td><td class="g2">2</td><td class="g2">${fx(v,2)}</td></tr>`);}
+  else{h+=`<th>${M.vars[0]}</th><th>${M.vars[1]}</th></tr>`;R.a.forEach((v,i)=>h+=`<tr><td class="i">${i+1}</td><td class="g1">${fx(v,2)}</td><td class="g2">${fx(R.b[i],2)}</td></tr>`);}
+  return h+`</table></div>`;}
+function diffView(R){const M=R.M;let h=`<div class="dv-wrap"><table class="dv"><tr><th></th><th>${M.vars[0]}</th><th>${M.vars[1]}</th><th>diferencia</th></tr>`;R.a.forEach((v,i)=>h+=`<tr><td class="i">${i+1}</td><td class="g1">${fx(v,2)}</td><td class="g2">${fx(R.b[i],2)}</td><td class="dd">${fx(R.D[i],2)}</td></tr>`);return h+`</table></div>`;}
+
+/* ============ láminas ============ */
+const PATH=(arr)=>`<div class="path">${arr.map((x,i)=>(i?"<em>›</em>":"")+`<span>${x}</span>`).join("")}</div>`;
+const OPEN=R=>PATH(["Archivo","Abrir","Datos…"])+`<div class="cap">Abrir <b>${R.M.file}</b> (carpeta Datos_Ejercicios).</div>`;
+const RUN=R=>R.M.par
+ ? PATH(["Analizar","Comparar medias","Prueba T para muestras relacionadas…"])+`<ol class="clicks"><li>Pasar <b>${R.M.vars[0]}</b> y <b>${R.M.vars[1]}</b> como Par 1 <span class="tag x">VERIFICAR ETIQUETA EN PANTALLA</span>.</li><li>Opciones…: intervalo de confianza 95 % (valor por omisión).</li><li>Aceptar.</li></ol>`
+ : PATH(["Analizar","Comparar medias","Prueba T para muestras independientes…"])+`<ol class="clicks"><li><b>${R.M.var}</b> → «Variables de prueba».</li><li><b>${R.M.grp}</b> → «Variable de agrupación» → «Definir grupos»: Grupo 1 = 1, Grupo 2 = 2 → Continuar.</li><li>Opciones…: intervalo de confianza 95 % (valor por omisión).</li><li>Aceptar.</li></ol>`;
+const ALLKEYS=["n","mean","sd","se","F","levsig","r","dm","dsd","ee","gl","t","dif","sig","ci"];
+
+const STEPS=[
+ {grp:"Planear",t:"La pregunta y los datos",phase:"Planear",keys:[],
+  why:R=>`<b>Antes de cualquier número</b>, se entiende qué decisión se quiere tomar y cómo están los datos. ${R.M.ctx}`,
+  fig:R=>{const d=document.createElement("div");d.className="split";d.innerHTML=`<div><div class="hyp"><span>Pregunta</span><b style="font-family:var(--f-body)">${R.M.q}</b><span>Contexto</span><span>${R.M.ctx}</span><span>Variable</span><span>${R.M.varlab}</span><span>Diseño</span><span>${R.M.par?"mismos sujetos (pareadas)":"grupos distintos (independientes)"}</span><span>Archivo</span><span class="mono">${R.M.file}</span></div></div><div>${dataView(R)}</div>`;return d;},
+  cap:R=>R.M.par?"Vista de datos en SPSS: formato ancho, una fila por sujeto y una columna por medición.":"Vista de datos en SPSS: formato largo, una columna con el valor y otra con el grupo (1 y 2).",
+  fx:R=>`<div class="fx">n = ${R.n[0]}${R.M.par?" pares":" + "+R.n[1]} · variable de escala</div>`,
+  does:R=>"Todavía nada: SPSS solo guarda los datos. En la Vista de variables conviene revisar que la medida sea <b>Escala</b> y que el grupo tenga etiquetas de valor.",
+  where:R=>OPEN(R)+PATH(["Vista de variables","Medida: Escala"])},
+ {grp:"Planear",t:"Definir el modelo de evaluación",phase:"Planear",keys:[],
+  why:R=>`<b>Se decide antes de ver resultados:</b> qué prueba corresponde al diseño, qué hipótesis se contrastan, cuántas colas y con qué α. Si esto se decide después, el resultado pierde validez.`,
+  fig:R=>{const d=document.createElement("div");d.className="fit";d.style.gap="8px";const a=document.createElement("div");a.className="fit";a.appendChild(figTree(R));const h=document.createElement("div");h.innerHTML=`<div class="hyp hyp2"><span>H₀</span><b>${R.M.h0}</b><span>H₁</span><b>${R.M.h1}</b><span>Colas</span><span>${R.M.tailTxt}</span><span>α</span><span>0.05 → confianza de 95 %</span><span>Prueba</span><span>${R.M.par?"t para muestras relacionadas":"t para muestras independientes"}</span></div>`;d.appendChild(h);d.appendChild(a);return d;},
+  cap:R=>R.M.par?"Mismos sujetos medidos dos veces → t para muestras relacionadas.":"Personas distintas en cada grupo → t para muestras independientes.",
+  fx:R=>`<div class="fx">H₀: ${R.M.h0}<br>H₁: ${R.M.h1}<br>α = 0.05</div>`,
+  does:R=>"<b>SPSS no decide esto por ti.</b> Tú eliges el menú correcto según el diseño. SPSS siempre reporta la Sig. bilateral; si fijaste una cola, la divides entre 2 al final.",
+  where:R=>`<div class="cap">El diseño decide el menú:</div>`+(R.M.par?PATH(["Analizar","Comparar medias","Prueba T para muestras relacionadas…"]):PATH(["Analizar","Comparar medias","Prueba T para muestras independientes…"]))},
+ {grp:"Describir",t:"Ver los datos antes de probar",phase:"Describir",keys:[],
+  why:R=>R.M.par?`<b>Graficar primero.</b> Cada línea une las dos mediciones de un mismo sujeto: si la mayoría sube o baja, ya se intuye la dirección.`:`<b>Graficar primero.</b> Cada punto es un dato: se ven la ubicación, la dispersión y los valores extremos de cada grupo.`,
+  fig:R=>figDots(R),cap:R=>R.M.par?"Líneas azules: la primera medición es mayor. Líneas verde agua: la segunda es mayor.":"Puntos de cada grupo, separados un poco para que no se encimen.",
+  fx:R=>`<div class="fx">Sin fórmula: solo mirar.</div>`,
+  does:R=>"Dibuja gráficas de los datos: barras de error, cajas o histogramas. No decide nada: sirve para conocer los datos.",
+  where:R=>PATH(["Gráficos","Cuadros de diálogo antiguos","Barras de error…"])+PATH(["Analizar","Estadísticos descriptivos","Explorar…"])+`<div class="cap">Detalle en el Anexo «Ver antes de probar».</div>`},
+ {grp:"Describir",t:"Promedio y dispersión de cada muestra",phase:"Describir",keys:["n","mean","sd","se"],
+  why:R=>`<b>Primera pieza del plano:</b> el promedio de cada muestra (x̄), cuánto se dispersan sus datos (s) y cuánto variaría ese promedio con otra muestra (su error estándar).`,
+  fig:R=>figDots(R,{stats:true,fade:true,noLines:true}),cap:R=>"Línea negra: promedio. Barra morada: ± una desviación estándar.",
+  fx:R=>`<div class="fx">x̄ = Σx ÷ n<br>s = √[ Σ(x − x̄)² ÷ (n − 1) ]<br>EE de cada media = s ÷ √n<br><br>${R.M.g[0]}: x̄ = <b>${fx(R.m[0],3)}</b>, s = <b>${fx(R.s[0],3)}</b>, EE = ${fx(R.s[0],3)} ÷ √${R.n[0]} = <span class="res">${fx(R.se[0],3)}</span><br>${R.M.g[1]}: x̄ = <b>${fx(R.m[1],3)}</b>, s = <b>${fx(R.s[1],3)}</b>, EE = ${fx(R.s[1],3)} ÷ √${R.n[1]} = <span class="res">${fx(R.se[1],3)}</span></div>`,
+  does:R=>`Calcula N, Media, Desv. Desviación y Desv. Error promedio de cada ${R.M.par?"medición":"grupo"} y los pone en la primera tabla.`,
+  where:R=>RUN(R)+`<div class="cap">Primera tabla de la salida: «${R.M.par?"Estadísticas de muestras emparejadas":"Estadísticas de grupo"}».</div>`},
+ {grp:"Verificar",t:R=>R.M.par?"La columna de diferencias":"¿Varianzas iguales? Levene",phase:"Verificar",keys:R=>R.M.par?["r","dm","dsd"]:["F","levsig"],
+  why:R=>R.M.par?`<b>En pareadas la prueba no compara dos columnas: analiza una.</b> Se resta cada par y se trabaja con esas diferencias. La correlación muestra qué tan parecido es cada sujeto a sí mismo.`:`<b>Levene decide qué fila de la tabla leer.</b> Compara cuánto se alejan los datos de su media en cada grupo. No responde la pregunta de investigación.`,
+  fig:R=>{if(R.M.par){const d=document.createElement("div");d.className="split";const a=document.createElement("div");a.className="fit";a.appendChild(figDiffs(R));d.classList.add("narrow");d.appendChild(a);const b=document.createElement("div");b.innerHTML=diffView(R);d.appendChild(b);return d;}return figLevene(R);},
+  cap:R=>R.M.par?`Cada punto morado es la diferencia de un sujeto. Correlación entre mediciones: r = ${fx(R.r,3)}.`:"Levene es una prueba sobre estas distancias: si los promedios de distancia se parecen, las varianzas se consideran iguales.",
+  fx:R=>R.M.par?`<div class="fx">dᵢ = ${R.M.vars[0]}ᵢ − ${R.M.vars[1]}ᵢ<br>d̄ = Σd ÷ n = <b>${fx(R.dm,3)}</b><br>s_d = <b>${fx(R.dsd,3)}</b></div>`:`<div class="fx">F de Levene = <b>${fx(R.F,3)}</b> · Sig. = <b>${sig(R.levP)}</b><br>${R.levP>=.05?"Sig. ≥ .05 → fila «Se asumen varianzas iguales»":"Sig. &lt; .05 → fila «No se asumen varianzas iguales» (Welch)"}</div>`,
+  does:R=>R.M.par?"Resta cada par por dentro y reporta media, desviación y error de esas diferencias (bloque «Diferencias emparejadas»). La correlación va en su propia tabla.":"Corre la prueba de Levene automáticamente dentro de la prueba t y la reporta en las dos primeras columnas.",
+  where:R=>R.M.par?`<div class="cap">No hay que hacer nada extra: sale con la misma prueba. Para ver la columna: </div>`+PATH(["Transformar","Calcular variable…"]):`<div class="cap">Sale sola con la prueba t:</div>`+PATH(["Analizar","Comparar medias","Prueba T para muestras independientes…"])},
+ {grp:"Construir",t:"El error estándar de la diferencia",phase:"Construir",keys:["ee"],
+  why:R=>`<b>El ruido.</b> Cuánto cambiaría la diferencia observada si se repitiera el estudio con otras muestras. Es la regla con la que se mide la diferencia.`,
+  fig:R=>figNoise(R),cap:R=>"La diferencia observada, medida en «pedazos» de error estándar. Ese conteo será el t.",
+  fx:R=>R.M.par?`<div class="fx">EE = s_d ÷ √n = ${fx(R.dsd,3)} ÷ √${R.n[0]} = <span class="res">${fx(R.ee,3)}</span></div>`:(R.welch?`<div class="fx">Welch: EE = √(s₁²/n₁ + s₂²/n₂) = <span class="res">${fx(R.eeW,3)}</span></div>`:`<div class="fx">s²ₚ = [(n₁−1)s₁² + (n₂−1)s₂²] ÷ (n₁+n₂−2)<br>= [${R.n[0]-1}·${fx(R.s[0],3)}² + ${R.n[1]-1}·${fx(R.s[1],3)}²] ÷ ${R.gl} = ${fx(R.sp2,3)}<br>sₚ = ${fx(R.sp,3)}<br>EE = sₚ·√(1/${R.n[0]} + 1/${R.n[1]}) = <span class="res">${fx(R.ee,3)}</span></div>`),
+  does:R=>R.M.par?"Lo reporta como «Desv. Error promedio» dentro de «Diferencias emparejadas».":"Lo reporta como «Diferencia de error estándar», una vez por fila (varianzas iguales y Welch).",
+  where:R=>RUN(R)},
+ {grp:"Construir",t:"Grados de libertad",phase:"Construir",keys:["gl"],
+  why:R=>`<b>Cuántos datos quedan libres</b> después de calcular las medias. Con menos grados de libertad, la curva t tiene colas más gruesas y exige un valor crítico mayor.`,
+  fig:R=>figDF(R),cap:R=>"Cada media estimada deja un dato obligado.",
+  fx:R=>R.M.par?`<div class="fx">gl = pares − 1 = ${R.n[0]} − 1 = <span class="res">${R.gl}</span></div>`:`<div class="fx">gl = n₁ + n₂ − 2 = ${R.n[0]} + ${R.n[1]} − 2 = <span class="res">${R.gl}</span>${R.welch?`<br>Welch (fila que se usa): gl = <span class="res">${fx(R.glW,3)}</span>`:`<br>La fila Welch usa un gl ajustado: ${fx(R.glW,3)}`}</div>`,
+  does:R=>"Lo calcula y lo pone en la columna «gl».",where:R=>RUN(R)},
+ {grp:"Construir",t:"Confianza de 95 % y valor crítico",phase:"Construir",keys:[],
+  why:R=>`<b>La frontera.</b> Con α = 0.05, el valor crítico marca dónde empieza lo «demasiado raro si H₀ fuera cierta». También fija cuánto se abre el intervalo.`,
+  fig:R=>figBell(R,"crit"),cap:R=>R.M.tails===1?"Las líneas rojas son las de dos colas (las del IC 95 %). Para la prueba de una cola de E1 la frontera es la línea ámbar.":"Zonas rojas: 2.5 % en cada cola.",
+  fx:R=>`<div class="fx">t crítico (95 %, dos colas, ${R.useGl%1?fx(R.useGl,3):R.useGl} gl) = <span class="res">${fx(R.tc,3)}</span><br>Excel: INV.T.2C(0.05, ${R.useGl%1?fx(R.useGl,3):R.useGl})${R.M.tails===1?`<br>Una cola: INV.T(0.95, ${R.useGl}) = <span class="res">${fx(R.tc1,3)}</span>`:""}</div>`,
+  does:R=>"<b>SPSS no muestra el valor crítico.</b> Lo usa por dentro para el intervalo y en su lugar reporta la Sig. El nivel de 95 % se fija en Opciones.",
+  where:R=>PATH([R.M.par?"Prueba T para muestras relacionadas":"Prueba T para muestras independientes","Opciones…","Intervalo de confianza: 95 %"])+`<div class="cap"><span class="tag x">VERIFICAR ETIQUETA EN PANTALLA</span> para el campo del porcentaje.</div>`},
+ {grp:"Probar",t:"El estadístico t",phase:"Probar",keys:R=>R.M.par?["t"]:["t","dif"],
+  why:R=>`<b>Señal ÷ ruido.</b> Cuántos errores estándar mide la diferencia observada. Se ubica en la curva para ver si cae en la zona de rechazo.`,
+  fig:R=>figBell(R,"t"),cap:R=>Math.abs(R.t)>(R.M.tails===1?R.tc1:R.tc)?"El t cae en la zona de rechazo.":"El t queda en la zona central: no alcanza el valor crítico.",
+  fx:R=>`<div class="fx">t = diferencia ÷ EE = ${fx(R.dif,3)} ÷ ${fx(R.useEE,3)} = <span class="res">${fx(R.t,3)}</span><br>|t| ${Math.abs(R.t)>(R.M.tails===1?R.tc1:R.tc)?"&gt;":"≤"} t crítico ${fx(R.M.tails===1?R.tc1:R.tc,3)}${R.M.tails===1?" (una cola)":""}</div>`,
+  does:R=>`Calcula t y lo pone en la columna «t»${R.M.par?"":", junto a la «Diferencia de medias»"}. El signo solo refleja el orden de la resta.`,where:R=>RUN(R)},
+ {grp:"Probar",t:"El valor p",phase:"Probar",keys:["sig"],
+  why:R=>`<b>¿Qué tan raro sería este t si H₀ fuera cierta?</b> Es el área más allá del t observado. Si es menor que α, se rechaza H₀.`,
+  fig:R=>figBell(R,"p"),cap:R=>R.M.tails===1?"Área azul: p de una cola (la Sig. bilateral dividida entre 2).":"Área azul: p bilateral (las dos colas).",
+  fx:R=>`<div class="fx">Sig. (bilateral) = DISTR.T.2C(|t|, gl) = <b>${pTxt(R.p)}</b>${R.M.tails===1?`<br>una cola = ${pTxt(R.p)} ÷ 2 = <span class="res">${pTxt(R.pUsed)}</span>`:""}<br>p ${R.rej?"&lt;":"≥"} 0.05 → <span class="res">${R.rej?"se rechaza H₀":"no se rechaza H₀"}</span></div>`,
+  does:R=>"Calcula el área y la reporta como «Sig. (bilateral)». Nunca da la de una cola: si la fijaste, divides entre 2 solo si la diferencia va en el sentido de H₁.",where:R=>RUN(R)},
+ {grp:"Probar",t:"El intervalo de confianza de la diferencia",phase:"Probar",keys:["ci"],
+  why:R=>`<b>¿Cuánto?</b> El intervalo da los valores de la diferencia que los datos no descartan. Si deja fuera el 0, coincide con rechazar H₀ (a dos colas).`,
+  fig:R=>figCI(R),cap:R=>"Barra: IC 95 % de la diferencia. Línea negra: el 0.",
+  fx:R=>`<div class="fx">margen = t crítico × EE = ${fx(R.tc,3)} × ${fx(R.useEE,3)} = <b>${fx(R.marg,3)}</b><br>IC = ${fx(R.dif,3)} ± ${fx(R.marg,3)} = <span class="res">[${fx(R.lo,3)} ; ${fx(R.hi,3)}]</span>${R.M.tails===1?`<br>Una cola al 5 % ⇔ IC 90 %: [${fx(R.dif-R.tc1*R.useEE,3)} ; ${fx(R.dif+R.tc1*R.useEE,3)}]`:""}</div>`,
+  does:R=>"Calcula el intervalo con el t crítico que no muestra y reporta «Inferior» y «Superior».",where:R=>RUN(R)},
+ {grp:"Decidir",t:"Plano completo: interpretar y decidir",phase:"Decidir",keys:R=>ALLKEYS,
+  why:R=>`<b>Todo está resuelto.</b> Las tres gráficas dicen lo mismo desde ángulos distintos. Ahora sí se interpreta y se decide.`,
+  fig:R=>{const d=document.createElement("div");d.className="three";const add=(t,svg)=>{const m=document.createElement("div");m.className="mini";m.innerHTML=`<h4>${t}</h4>`;m.appendChild(svg);d.appendChild(m);};add("1 · La campana",figBell(R,"t"));add("2 · Cada grupo",figGroups(R));add("3 · La diferencia",figCI(R,true));
+    const w=document.createElement("div");w.appendChild(d);const v=document.createElement("div");v.className="verdict "+(R.rej?"yes":"no");
+    v.innerHTML=`<strong>${R.rej?"Se rechaza H₀":"No se rechaza H₀"}</strong><span>Con α = .05, t(${R.useGl%1?fx(R.useGl,3):R.useGl}) = ${fx(R.t,3)}, p ${R.M.tails===1?"(una cola) ":""}= ${pTxt(R.pUsed)}; diferencia = ${fx(R.dif,3)}${R.M.unit?" "+R.M.unit:""}, IC 95 % [${fx(R.lo,3)} ; ${fx(R.hi,3)}]; ${R.M.par?"d_z":"d"} = ${fx(R.d,2)}.</span><span>${R.rej?"Hay evidencia de que las medias difieren"+(R.M.tails===1?" en el sentido de H₁":"")+".":"No hay evidencia suficiente de diferencia. Es inconcluso: no prueba que sean iguales."}</span>`;
+    w.className="fit";w.style.gap="8px";w.appendChild(v);return w;},
+  cap:R=>"La gráfica 2 describe; la 1 y la 3 deciden. Los traslapes de la gráfica 2 no deciden nada.",
+  fx:R=>`<div class="fx">Regla: p &lt; α ⇔ |t| &gt; t crítico ⇔ el IC no incluye el 0 (dos colas)<br>${R.M.tails===1?"E1 (una cola): p = "+pTxt(R.pUsed)+" ⇔ IC 90 % sin el 0":"p = "+pTxt(R.pUsed)+(R.rej?" &lt; .05":" ≥ .05")}</div>`,
+  does:R=>"Entrega toda la tabla. SPSS no interpreta: la decisión y la redacción son tuyas.",
+  where:R=>RUN(R)+`<div class="cap">Lectura en orden: ${R.M.par?"Estadísticas → Diferencias emparejadas":"Estadísticas de grupo → Levene → fila"} → t, gl, Sig. → IC.</div>`},
+];
+
+
+/* ============ ruta completa en SPSS (cada renglón = un clic o una lectura) ============ */
+const V="<span class=\"tag x\">VERIFICAR</span>";
+function ROUTE(R){const M=R.M,P=PATH;
+ if(!M.par) return [
+  {sec:"Preparar"},
+  {at:0,h:P(["Archivo","Abrir","Datos…"])+` Seleccionar <b>${M.file}</b> › Abrir.`},
+  {at:0,h:`Pestaña <b>Vista de variables</b>: <b>${M.var}</b> con Medida = Escala; <b>${M.grp}</b> con Valores 1 = ${M.g[0]}, 2 = ${M.g[1]}.`},
+  {at:1,h:`Elegir la prueba según el diseño (grupos distintos): <b>Prueba T para muestras independientes</b>. Aquí no se pica nada: se decide.`},
+  {at:2,h:P(["Gráficos","Cuadros de diálogo antiguos","Barras de error…"])+` Simple + «Resúmenes para grupos de casos» ${V} › Definir › Variable: <b>${M.var}</b>; Eje de categorías: <b>${M.grp}</b> › Aceptar.`},
+  {sec:"Correr la prueba"},
+  {at:3,h:P(["Analizar","Comparar medias","Prueba T para muestras independientes…"])},
+  {at:3,h:`Seleccionar <b>${M.var}</b> y pasarlo con la flecha a «Variables de prueba».`},
+  {at:3,h:`Seleccionar <b>${M.grp}</b> y pasarlo a «Variable de agrupación» (aparece «${M.grp}(? ?)»).`},
+  {at:3,h:`Clic en «Definir grupos…» › «Utilizar valores especificados»: Grupo 1 = <b>1</b>, Grupo 2 = <b>2</b> › Continuar.`},
+  {at:3,h:`Clic en «Opciones…» › intervalo de confianza en <b>95</b> % ${V} › Continuar.`},
+  {at:3,h:`Clic en <b>Aceptar</b>: se abre el Visor de resultados.`},
+  {sec:"Leer la salida, en orden"},
+  {at:3,h:`Tabla «Estadísticas de grupo»: N, Media, Desv. Desviación, Desv. Error promedio.`},
+  {at:4,h:`Tabla «Prueba de muestras independientes», columnas de Levene: F y Sig. → ${R.levP>=.05?"Sig. ≥ .05: leer la fila «Se asumen varianzas iguales»":"Sig. < .05: leer la fila «No se asumen varianzas iguales»"}.`},
+  {at:5,h:`En esa fila: «Diferencia de error estándar».`},
+  {at:6,h:`En esa fila: «gl».`},
+  {at:7,h:`El t crítico no aparece en la salida: el 95 % fijado en Opciones es el que usa SPSS para el intervalo.`},
+  {at:8,h:`En esa fila: «t» y «Diferencia de medias».`},
+  {at:9,h:`En esa fila: «Sig. (bilateral)»${M.tails===1?" → dividir entre 2 (una cola, si la diferencia va en el sentido de H₁)":""}.`},
+  {at:10,h:`En esa fila: «95% de intervalo de confianza de la diferencia», Inferior y Superior.`},
+  {sec:"Cerrar"},
+  {at:11,h:P(["Archivo","Guardar como…"])+` en el Visor para conservar la salida (.spv). Redactar la decisión.`}];
+ return [
+  {sec:"Preparar"},
+  {at:0,h:P(["Archivo","Abrir","Datos…"])+` Seleccionar <b>${M.file}</b> › Abrir.`},
+  {at:0,h:`Pestaña <b>Vista de variables</b>: <b>${M.vars[0]}</b> y <b>${M.vars[1]}</b> con Medida = Escala (una columna por medición, una fila por sujeto).`},
+  {at:1,h:`Elegir la prueba según el diseño (mismos sujetos): <b>Prueba T para muestras relacionadas</b>. Aquí no se pica nada: se decide.`},
+  {at:2,h:P(["Gráficos","Cuadros de diálogo antiguos","Barras de error…"])+` Simple + «Resúmenes para variables separadas» ${V} › Definir › pasar <b>${M.vars[0]}</b> y <b>${M.vars[1]}</b> › Aceptar.`},
+  {sec:"Correr la prueba"},
+  {at:3,h:P(["Analizar","Comparar medias","Prueba T para muestras relacionadas…"])},
+  {at:3,h:`Seleccionar <b>${M.vars[0]}</b> y <b>${M.vars[1]}</b> y pasarlas con la flecha: quedan en el Par 1 (Variable1 = ${M.vars[0]}, Variable2 = ${M.vars[1]}) ${V}.`},
+  {at:3,h:`Clic en «Opciones…» › intervalo de confianza en <b>95</b> % ${V} › Continuar.`},
+  {at:3,h:`Clic en <b>Aceptar</b>: se abre el Visor de resultados.`},
+  {sec:"Leer la salida, en orden"},
+  {at:3,h:`Tabla «Estadísticas de muestras emparejadas»: Media, N, Desv. Desviación, Desv. Error promedio.`},
+  {at:4,h:`Tabla «Correlaciones de muestras emparejadas»: Correlación y Sig. (descriptiva; no hay Levene).`},
+  {at:4,h:`Tabla «Prueba de muestras emparejadas», bloque «Diferencias emparejadas»: Media y Desv. Desviación de ${M.vars[0]} - ${M.vars[1]}.`},
+  {at:4,h:`Opcional, para ver la columna: `+P(["Transformar","Calcular variable…"])+` Variable de destino = dif; Expresión = ${M.vars[0]} - ${M.vars[1]} › Aceptar.`},
+  {at:5,h:`Mismo bloque: «Desv. Error promedio».`},
+  {at:6,h:`Columna «gl».`},
+  {at:7,h:`El t crítico no aparece en la salida: el 95 % fijado en Opciones es el que usa SPSS para el intervalo.`},
+  {at:8,h:`Columna «t».`},
+  {at:9,h:`Columna «Sig. (bilateral)».`},
+  {at:10,h:`«95% de intervalo de confianza de la diferencia», Inferior y Superior.`},
+  {sec:"Cerrar"},
+  {at:11,h:P(["Archivo","Guardar como…"])+` en el Visor para conservar la salida (.spv). Redactar la decisión.`}];
+}
+function renderRoute(){const rt=ROUTE(R),items=rt.filter(x=>!x.sec),now=items.filter(x=>x.at===I).length,done=items.filter(x=>x.at<I).length;
+  const head=`<div class="route-head">${now?`En esta lámina: <b>${now}</b> ${now===1?"paso":"pasos"} (en amarillo) · `:""}${done} de ${items.length} ya hechos</div>`;
+  return head+`<div class="route-box"><ol class="route">`+rt.map(x=>x.sec?`<li class="sec">${x.sec}</li>`:`<li class="${x.at<I?"done":x.at===I?"now":""}"><div>${x.h}</div></li>`).join("")+`</ol></div>`+`<div class="route-note"><span class="tag x">VERIFICAR</span> = etiqueta interna del cuadro de diálogo que no aparece en las capturas; confirmar en pantalla. Menús y botones verificados con capturas de SPSS 25 en español.</div>`;}
+
+/* ============ estado y render ============ */
+let K="E1",I=0,R=compute(K);
+try{const s=localStorage.getItem("planoT");if(s){const o=JSON.parse(s);if(META[o.k]){K=o.k;R=compute(K);}if(o.i>=0&&o.i<STEPS.length)I=o.i;}}catch(_){}
+{const h=(location.hash||"").replace("#","").toUpperCase();if(META[h]){K=h;R=compute(K);I=0;}}
+const $=id=>document.getElementById(id);
+const val=(f)=>typeof f==="function"?f(R):f;
+function keysUpTo(i){const s=new Set();for(let j=0;j<=i;j++)val(STEPS[j].keys).forEach(k=>s.add(k));return s;}
+const SHORT=["Datos","Modelo","Ver","Promedios",null,"Error est.","gl","t crítico","t","p","IC","Decisión"];
+function renderSteps(){
+  let h="",last="",open=false;STEPS.forEach((st,i)=>{if(st.grp!==last){if(open)h+="</div></div>";h+=`<div class="ph"><span>${st.grp}</span><div>`;open=true;last=st.grp;}
+    const sh=SHORT[i]||(R.M.par?"Diferencias":"Levene");h+=`<button type="button" data-i="${i}" class="${i<I?"done":i===I?"cur":""}" aria-current="${i===I?"step":"false"}" title="${val(st.t)}"><b>${i<I?"✓":String(i+1).padStart(2,"0")}</b><small>${sh}</small></button>`;});
+  h+="</div></div>";$("steps").innerHTML=h;$("steps").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>go(+b.dataset.i)));}
+function renderStepsOld(){
+  let h="",last="";STEPS.forEach((st,i)=>{if(st.grp!==last){h+=`<li class="grp">${st.grp}</li>`;last=st.grp;}h+=`<li class="${i<I?"done":i===I?"cur":""}"><button type="button" data-i="${i}" aria-current="${i===I?"step":"false"}"><span class="num">${i<I?"✓":String(i+1).padStart(2,"0")}</span><span>${val(st.t)}</span></button></li>`;});
+  $("steps").innerHTML=h;$("steps").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>go(+b.dataset.i)));}
+function renderBOM(){
+  const gl=R.useGl%1?fx(R.useGl,3):R.useGl,items=[
+   ["Diseño",R.M.par?"pareadas":"independientes",1],["H₁ · colas",(R.M.tails===1?"una":"dos"),1],["α","0.05",1],
+   ["x̄ "+R.M.g[0],fx(R.m[0],2),3],["x̄ "+R.M.g[1],fx(R.m[1],2),3],
+   [R.M.par?"d̄ (diferencia)":"Levene Sig.",R.M.par?fx(R.dm,3):sig(R.levP),4],
+   ["EE diferencia",fx(R.useEE,3),5],["gl",gl,6],["t crítico 95 %","±"+fx(R.tc,3),7],["t",fx(R.t,3),8],["p"+(R.M.tails===1?" (una cola)":""),pTxt(R.pUsed),9],["IC 95 %",`${fx(R.lo,2)} a ${fx(R.hi,2)}`,10],["Decisión",R.rej?"rechaza H₀":"no rechaza",11]];
+  $("bom").innerHTML=items.map(([k,v,s])=>`<div class="${s>I?"pend":""}${s===I?" new":""}" title="${k}"><span>${k}</span><span>${s>I?"—":v}</span></div>`).join("");}
+function render(){
+  const st=STEPS[I];
+  $("s-k").textContent=`LÁMINA ${String(I+1).padStart(2,"0")} / ${STEPS.length} · ${R.k}`;
+  $("s-title").textContent=val(st.t);$("s-phase").textContent=st.phase;$("s-why").innerHTML=val(st.why);
+  const f=$("s-fig");f.innerHTML="";const fg=st.fig(R);f.appendChild(fg);$("s-cap").innerHTML=val(st.cap);
+  const shown=keysUpTo(I),hl=new Set(val(st.keys));$("s-spss").innerHTML=I>=3?spssTables(R,shown,hl):"";$("work").classList.toggle("final",I===STEPS.length-1);if(I===STEPS.length-1){$("s-spss").insertAdjacentHTML("beforeend",`<div class="card f" style="margin-top:6px"><div class="panel-k"><i>2</i>La regla, con tus números</div>${val(st.fx)}</div><div class="card s"><div class="panel-k"><i>3</i>Qué hace SPSS · orden de lectura</div><div class="does">${val(st.does)} Lectura: ${R.M.par?"Estadísticas de muestras emparejadas → Correlaciones → Diferencias emparejadas":"Estadísticas de grupo → Levene → fila correspondiente"} → t, gl, Sig. → intervalo.</div></div><div class="card w" style="flex:none"><div class="panel-k"><i>4</i>Cómo redactarlo</div><div class="does"><i>«Con α = .05, t(${R.useGl%1?fx(R.useGl,3):R.useGl}) = ${fx(R.t,3)}, p ${R.M.tails===1?"(una cola) ":""}= ${pTxt(R.pUsed)}, la diferencia es de ${fx(R.dif,2)}${R.M.unit?" "+R.M.unit:""} (IC 95 % ${fx(R.lo,2)} a ${fx(R.hi,2)}). ${R.rej?"Se rechaza H₀.":"No se rechaza H₀; el resultado es inconcluso."}»</i></div></div>`);}
+  $("s-fx").innerHTML=val(st.fx);$("s-does").innerHTML=val(st.does);$("s-where").innerHTML=renderRoute();{const box=document.querySelector(".route-box"),nowEl=box&&box.querySelector("li.now");if(nowEl){box.scrollTop=Math.max(0,nowEl.offsetTop-box.offsetTop-40);}}
+  $("prev").disabled=I===0;$("next").disabled=I===STEPS.length-1;$("next").textContent=I===STEPS.length-2?"Plano completo →":"Siguiente →";
+  $("cartela").innerHTML=`<div><span>Proyecto</span><b>260814 · Dos medias</b></div><div><span>Lámina</span><b>${String(I+1).padStart(2,"0")} de ${STEPS.length}</b></div><div><span>Ejercicio</span><b>${R.k} · ${R.M.par?"pareadas":"indep."}</b></div><div><span>Archivo</span><b>${R.M.file.replace(".sav","")}</b></div><div><span>Revisión</span><b>V2 · 24-sep-2026</b></div><div><span>Elaboró</span><b>E. Salas G.</b></div>`;
+  document.querySelectorAll(".ex button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===K));
+  renderSteps();renderBOM();
+  try{localStorage.setItem("planoT",JSON.stringify({k:K,i:I}));}catch(_){}
+}
+function go(i){I=Math.max(0,Math.min(STEPS.length-1,i));render();}
+$("prev").addEventListener("click",()=>go(I-1));$("next").addEventListener("click",()=>go(I+1));
+document.querySelectorAll(".ex button").forEach(b=>b.addEventListener("click",()=>{K=b.dataset.k;R=compute(K);render();}));
+document.addEventListener("keydown",e=>{if(e.target.closest("input,textarea"))return;if(e.key==="ArrowRight")go(I+1);if(e.key==="ArrowLeft")go(I-1);});
+window.__planoCheck=()=>Object.keys(META).map(k=>{const r=compute(k);return {k,t:+r.t.toFixed(3),gl:r.useGl,p:+r.p.toFixed(4),lo:+r.lo.toFixed(3),hi:+r.hi.toFixed(3),lev:r.levP!=null?+r.levP.toFixed(3):null,r:r.r!=null?+r.r.toFixed(3):null,d:+r.d.toFixed(3)};});
+render();
+})();
+</script>
+
+</body></html>
